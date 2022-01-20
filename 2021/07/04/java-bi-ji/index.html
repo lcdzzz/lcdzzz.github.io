@@ -457,14 +457,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-01-18
+                    2021-07-04
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2021-03-07
+                    2021-08-22
                 </div>
                 
 
@@ -1819,10 +1819,12 @@ new对象的时候一定是在堆内存当中开辟空间
 </li>
 <li><p>catch写多个的时候，从上到下，必须遵守从小到大</p>
 <p><br><br></p>
-<h3 id="上报和捕捉的选择："><a href="#上报和捕捉的选择：" class="headerlink" title="上报和捕捉的选择："></a>上报和捕捉的选择：</h3><p>如果希望调用者来处理，选择throws上报</p>
-<p><br><br></p>
-<p>异常对象有两个非常重要的方法：、</p>
 </li>
+</ol>
+<h3 id="上报和捕捉的选择："><a href="#上报和捕捉的选择：" class="headerlink" title="上报和捕捉的选择："></a>上报和捕捉的选择：</h3><p>   如果希望调用者来处理，选择throws上报</p>
+<p>   <br><br></p>
+<p>   异常对象有两个非常重要的方法：、</p>
+<ol>
 <li><p>获取异常简单的描述信息：</p>
 <p>String msg = exception.getMessage();</p>
 </li>
@@ -3435,7 +3437,8 @@ File中的listFile方法
 <p>就算创建了100个对象，那么类锁也只有一把</p>
 </li>
 </ol>
-<h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a><br><br><br><br>守护线程</h2><ol>
+<p><br><br><br><br></p>
+<h2 id="守护线程"><a href="#守护线程" class="headerlink" title="守护线程"></a>守护线程</h2><ol>
 <li><p>java语言中线程分为两大类：</p>
 <p>一类是：用户线程</p>
 <p>一类是：守护线程（后台线程）</p>
@@ -3454,60 +3457,64 @@ File中的listFile方法
 </li>
 </ul>
 <p><br><br><br><br></p>
-<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><p>定时器的作用：</p>
-<p>间隔特定的时间，执行特定的程序。</p>
-<p>每周要进行银行的总账操作。</p>
-<p>每天要进行数据的备份操作。</p>
-<p>在实际的开发中，每隔多久执行一段特定的程序，这种需求很常见，那么在java中其实可以采用多种方式实现</p>
+</li>
+</ol>
+<h2 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h2><p>   定时器的作用：</p>
+<p>   间隔特定的时间，执行特定的程序。</p>
+<p>   每周要进行银行的总账操作。</p>
+<p>   每天要进行数据的备份操作。</p>
+<p>   在实际的开发中，每隔多久执行一段特定的程序，这种需求很常见，那么在java中其实可以采用多种方式实现</p>
 <ul>
-<li>可以使用sleep方法，睡眠设置睡眠时间，每到这个时间点醒来执行任务，这种方式是最原始的。定时器（比较low）</li>
-<li>在java的类库中已经写好了一个定时器：java.util.Timer,可以直接哪来用。</li>
-</ul>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token class-name">SelfTest</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span><span class="token class-name">ParseException</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span><span class="token class-name">SimpleDateFormat</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Date</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Timer</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">TimerTask</span><span class="token punctuation">;</span>
-
-<span class="token comment">/*
-使用定时器定时任务
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TimeTest</span> <span class="token punctuation">&#123;</span>
-
-
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ParseException</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//创建定时器对象</span>
-        <span class="token class-name">Timer</span> timer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//Timer timer = new Timer(true); //守护线程的方法</span>
-
-        <span class="token comment">//指定定时任务</span>
-        <span class="token comment">//timeer.schedule(定时任务，第一次执行任务，间隔多久执行一次）</span>
-        <span class="token class-name">SimpleDateFormat</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Date</span> firstTime <span class="token operator">=</span> sdf<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">"2021-03-04 14:39:50"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        timer<span class="token punctuation">.</span><span class="token function">schedule</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">LogTimerTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>firstTime<span class="token punctuation">,</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">//编写一个定时任务类</span>
-<span class="token comment">//假设这是一个记录日志的定时任务</span>
-<span class="token keyword">class</span> <span class="token class-name">LogTimerTask</span> <span class="token keyword">extends</span> <span class="token class-name">TimerTask</span><span class="token punctuation">&#123;</span>
-
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//编写你需要执行的任务就行了</span>
-        <span class="token class-name">SimpleDateFormat</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> strTime <span class="token operator">=</span> sdf<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>strTime<span class="token operator">+</span><span class="token string">":成功完成了一次数据备份"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token punctuation">&#125;</span>
+<li><p>可以使用sleep方法，睡眠设置睡眠时间，每到这个时间点醒来执行任务，这种方式是最原始的。定时器（比较low）</p>
+<ul>
+<li><p>在java的类库中已经写好了一个定时器：java.util.Timer,可以直接哪来用。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">   <span class="token keyword">package</span> <span class="token class-name">SelfTest</span><span class="token punctuation">;</span>
+   
+   <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span><span class="token class-name">ParseException</span><span class="token punctuation">;</span>
+   <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>text<span class="token punctuation">.</span></span><span class="token class-name">SimpleDateFormat</span><span class="token punctuation">;</span>
+   <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Date</span><span class="token punctuation">;</span>
+   <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Timer</span><span class="token punctuation">;</span>
+   <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">TimerTask</span><span class="token punctuation">;</span>
+   
+   <span class="token comment">/*
+   使用定时器定时任务
+    */</span>
+   <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TimeTest</span> <span class="token punctuation">&#123;</span>
+   
+   
+       <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">ParseException</span> <span class="token punctuation">&#123;</span>
+           <span class="token comment">//创建定时器对象</span>
+           <span class="token class-name">Timer</span> timer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Timer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token comment">//Timer timer = new Timer(true); //守护线程的方法</span>
+   
+           <span class="token comment">//指定定时任务</span>
+           <span class="token comment">//timeer.schedule(定时任务，第一次执行任务，间隔多久执行一次）</span>
+           <span class="token class-name">SimpleDateFormat</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token class-name">Date</span> firstTime <span class="token operator">=</span> sdf<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">"2021-03-04 14:39:50"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           timer<span class="token punctuation">.</span><span class="token function">schedule</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">LogTimerTask</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>firstTime<span class="token punctuation">,</span><span class="token number">1000</span><span class="token operator">*</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   
+       <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span>
+   <span class="token comment">//编写一个定时任务类</span>
+   <span class="token comment">//假设这是一个记录日志的定时任务</span>
+   <span class="token keyword">class</span> <span class="token class-name">LogTimerTask</span> <span class="token keyword">extends</span> <span class="token class-name">TimerTask</span><span class="token punctuation">&#123;</span>
+   
+       <span class="token annotation punctuation">@Override</span>
+       <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           <span class="token comment">//编写你需要执行的任务就行了</span>
+           <span class="token class-name">SimpleDateFormat</span> sdf <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleDateFormat</span><span class="token punctuation">(</span><span class="token string">"yyyy-MM-dd HH:mm:ss"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token class-name">String</span> strTime <span class="token operator">=</span> sdf<span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>strTime<span class="token operator">+</span><span class="token string">":成功完成了一次数据备份"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+   
+       <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 </li>
-</ol>
+</ul>
+</li>
+</ul>
 <p><br><br><br><br></p>
 <h2 id="实现线程的第三种方法，实现Callable接口。（JDK8新特性。）"><a href="#实现线程的第三种方法，实现Callable接口。（JDK8新特性。）" class="headerlink" title="实现线程的第三种方法，实现Callable接口。（JDK8新特性。）"></a>实现线程的第三种方法，实现Callable接口。（JDK8新特性。）</h2><p>这种方式实现的线程可以获取线程的返回值。</p>
 <p>之前讲解的那两种方式是无法获取线程返回值的，因为run方法返回void</p>
@@ -4365,6 +4372,8 @@ public class ReflectTest11 &#123;
 </li>
 </ul>
 <p><br><br></p>
+</li>
+</ul>
 <h3 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h3><ul>
 <li><p>什么是元注解？</p>
 <p>用来“标注”注解类型的“注解”,称为元注解</p>
@@ -4388,10 +4397,10 @@ public class ReflectTest11 &#123;
 <p><code>@RetentionA(RetentionPolicy.SOURCE)</code>:表示该注解只能被保留在java源文件中。</p>
 <p><code>@RetentionA(RetentionPolicy.CLASS)</code>:表示该注解被保存在class文件中。</p>
 <p><code>@RetentionA(RetentionPolicy.RUNTIME)</code>:表示该注解被保存在class文件中，并且可以被反射机制所读取。</p>
+<p><br><br><br><br></p>
 </li>
 </ul>
-<p><br><br><br><br></p>
-<h2 id="反射注解，获取注解里的属性值"><a href="#反射注解，获取注解里的属性值" class="headerlink" title="反射注解，获取注解里的属性值"></a>反射注解，获取注解里的属性值</h2><ul>
+<h3 id="反射注解，获取注解里的属性值"><a href="#反射注解，获取注解里的属性值" class="headerlink" title="反射注解，获取注解里的属性值"></a>反射注解，获取注解里的属性值</h3><ul>
 <li><p>有三个类</p>
 </li>
 <li><p>MyAnnotation.java【注解】</p>
@@ -4412,118 +4421,119 @@ public class ReflectTest11 &#123;
 
     <span class="token comment">/*
     username属性
-     */</span>
+   */</span>
     <span class="token class-name">String</span> <span class="token function">username</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
+  
     <span class="token class-name">String</span> <span class="token function">password</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>MyAnnotationTest.java【里面包含注解的java类】</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token class-name">ReflectAnnotationTest</span><span class="token punctuation">;</span>
-<span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>username <span class="token operator">=</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>password <span class="token operator">=</span> <span class="token string">"123"</span><span class="token punctuation">)</span>
+  <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>username <span class="token operator">=</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>password <span class="token operator">=</span> <span class="token string">"123"</span><span class="token punctuation">)</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyAnnotationTest</span> <span class="token punctuation">&#123;</span>
-    
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+      
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>ReflectAnnotation.java【用于测试】【所有需要了解的代码都在这里】</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token class-name">ReflectAnnotationTest</span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReflectAnnotation</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">Class</span> c <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"ReflectAnnotationTest.MyAnnotationTest"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-        <span class="token comment">//判断类上面是否有@MyAnnotation</span>
-<span class="token comment">//        System.out.println(c.isAnnotationPresent(MyAnnotation.class));</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token comment">//获取该注解对象</span>
-            <span class="token class-name">MyAnnotation</span> myAnnotation <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">)</span> c<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"类上面的注解对象"</span> <span class="token operator">+</span> myAnnotation<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>myAnnotation<span class="token punctuation">.</span><span class="token function">username</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>myAnnotation<span class="token punctuation">.</span><span class="token function">password</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            <span class="token comment">//获取注解对象的属性怎么办？和调接口没区别。</span>
-            <span class="token class-name">String</span> value <span class="token operator">=</span> myAnnotation<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">  <span class="token keyword">package</span> <span class="token class-name">ReflectAnnotationTest</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ReflectAnnotation</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+          <span class="token class-name">Class</span> c <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"ReflectAnnotationTest.MyAnnotationTest"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+          <span class="token comment">//判断类上面是否有@MyAnnotation</span>
+  <span class="token comment">//        System.out.println(c.isAnnotationPresent(MyAnnotation.class));</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+              <span class="token comment">//获取该注解对象</span>
+              <span class="token class-name">MyAnnotation</span> myAnnotation <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">)</span> c<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">MyAnnotation</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"类上面的注解对象"</span> <span class="token operator">+</span> myAnnotation<span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>myAnnotation<span class="token punctuation">.</span><span class="token function">username</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>myAnnotation<span class="token punctuation">.</span><span class="token function">password</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+              <span class="token comment">//获取注解对象的属性怎么办？和调接口没区别。</span>
+              <span class="token class-name">String</span> value <span class="token operator">=</span> myAnnotation<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">&#125;</span>
+  
 
-
-    <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 </li>
 </ul>
-</li>
-</ul>
 <p>  <br><br><br><br></p>
-<h2 id="注解在开发中有什么用呢？"><a href="#注解在开发中有什么用呢？" class="headerlink" title="注解在开发中有什么用呢？"></a>注解在开发中有什么用呢？</h2><p>  需求：</p>
+<h3 id="注解在开发中有什么用呢？"><a href="#注解在开发中有什么用呢？" class="headerlink" title="注解在开发中有什么用呢？"></a>注解在开发中有什么用呢？</h3><p>需求：</p>
 <ul>
 <li><p>假设有这丫昂的一个注解，叫做：@ID</p>
-</li>
-<li><p>这个注解只能出现在类上面，当这个类上有这个注解的时候要求这个类中必须有一个int类型的id属性，如果没有这个属性就报异常，如果有这个属性则正常执行！</p>
+<ul>
+<li>这个注解只能出现在类上面，当这个类上有这个注解的时候要求这个类中必须有一个int类型的id属性，如果没有这个属性就报异常，如果有这个属性则正常执行！</li>
+</ul>
 <p>答案</p>
-</li>
+<ul>
 <li><p>ID.java【注解】</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token class-name">AnnotationHomework</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">ElementType</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Retention</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Target</span><span class="token punctuation">;</span>
-<span class="token comment">//表示这个注解只能出现在类上面</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
-<span class="token comment">//该注解可以被反射机制读取到</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">  <span class="token keyword">package</span> <span class="token class-name">AnnotationHomework</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">ElementType</span><span class="token punctuation">;</span>
+  <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Retention</span><span class="token punctuation">;</span>
+  <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">;</span>
+  <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Target</span><span class="token punctuation">;</span>
+  <span class="token comment">//表示这个注解只能出现在类上面</span>
+  <span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
+  <span class="token comment">//该注解可以被反射机制读取到</span>
 <span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> ID <span class="token punctuation">&#123;</span>
+  <span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> ID <span class="token punctuation">&#123;</span>
 
-<span class="token punctuation">&#125;</span>
-<span class="token comment">//这个注解@ID用来标注类，被标注的类中必须又一个int类型的id属性，没有的话就报异常</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <span class="token punctuation">&#125;</span>
+  <span class="token comment">//这个注解@ID用来标注类，被标注的类中必须又一个int类型的id属性，没有的话就报异常</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>User.java【定义类，要求有int类型的id属性】</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token class-name">AnnotationHomework</span><span class="token punctuation">;</span>
 <span class="token annotation punctuation">@ID</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> id<span class="token punctuation">;</span>
+  <span class="token keyword">int</span> id<span class="token punctuation">;</span>
     <span class="token class-name">String</span> name<span class="token punctuation">;</span>
-    <span class="token class-name">String</span> password<span class="token punctuation">;</span>
+  <span class="token class-name">String</span> password<span class="token punctuation">;</span>
 
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>Test.java【测试类，使用了反射注解】</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token class-name">AnnotationHomework</span><span class="token punctuation">;</span>
-
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Field</span><span class="token punctuation">;</span>
-
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-
-        <span class="token comment">//获取类</span>
-        <span class="token class-name">Class</span> userClass <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"AnnotationHomework.User"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//判断类上是否存在ID注解</span>
-        <span class="token keyword">boolean</span> isOk <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span>userClass<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>ID<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token comment">//当一个类上面有@ID注解的时候吗，要求类中必须存在int类型的id属性</span>
-            <span class="token comment">//如果没有int类型的id属性则报异常</span>
-            <span class="token comment">//获取类的属性</span>
-            <span class="token class-name">Field</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> userClass<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Field</span> field<span class="token operator">:</span>fields<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token string">"int"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                    <span class="token comment">//表示这个类是合法的类。有@ID注解，则这个类必须有int类型的id</span>
-                    isOk <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-                    <span class="token keyword">break</span><span class="token punctuation">;</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isOk<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">  <span class="token keyword">package</span> <span class="token class-name">AnnotationHomework</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Field</span><span class="token punctuation">;</span>
+  
+  <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Test</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+  
+          <span class="token comment">//获取类</span>
+          <span class="token class-name">Class</span> userClass <span class="token operator">=</span> <span class="token class-name">Class</span><span class="token punctuation">.</span><span class="token function">forName</span><span class="token punctuation">(</span><span class="token string">"AnnotationHomework.User"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token comment">//判断类上是否存在ID注解</span>
+          <span class="token keyword">boolean</span> isOk <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span><span class="token punctuation">(</span>userClass<span class="token punctuation">.</span><span class="token function">isAnnotationPresent</span><span class="token punctuation">(</span>ID<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+              <span class="token comment">//当一个类上面有@ID注解的时候吗，要求类中必须存在int类型的id属性</span>
+              <span class="token comment">//如果没有int类型的id属性则报异常</span>
+              <span class="token comment">//获取类的属性</span>
+              <span class="token class-name">Field</span><span class="token punctuation">[</span><span class="token punctuation">]</span> fields <span class="token operator">=</span> userClass<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  
+              <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Field</span> field<span class="token operator">:</span>fields<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"id"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;&amp;</span><span class="token string">"int"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>field<span class="token punctuation">.</span><span class="token function">getType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+                      <span class="token comment">//表示这个类是合法的类。有@ID注解，则这个类必须有int类型的id</span>
+                      isOk <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+                      <span class="token keyword">break</span><span class="token punctuation">;</span>
+                  <span class="token punctuation">&#125;</span>
+              <span class="token punctuation">&#125;</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isOk<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
                 <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">HasnotIDPropertyException</span><span class="token punctuation">(</span><span class="token string">"被@ID注解标注的类必须要有一个int类型的id属性！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
+              <span class="token punctuation">&#125;</span>
         <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
+</li>
+</ul>
 </li>
 </ul>
 <ul>
@@ -4535,7 +4545,7 @@ public class ReflectTest11 &#123;
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HasnotIDPropertyException</span> <span class="token keyword">extends</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">&#123;</span>
     <span class="token keyword">public</span> <span class="token class-name">HasnotIDPropertyException</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
 
-    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
     <span class="token keyword">public</span> <span class="token class-name">HasnotIDPropertyException</span><span class="token punctuation">(</span><span class="token class-name">String</span> s<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
         <span class="token keyword">super</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
@@ -4568,7 +4578,7 @@ public class ReflectTest11 &#123;
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://lcdzzz.github.io/2021/01/18/java-bi-ji/">http://lcdzzz.github.io/2021/01/18/java-bi-ji/</a>
+                    <a href="http://lcdzzz.github.io/2021/07/04/java-bi-ji/">http://lcdzzz.github.io/2021/07/04/java-bi-ji/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -4777,18 +4787,17 @@ public class ReflectTest11 &#123;
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/01/18/java-bi-ji/">
+                <a href="/2021/12/03/springboot/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="java自学笔记">
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="springboot">
                         
-                        <span class="card-title">java自学笔记</span>
+                        <span class="card-title">springboot</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -4798,29 +4807,16 @@ public class ReflectTest11 &#123;
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-18
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-12-03
+                        </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/java/" class="post-category">
-                                    java
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            lcdzzz
                             
                         </span>
                     </div>
-                </div>
-
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-                        <span class="chip bg-color">2021寒假自学笔记</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -4832,13 +4828,13 @@ public class ReflectTest11 &#123;
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/01/18/chang-jian-de-dos-ming-ling/">
+                <a href="/2021/07/04/git-bash-bu-fen-ming-ling-xing-de-cao-zuo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="常见的DOS命令">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="git github git bash内容随记">
                         
-                        <span class="card-title">常见的DOS命令</span>
+                        <span class="card-title">git github git bash内容随记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -4849,23 +4845,19 @@ public class ReflectTest11 &#123;
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-04
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            lcdzzz
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/git/" class="post-category">
+                                    git
+                                </a>
+                            
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-                        <span class="chip bg-color">2021寒假自学笔记</span>
-                    </a>
-                    
                 </div>
                 
             </div>
@@ -5064,7 +5056,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
         <div class="col s12 m8 l8 copy-right">
             Copyright&nbsp;&copy;
             
-                <span id="year">2019-2021</span>
+                <span id="year">2019-2022</span>
             
             <span id="year">2019</span>
             <a href="/about" target="_blank">lcdzzz</a>
@@ -5073,7 +5065,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">29.6k</span>&nbsp;字
+                class="white-color">41.1k</span>&nbsp;字
             
             
             

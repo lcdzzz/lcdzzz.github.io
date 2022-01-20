@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="java语法随记, lcdzzz的博客">
+    <meta name="keywords" content="lcdzzz的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>java语法随记 | lcdzzz的博客</title>
+    <title>lcdzzz的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -311,12 +311,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">java语法随记</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -430,25 +430,12 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-                                <span class="chip bg-color">2021寒假自学笔记</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
-                    
-                    <div class="post-cate">
-                        <i class="fas fa-bookmark fa-fw icon-category"></i>
-                        
-                            <a href="/categories/java/" class="post-category">
-                                java
-                            </a>
-                        
-                    </div>
                     
                 </div>
             </div>
@@ -457,28 +444,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2020-11-25
+                    2022-01-20
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2021-02-11
+                    2022-01-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1.6k
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    6 Min
+                    4 Min
                 </div>
                 
 
@@ -493,150 +480,128 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="java-math-BigDecimal的用法"><a href="#java-math-BigDecimal的用法" class="headerlink" title="java.math.BigDecimal的用法"></a>java.math.BigDecimal的用法</h2><ol>
-<li><p>BigDecimal类型用来存储金额等有小数，需要精度的数据</p>
-</li>
-<li><p>BigDecimal不能直接使用int类型赋值！</p>
-</li>
-<li><p>两种使BigDecimal初始化为0的方法:<br>BigDecimal a=BigDecimal<br>BigDecimal b=new BigDecimal(0);<br>BigDecimal a = in.nextBigDecimal();</p>
-<ul>
-<li>除法运算：</li>
+                <h2 id="SpringSecurity完成基于数据库的认证（登录）"><a href="#SpringSecurity完成基于数据库的认证（登录）" class="headerlink" title="SpringSecurity完成基于数据库的认证（登录）"></a>SpringSecurity完成基于数据库的认证（登录）</h2><ol>
+<li>创建实体类</li>
+<li>User类 ：<ul>
+<li>实现    <strong>UserDetails</strong>接口，并实现其中的方法</li>
+<li><u>List&lt; Role &gt; roles</u>;变量用于存储user的角色属性</li>
+<li><u>Collection&lt;? enxtend GrandtedAuthority&gt; getAuthorities()</u>方法，用于返回用户所有角色</li>
 </ul>
-<p>​      <code>System.out.println(new BigDecimal(153.5).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));</code></p>
-<p>　  //new BigDecimal(100)除数，2精确的位数，BigDecimal.ROUND_HALF_UP：舍入模式</p>
-<ul>
-<li><p>加法运算：</p>
-<p><code>System.out.println(new BigDecimal(&quot;2.005&quot;).add(new BigDecimal(&quot;0.03&quot;)));</code></p>
 </li>
-<li><p>减法运算：</p>
-<p><code>System.out.println(new BigDecimal(&quot;2.00&quot;).subtract(new BigDecimal(&quot;1.10&quot;)));</code></p>
+<li>Role类，List&lt; Role &gt; roles;变量用于存储user的角色属性</li>
+<li>定义mapper层和实现类（service层）<ol>
+<li>UserMapper</li>
+<li>创建service层中的<strong>UserService</strong>类，实现UserDetailService这个类和它的方法（<u>public UserDetails loadUserByUsername</u>这个方法）</li>
+<li>用@Autowired注解注入UserMapper对象</li>
+<li>在<u>loadUserByUsername</u>来<u>自定义查询用户信息的方法</u><ol>
+<li>一个是loadUserByUsername这个方法，如果没有在数据库找到符合条件的数据，则返回null，抛出UsernameNotFoundException异常</li>
+<li>一个是getRolesById这个方法，得到用户的角色（身份）信息</li>
+</ol>
 </li>
-<li><p>乘法运算：</p>
-<p><code>System.out.println(new BigDecimal(&quot;2.05&quot;).multiply(new BigDecimal(&quot;10&quot;)));</code></p>
+<li>在UserMapper中定义方法</li>
+<li>在UserMapper.xml中实现</li>
+</ol>
 </li>
-</ul>
+<li>config层中的<strong>SecurityConfig</strong><ol>
+<li>记得加上@Configuration注解</li>
+<li><strong>SecurityConfig</strong>继承<strong>WebSecurityConfigurerAdapter</strong></li>
+<li>来一个<u>protect void configure(AuthenticationManagerBuilder auth)</u> 方法</li>
+<li>用@Autowired注解把UserService注入进来</li>
+<li>来一个<u>PasswordEncoder passwordEncoder()</u>方法，再return new BCryptPasswordEncoder()，最后加上注解@Bean</li>
+<li> 在“3”说的方法里写：<u>auth.userDetailService(userService)</u> 来<u>指定使用自定义查询用户信息来完成身份认证;</u></li>
+<li><u>在controller层写一个HelloController</u></li>
+<li>在porm.xml里配一个resources，指定资源文件目录</li>
+</ol>
 </li>
 </ol>
-<p><br><br><br><br></p>
-<h2 id="char-SS-s-toCharArray"><a href="#char-SS-s-toCharArray" class="headerlink" title="char [] SS = s.toCharArray();"></a>char [] SS = s.toCharArray();</h2><ul>
-<li><p><code>char [] SS = s.toCharArray();</code></p>
-<p>//把字符串中的每个字符放进ss的字符数组里</p>
-<p><br><br><br><br></p>
+<h2 id="动态配置权限（基于数据库）"><a href="#动态配置权限（基于数据库）" class="headerlink" title="动态配置权限（基于数据库）"></a>动态配置权限（基于数据库）</h2><ol>
+<li><p>上面登录完成后，要想通过数据库来动态配置权限。就要定义几个东西</p>
 </li>
-</ul>
-<h2 id="s-contains-“4”-s-contains-“62”"><a href="#s-contains-“4”-s-contains-“62”" class="headerlink" title="s.contains(“4”)||s.contains(“62”)"></a>s.contains(“4”)||s.contains(“62”)</h2><ul>
-<li><p><code>(s.contains(&quot;4&quot;)||s.contains(&quot;62&quot;)</code></p>
-<p>//判断s字符串里有没有包含”4”或”62”</p>
+<li><p>关于MyFilter类：</p>
+<ol>
+<li><p>在config层中创一个 <strong>MyFilter</strong>类，当然名字是自定义的。去实现 <strong>FilterInvocationSecurityMetadataSource</strong>并实现其中的三个方法</p>
 </li>
-</ul>
-<p><br><br><br><br></p>
-<h2 id="java自定义函数调用"><a href="#java自定义函数调用" class="headerlink" title="java自定义函数调用"></a>java自定义函数调用</h2><h3 id="一：主类中的自定义函数"><a href="#一：主类中的自定义函数" class="headerlink" title="一：主类中的自定义函数"></a>一：主类中的自定义函数</h3><p>在主类中，如果想要在main函数中调用自定义的其他方法，则这个函数需要使用<u>static关键字</u>定义，否则会报错Cannot make a static reference to the non-static method xx from the type xx，调用的时候<u>直接用函数名</u>就可以了，如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"> <span class="token keyword">public</span> <span class="token keyword">class</span> create_function <span class="token punctuation">&#123;</span>   
- <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>args<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>　　
-<span class="token keyword">int</span> s <span class="token operator">=</span> <span class="token function">jia</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>
-      <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">jia</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-          <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我是自定义相加函数，我被调用了！！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">return</span> a<span class="token operator">+</span>b<span class="token punctuation">;</span>
-      <span class="token punctuation">&#125;</span>             
-  <span class="token punctuation">&#125;</span>     <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>下面使用static关键字定义了一个“+”运算的函数，在main中调用时，直接使用函数名，括号中加参数就可以了。输出结果如下：</p>
-<p>​        我是自定义相加函数，我被调用了！！<br>​        9</p>
-<p><br><br></p>
-<h3 id="二：自定义类中函数的调用"><a href="#二：自定义类中函数的调用" class="headerlink" title="二：自定义类中函数的调用"></a>二：自定义类中函数的调用</h3><p>自定义类中函数的调用有两种情况，静态函数和非静态函数，<u>非静态函数的调用需要先声明一个类实例，通过实例调用</u>。静态函数的调用可以通过实例，也可以直接使用类名调用(建议使用这种，要不会造成内存空间的浪费。)，如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> create_function <span class="token punctuation">&#123;</span>    
-<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>args<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-           <span class="token class-name">Y</span> y <span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">Y</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                
-
-        <span class="token keyword">int</span> s2 <span class="token operator">=</span> y<span class="token punctuation">.</span><span class="token function">cheng</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//声明了y这个实例</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//直接用Y这个类调用</span>
-        
-        <span class="token keyword">int</span> s3 <span class="token operator">=</span> <span class="token class-name">Y</span><span class="token punctuation">.</span><span class="token function">chu</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s3<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span> 
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">class</span> <span class="token class-name">Y</span><span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> <span class="token function">cheng</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span><span class="token keyword">int</span> b<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我是自定义类中的乘方法，我被调用了！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> a<span class="token operator">*</span>b<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">chu</span><span class="token punctuation">(</span><span class="token keyword">int</span> c<span class="token punctuation">,</span><span class="token keyword">int</span> d<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-       <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我是自定义类中的除方法，我被调用了！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> c<span class="token operator">/</span>d<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-
-
-<p>在下面，自定义了一个Y类，cheng方法是非静态方法，必须通过实例y调用，chu方法是静态方法，使用类名直接调用。输出结果如下：</p>
-<p>​        我是自定义类中的乘方法，我被调用了！<br>​        15<br>​        我是自定义类中的除方法，我被调用了！<br>​        4</p>
-<p><br><br><br><br></p>
-<h2 id="String-valueOf-方法的使用"><a href="#String-valueOf-方法的使用" class="headerlink" title="String.valueOf()方法的使用"></a>String.valueOf()方法的使用</h2><h3 id="一：由基本数据形态转换成String"><a href="#一：由基本数据形态转换成String" class="headerlink" title="一：由基本数据形态转换成String"></a>一：由基本数据形态转换成String</h3><p>String 类别中已经提供了将基本数据型态转换成 String 的 static 方法 ，也就是 <strong>String.valueOf()</strong> 这个参数多载的方法 ：</p>
-<p>（1）<strong>String.valueOf(boolean b)</strong> : 将 boolean 变量 b 转换成字符串<br>（2）<strong>String.valueOf(char c)</strong> : 将 char 变量 c 转换成字符串<br>（3）<strong>String.valueOf(char[] data)</strong> : 将 char 数组 data 转换成字符串<br>（4）<strong>String.valueOf(char[] data, int offset, int count)</strong> : 将 char 数组 data 中 由 data[offset] 开始取 count 个元素 转换成字符串 </p>
-<p>（5）<strong>String.valueOf(double d)</strong> : 将 double 变量 d 转换成字符串<br>（6）<strong>String.valueOf(float f)</strong> : 将 float 变量 f 转换成字符串<br>（7）<strong>String.valueOf(int i)</strong> : 将 int 变量 i 转换成字符串<br>（8）<strong>String.valueOf(long l)</strong> : 将 long 变量 l 转换成字符串<br>（9）<strong>String.valueOf(Object obj)</strong> : 将 obj 对象转换成 字符串, 等于 obj.toString() </p>
-<p>　　<strong>用法如下:</strong><br>　　<code>int i = 10;</code><br>　　<code>String str = String.valueOf(i);</code><br>　　这时候 str 就会是 “10” </p>
-<p><br><br></p>
-<h3 id="二、-由-String-转换成-数字的基本数据型态"><a href="#二、-由-String-转换成-数字的基本数据型态" class="headerlink" title="二、 由 String 转换成 数字的基本数据型态"></a><strong>二、 由 String 转换成 数字的基本数据型态</strong></h3><p>要将 String 转换成基本数据型 ，大多需要使用基本数据型态的包装类别 </p>
-<p>（1） <strong>Byte.parseByte(String s)</strong> : 将 s 转换成 byte </p>
-<p>（2）<strong>Byte.parseByte(String s, int radix)</strong> : 以 radix 为基底（进制基数） 将 s 转换为 byte ，比如说 Byte.parseByte(“11”, 16) 会得到 17。</p>
-<p>（3） <strong>Double.parseDouble(String s)</strong> : 将 s 转换成 double </p>
-<p>（4） <strong>Double.parseFloat(String s)</strong> : 将 s 转换成 float </p>
-<p>（5） <strong>Integer.parseInt(String s)</strong> : 将 s 转换成 int </p>
-<p>（6） <strong>Long.parseLong(String s)</strong> : 将 s 转换成 long</p>
-<h2 id="终止程序的执行，退出JVM"><a href="#终止程序的执行，退出JVM" class="headerlink" title="终止程序的执行，退出JVM"></a>终止程序的执行，退出JVM</h2><blockquote>
-<p>system.exit(0);</p>
-</blockquote>
-<p><br><br><br><br></p>
-<h2 id="强行转换类型（强制类型转换-向下转型）"><a href="#强行转换类型（强制类型转换-向下转型）" class="headerlink" title="强行转换类型（强制类型转换/向下转型）"></a>强行转换类型（强制类型转换/向下转型）</h2><p>调用子类中特有的方法是，需要向下转型</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">if</span><span class="token punctuation">(</span>c <span class="token keyword">instanceof</span> <span class="token class-name">D</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//c指向的对象如果确实是一个D类型的</span>
-     <span class="token class-name">D</span> d1<span class="token operator">=</span><span class="token punctuation">(</span><span class="token class-name">D</span><span class="token punctuation">)</span>c<span class="token punctuation">;</span>
-    d1<span class="token punctuation">.</span><span class="token function">doOther</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//doOther是D类特有的方法</span>
-   
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><br><br><br><br></p>
-<h2 id="局部变量和成员变量"><a href="#局部变量和成员变量" class="headerlink" title="局部变量和成员变量"></a>局部变量和成员变量</h2><p>局部变量是没有初始值的</p>
-<p>成员变量有初始值（0  0.0  null）</p>
-<p><br><br><br><br></p>
-<h2 id="next部分相关用法"><a href="#next部分相关用法" class="headerlink" title="next部分相关用法"></a>next部分相关用法</h2><ol>
-<li><p>nextInt()它只读取int值，nextInt()在读取输入后将光标放在同一行。</p>
+<li><p><strong>getAttribute</strong>方法的作用：==根据请求的地址，分析出来这个地址需要哪些角色==</p>
 </li>
-<li><p>next()只读取输入直到空格。它无法阅读两个被空格隔开的单词。</p>
-<p>同样，next()在读取输入后将光标放在同一行中。</p>
+<li><p><code>AntPathMacher pathMatcher = new AntPathMatcher()</code> 这个是一个路径匹配符</p>
 </li>
-<li><p>nextLine()读取包括单词之间的空格在内的输入(也就是说，读取到行n的末尾)。<br>读取输入后，nextLine()将光标定位到下一行。</p>
+<li><p>在这个方法正式运作之前，要在Menu定义一个<code>private List&lt; Role&gt; roles</code> 变量，因为每个menu需要是某个角色才能访问，意思是当前这个menu需要具备哪些角色才能访问</p>
+</li>
+<li><p>在mapper层来一个MenuMapper类，定义 <code>List&lt; Menu&gt; getAllMenus()</code> 方法</p>
+</li>
+<li><p>在service层来一个 <strong>MenuService</strong> ，实现一个 <code>List&lt; Menu&gt; getAllMenu()</code>方法，通过@Autowired把MenuMapper自动装配过来</p>
+</li>
+<li><p>在MenuMapper中实现。在这里 因为到时候查出来是一对多的关系，所以不能resultType，要使用resultMap</p>
+</li>
+<li><p>转到MyFilter，用@Autowired把MenuService注入进来</p>
+</li>
+<li><p>以下是关键代码以及解释：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+   <span class="token comment">/**
+    * 根据请求的地址，分析出来这个地址需要哪些角色
+    * 根据需要的角色，拿出来目前“我”具有的角色，比较一下是否具备
+    */</span>
+   <span class="token keyword">public</span> <span class="token class-name">Collection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ConfigAttribute</span><span class="token punctuation">></span></span> <span class="token function">getAttributes</span><span class="token punctuation">(</span><span class="token class-name">Object</span> o<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IllegalArgumentException</span> <span class="token punctuation">&#123;</span>
+       <span class="token class-name">String</span> requestUrl <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">FilterInvocation</span><span class="token punctuation">)</span> o<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequestUrl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//请求的地址</span>
+       <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> allMenus <span class="token operator">=</span> menuService<span class="token punctuation">.</span><span class="token function">getAllMenus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//得到所有的菜单</span>
+       <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Menu</span> menu <span class="token operator">:</span> allMenus<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           <span class="token keyword">if</span> <span class="token punctuation">(</span>pathMatcher<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span>menu<span class="token punctuation">.</span><span class="token function">getPattern</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> requestUrl<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//第一个是规则，第二个是地址，看看是否匹配</span>
+               <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> roles <span class="token operator">=</span> menu<span class="token punctuation">.</span><span class="token function">getRoles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> rolesStr <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">[</span>roles<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+               <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> roles<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                   rolesStr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> roles<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+               <span class="token keyword">return</span> <span class="token class-name">SecurityConfig</span><span class="token punctuation">.</span><span class="token function">createList</span><span class="token punctuation">(</span>rolesStr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">&#125;</span>
+       <span class="token punctuation">&#125;</span>
+       <span class="token keyword">return</span> <span class="token class-name">SecurityConfig</span><span class="token punctuation">.</span><span class="token function">createList</span><span class="token punctuation">(</span><span class="token string">"ROLE_login"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//如果角色是ROLE_login，代表登录之后就可以访问这个资源</span>
+   <span class="token punctuation">&#125;</span>
+      <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
 </li>
 </ol>
-<p><br><br><br><br></p>
-<h2 id="java中，按数组下标来输出内容"><a href="#java中，按数组下标来输出内容" class="headerlink" title="java中，按数组下标来输出内容"></a>java中，按数组下标来输出内容</h2><p><code>System.out.println(line.substring(6,11));</code><br>意思是：输出line字符串中下标6到11的字符</p>
-<p><br><br><br><br></p>
-<h2 id="怎么把一个变量塞到一个字符串当中"><a href="#怎么把一个变量塞到一个字符串当中" class="headerlink" title="怎么把一个变量塞到一个字符串当中"></a>怎么把一个变量塞到一个字符串当中</h2><p>口诀：<strong>加一个引号，双引号中间加两个加号，两个加号之间加变量名</strong></p>
-<p>例如:</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">return</span> <span class="token string">" [ "</span><span class="token operator">+</span>no<span class="token operator">+</span><span class="token string">",单人间，空闲] "</span>；<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ol>
+<ol start="3">
+<li><p>关于MyAccessDecisionManager</p>
+<ol>
+<li><p>创建MyAccessDecisionManager类，让它实现AccessDecisionManager接口，并实现里面的方法<!--核心只有最上面一个方法，下面两个方法和之前一样，意思是：“是否支持这种方式”，所以返回true就行    -->，记得在类的上面加上@Component注解</p>
+</li>
+<li><p>以下是关键方法以及代码的解释</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+   <span class="token comment">/**
+    * authentication保存着当前登录的用户的信息。从这里可以知道我有哪些角色
+    * collection就是MyFilter类中的getAttributes的返回值。从这里可以知道需要哪些角色
+    */</span>
+   <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">decide</span><span class="token punctuation">(</span><span class="token class-name">Authentication</span> authentication<span class="token punctuation">,</span> <span class="token class-name">Object</span> o<span class="token punctuation">,</span> <span class="token class-name">Collection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">ConfigAttribute</span><span class="token punctuation">></span></span> collection<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">AccessDeniedException</span><span class="token punctuation">,</span> <span class="token class-name">InsufficientAuthenticationException</span> <span class="token punctuation">&#123;</span>
+       <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">ConfigAttribute</span> attribute <span class="token operator">:</span> collection<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//这是需要的角色</span>
+           <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token string">"ROLE_login"</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attribute<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//意思是这个请求只要登录了就能访问（这边可以自定义，我们这里就这么举例）</span>
+               <span class="token keyword">if</span> <span class="token punctuation">(</span>authentication <span class="token keyword">instanceof</span> <span class="token class-name">AnonymousAuthenticationToken</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//AnonymousAuthenticationToken意思是匿名用户，也就是没登录，所以要抛异常</span>
+                   <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">AccessDeniedException</span><span class="token punctuation">(</span><span class="token string">"非法请求!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+                   <span class="token keyword">return</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+           <span class="token punctuation">&#125;</span>
+           <span class="token class-name">Collection</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">GrantedAuthority</span><span class="token punctuation">></span></span> authorities <span class="token operator">=</span> authentication<span class="token punctuation">.</span><span class="token function">getAuthorities</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//得到我现在属于的角色</span>
+           <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">GrantedAuthority</span> authority <span class="token operator">:</span> authorities<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+               <span class="token keyword">if</span> <span class="token punctuation">(</span>authority<span class="token punctuation">.</span><span class="token function">getAuthority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>attribute<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//如果我具备你需要的</span>
+                   <span class="token keyword">return</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+           <span class="token punctuation">&#125;</span>
+       <span class="token punctuation">&#125;</span>
+       <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">AccessDeniedException</span><span class="token punctuation">(</span><span class="token string">"非法请求!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//非常不幸的走到了这一步，意味着你是非法请求（不然中途就break了）</span>
+   <span class="token punctuation">&#125;</span>
+      <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<p><br><br><br><br></p>
-<h2 id="三目运算符"><a href="#三目运算符" class="headerlink" title="三目运算符"></a>三目运算符</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">status <span class="token operator">?</span> <span class="token string">"空闲"</span> <span class="token operator">:</span> <span class="token string">"占用"</span><span class="token punctuation">;</span>
-<span class="token comment">/**
-如果status是true，那么输出空闲，否则就输出占用
-*/</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p><br><br><br><br></p>
-<h2 id="println-引用-，会自动调用引用toString-方法"><a href="#println-引用-，会自动调用引用toString-方法" class="headerlink" title="println(引用)，会自动调用引用toString()方法"></a>println(引用)，会自动调用引用toString()方法</h2><p><br><br><br><br></p>
-<h2 id="arrays工具-排序和二分法查找"><a href="#arrays工具-排序和二分法查找" class="headerlink" title="arrays工具(排序和二分法查找)"></a>arrays工具(排序和二分法查找)</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> main <span class="token punctuation">(</span><span class="token class-name">String</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    
-<span class="token keyword">int</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> arr<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">434</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">232</span><span class="token punctuation">,</span><span class="token number">45</span><span class="token punctuation">,</span><span class="token number">67</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">&#125;</span>
-<span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//排序</span>
-<span class="token keyword">int</span> index <span class="token operator">=</span> <span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">binarySearch</span><span class="token punctuation">(</span>arr<span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//3是所要查询的数据，arr是查询的对象（数组）</span>
-<span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>index<span class="token operator">==</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">?</span> <span class="token string">"该元素不存在"</span> <span class="token operator">:</span> <span class="token string">"该元素下标是："</span> <span class="token operator">+</span>index<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
-
-<h2 id="类和接口的强制类型转换"><a href="#类和接口的强制类型转换" class="headerlink" title="类和接口的强制类型转换"></a>类和接口的强制类型转换</h2><p>类在强制类型转换过程中，如果是类转换成接口类型。那么类和接口之间不需要存在继承关系，也可以转换    </p>
-
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="Spring-Security结合OAuth2协议"><a href="#Spring-Security结合OAuth2协议" class="headerlink" title="Spring Security结合OAuth2协议"></a>Spring Security结合OAuth2协议</h2>
             </div>
             <hr/>
 
@@ -661,7 +626,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://lcdzzz.github.io/2020/11/25/java-yu-fa-sui-ji/">http://lcdzzz.github.io/2020/11/25/java-yu-fa-sui-ji/</a>
+                    <a href="http://lcdzzz.github.io/2022/01/20/springsecurity-sui-ji/">http://lcdzzz.github.io/2022/01/20/springsecurity-sui-ji/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -698,11 +663,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-                                    <span class="chip bg-color">2021寒假自学笔记</span>
-                                </a>
-                            
+                            <span class="chip bg-color">No tag</span>
                         </div>
                     
                 </div>
@@ -870,58 +831,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
             <div class="card">
-                <a href="/2020/11/28/acm-bu-fen-zuo-ti-ji-lu/">
+                <a href="/2022/01/20/springsecurity-sui-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="acm部分做题记录">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">acm部分做题记录</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-11-28
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/acm/" class="post-category">
-                                    acm
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2020/11/24/jie-jue-java-cuo-wu-bian-ma-gbk-de-bu-ke-ying-she-zi-fu/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="解决 java “错误：编码GBK 的不可映射字符”">
-                        
-                        <span class="card-title">解决 java “错误：编码GBK 的不可映射字符”</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -932,12 +853,54 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-24
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
                             lcdzzz
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2022/01/20/spring5-bi-ji/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="Spring5自学">
+                        
+                        <span class="card-title">Spring5自学</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/java/" class="post-category">
+                                    java
+                                </a>
+                            
                             
                         </span>
                     </div>
