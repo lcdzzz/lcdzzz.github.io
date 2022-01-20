@@ -2,7 +2,56 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lcdzzz.github.io/2022/01/20/springbootwmm/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lcdzzz.github.io/2022/01/20/springsecurity-sui-ji/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/2021/07/04/java-bi-ji/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/2022/01/20/spring5-bi-ji/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/2021/12/03/springboot/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/2021/07/04/chang-jian-de-dos-ming-ling/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/</loc>
+    
+    <lastmod>2022-01-20</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/2021/07/04/jie-jue-java-cuo-wu-bian-ma-gbk-de-bu-ke-ying-she-zi-fu/</loc>
     
     <lastmod>2022-01-20</lastmod>
     
@@ -12,27 +61,6 @@
     <loc>http://lcdzzz.github.io/2022/01/20/redis-ru-men/</loc>
     
     <lastmod>2022-01-20</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lcdzzz.github.io/2021/12/03/springboot/</loc>
-    
-    <lastmod>2021-12-03</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lcdzzz.github.io/2021/07/04/java-bi-ji/</loc>
-    
-    <lastmod>2021-08-22</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lcdzzz.github.io/2022/01/20/spring5-bi-ji/</loc>
-    
-    <lastmod>2021-08-05</lastmod>
     
   </url>
   
@@ -58,23 +86,9 @@
   </url>
   
   <url>
-    <loc>http://lcdzzz.github.io/2020/11/24/jie-jue-java-cuo-wu-bian-ma-gbk-de-bu-ke-ying-she-zi-fu/</loc>
-    
-    <lastmod>2021-01-21</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lcdzzz.github.io/2020/11/24/hexo-bu-fen-ming-ling/</loc>
     
     <lastmod>2021-01-21</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lcdzzz.github.io/2021/01/18/chang-jian-de-dos-ming-ling/</loc>
-    
-    <lastmod>2021-01-20</lastmod>
     
   </url>
   
@@ -168,6 +182,27 @@
   
   <url>
     <loc>http://lcdzzz.github.io/categories/git/</loc>
+    <lastmod>2022-01-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/categories/nosql/</loc>
+    <lastmod>2022-01-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/categories/%E8%A7%A3%E5%86%B3%E7%9A%84%E9%94%99%E8%AF%AF/</loc>
+    <lastmod>2022-01-20</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/categories/dos%E5%91%BD%E4%BB%A4/</loc>
     <lastmod>2022-01-20</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

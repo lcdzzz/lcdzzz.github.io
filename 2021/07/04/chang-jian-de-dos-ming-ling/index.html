@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="springboot, lcdzzz的博客">
+    <meta name="keywords" content="常见的DOS命令, lcdzzz的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>springboot | lcdzzz的博客</title>
+    <title>常见的DOS命令 | lcdzzz的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -311,12 +311,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">springboot</h1>
+                    <h1 class="description center-align post-title">常见的DOS命令</h1>
                 </div>
             </div>
         </div>
@@ -430,9 +430,13 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+                                <span class="chip bg-color">2021寒假自学笔记</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -440,8 +444,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/java/" class="post-category">
-                                java
+                            <a href="/categories/dos%E5%91%BD%E4%BB%A4/" class="post-category">
+                                dos命令
                             </a>
                         
                     </div>
@@ -453,7 +457,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-12-03
+                    2021-07-04
                 </div>
                 
 
@@ -467,14 +471,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    594
+                    128
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    2 Min
+                    1 Min
                 </div>
                 
 
@@ -489,62 +493,36 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="springboot"><a href="#springboot" class="headerlink" title="springboot"></a>springboot</h1><h2 id="第一个springboot程序"><a href="#第一个springboot程序" class="headerlink" title="第一个springboot程序"></a>第一个springboot程序</h2><h3 id="简单注解："><a href="#简单注解：" class="headerlink" title="简单注解："></a>简单注解：</h3><p><strong>@Controller</strong>放controller层<br></p>
-<p><strong>@RequestMapping</strong>和**@GetMapping**后面跟地址<br></p>
-<p><strong>@ResponseBody</strong>作用：让return后面的东西是字符串（不然的话是跳转”hello”这个界面）<br></p>
-<p><strong>@Component</strong>作用：把注解的东西放到springboot的组件当中</p>
-<p><img src="@Component.png"><br></p>
-<p><strong>@Value(“xxx”)</strong> 作用：给对象的属性赋值。 位置：对象声明的上面</p>
-<p><img src="@Value.png"><br></p>
-<p><strong>@Autwired</strong>作用：把对象装配过来</p>
-<p><img src="@Autowired.png"><br></p>
-<p><strong>@ConfigurationProperties</strong>作用：实现配置类的值和配置文件绑定</p>
-<p><img src="@ConfigurationProperties.png"><br></p>
-<p><strong>@ConfigurationProperties</strong>和**@Value**的对比小结</p>
-<p><img src="@ConfigurationProperties%E5%92%8C@Value%E7%9A%84%E5%8C%BA%E5%88%AB.png"><br></p>
-<ol>
-<li>@ConfigurationProperties只需要写一次即可 ， @Value则需要每个字段都添加</li>
-<li>松散绑定：这个什么意思呢? 比如我的yml中写的last-name，这个和lastName是一样的， - 后面跟着的字母默认是大写的。这就是松散绑定。可以测试一下</li>
-<li>JSR303数据校验 ， 这个就是我们可以在字段是增加一层过滤器验证 ， 可以保证数据的合法性</li>
-<li>复杂类型封装，yml中可以封装对象 ， 使用value就不支持</li>
-</ol>
-<p><strong>结论：</strong></p>
-<ul>
-<li>配置yml和配置properties都可以获取到值 ， 强烈推荐 yml；</li>
-<li>如果我们在某个业务中，只需要获取配置文件中的某个值，可以使用一下 @value；</li>
-<li>如果说，我们专门编写了一个JavaBean来和配置文件进行一一映射，就直接@configurationProperties，不要犹豫！</li>
-</ul>
-<p><strong>@PropertySource</strong> 作用：指定配置文件，但是不用在用@ConfigurationProperties了，只能用@Value</p>
-<p><img src="@PropertySource.png"><br></p>
-<p>**@Validated:**数据校验</p>
-<ul>
-<li><p>例：@Email  如果数据错误，则报message里的信息</p>
-<p><img src="%E4%BE%8B1.png"></p>
+                <ul>
+<li><p>打开DOS命令窗口：</p>
+<p>开始菜单–&gt;运行–&gt;输入cmd–&gt;回车/win+r</p>
 </li>
-<li><p>其他：<img src="%E4%BE%8B2.png"></p>
-<p><img src="%E4%BE%8B3.png"></p>
+<li><p>常见的DOS命令：</p>
+<ol>
+<li><p>cls 清屏。</p>
+</li>
+<li><p>DOS窗口怎么复制：选中复制内容后在任意位置点击鼠标右键，此时内容已经在剪切板了。</p>
+</li>
+<li><p>dir 列出当前目录下所有的子文件/子目录。</p>
+</li>
+<li><p>cd 命令</p>
+<ul>
+<li><p>cd命令表示：change directory。</p>
+</li>
+<li><p>怎么用：cd 目录的路径。</p>
+</li>
+<li><p>cd.. 回到上级目录。</p>
+</li>
+<li><p>cd\ 直接回到根目录。</p>
+</li>
+<li><p>怎么切换盘符：</p>
+<p>d:回车。</p>
 </li>
 </ul>
-<p><br><br></p>
-<h3 id="banner配置："><a href="#banner配置：" class="headerlink" title="banner配置："></a>banner配置：</h3><p>springboot banner自动生成的工具网站：<a target="_blank" rel="noopener" href="https://www.bootschool.net/ascii">https://www.bootschool.net/ascii</a></p>
-<p><img src="banner.png"></p>
-<p>把复制/下载的东西放在resource目录下的banner.txt文件即可，重启项目</p>
-<p><br><br><br><br></p>
-<h2 id="原理："><a href="#原理：" class="headerlink" title="原理："></a>原理：</h2><h3 id="自动装配原理："><a href="#自动装配原理：" class="headerlink" title="自动装配原理："></a>自动装配原理：</h3><blockquote>
-<p>精髓</p>
-</blockquote>
-<ol>
-<li><p>SpringBoot启动会加载大量的自动配置类</p>
-</li>
-<li><p>我们看我们需要的功能有没有在SpringBoot默认写好的自动配置类当中；</p>
-</li>
-<li><p>我们再来看这个自动配置类中到底配置了哪些组件；（只要我们要用的组件存在在其中，我们就不需要再手动配置了）</p>
-</li>
-<li><p>给容器中自动配置类添加组件的时候，会从properties类中获取某些属性。我们只需要在配置文件中指定这些属性的值即可；</p>
-<p><strong>xxxxAutoConfigurartion：自动配置类；</strong>给容器中添加组件</p>
-<p><strong>xxxxProperties:封装配置文件中相关属性；</strong></p>
 </li>
 </ol>
+</li>
+</ul>
 
             </div>
             <hr/>
@@ -570,7 +548,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://lcdzzz.github.io/2021/12/03/springboot/">http://lcdzzz.github.io/2021/12/03/springboot/</a>
+                    <a href="http://lcdzzz.github.io/2021/07/04/chang-jian-de-dos-ming-ling/">http://lcdzzz.github.io/2021/07/04/chang-jian-de-dos-ming-ling/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -607,7 +585,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">No tag</span>
+                            
+                                <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+                                    <span class="chip bg-color">2021寒假自学笔记</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -779,47 +761,6 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2022/01/20/redis-ru-men/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Redis">
-                        
-                        <span class="card-title">Redis</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/nosql/" class="post-category">
-                                    nosql
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                Next&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
                 <a href="/2021/07/04/jie-jue-java-cuo-wu-bian-ma-gbk-de-bu-ke-ying-she-zi-fu/">
                     <div class="card-image">
                         
@@ -836,9 +777,9 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-04
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-04
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -850,6 +791,55 @@
                             
                         </span>
                     </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2021/07/04/java-bi-ji/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="java自学笔记">
+                        
+                        <span class="card-title">java自学笔记</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-07-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/java/" class="post-category">
+                                    java
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+                        <span class="chip bg-color">2021寒假自学笔记</span>
+                    </a>
+                    
                 </div>
                 
             </div>

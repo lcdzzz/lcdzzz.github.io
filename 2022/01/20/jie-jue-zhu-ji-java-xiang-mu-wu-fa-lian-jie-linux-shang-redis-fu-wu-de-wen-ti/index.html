@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="常见的DOS命令, lcdzzz的博客">
+    <meta name="keywords" content="解决主机java项目无法连接linux上redis服务的问题, lcdzzz的博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>常见的DOS命令 | lcdzzz的博客</title>
+    <title>解决主机java项目无法连接linux上redis服务的问题 | lcdzzz的博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -311,12 +311,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/4.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">常见的DOS命令</h1>
+                    <h1 class="description center-align post-title">解决主机java项目无法连接linux上redis服务的问题</h1>
                 </div>
             </div>
         </div>
@@ -430,16 +430,21 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-                                <span class="chip bg-color">2021寒假自学笔记</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">No tag</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E8%A7%A3%E5%86%B3%E7%9A%84%E9%94%99%E8%AF%AF/" class="post-category">
+                                解决的错误
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -448,21 +453,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
-                    2021-01-18
+                    2022-01-20
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>Update Date:&nbsp;&nbsp;
-                    2021-01-20
+                    2022-01-20
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    128
+                    158
                 </div>
                 
 
@@ -484,36 +489,19 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <ul>
-<li><p>打开DOS命令窗口：</p>
-<p>开始菜单–&gt;运行–&gt;输入cmd–&gt;回车/win+r</p>
+                <h2 id="解决主机java项目无法连接linux上redis服务的问题"><a href="#解决主机java项目无法连接linux上redis服务的问题" class="headerlink" title="解决主机java项目无法连接linux上redis服务的问题"></a>解决主机java项目无法连接linux上redis服务的问题</h2><ol>
+<li><p>若远程主机需要访问redis服务器，可以修改redis.conf配置文件。如我的linux服务上的redis.config文件存放在 <code>/usr/local/bin/zhouconfig</code>下</p>
 </li>
-<li><p>常见的DOS命令：</p>
-<ol>
-<li><p>cls 清屏。</p>
+<li><p>bind字段默认为： <code>bind 127.0.0.1</code> 这样只能本机访问redis</p>
+<p>若允许远程主机访问，可注释掉bind行  或者  将bind 127.0.0.1改为： bind 0.0.0.0</p>
+<p><img src="%E6%AD%A5%E9%AA%A41.png" alt="步骤1"></p>
 </li>
-<li><p>DOS窗口怎么复制：选中复制内容后在任意位置点击鼠标右键，此时内容已经在剪切板了。</p>
+<li><p>.将<code>protected-mod yes</code> 修改为<code>protected-mod no</code> ；意思是将redis的保护模式关闭掉，这样可以供外部来访问redis访问</p>
+<p><img src="%E6%AD%A5%E9%AA%A42.png" alt="步骤2"></p>
 </li>
-<li><p>dir 列出当前目录下所有的子文件/子目录。</p>
-</li>
-<li><p>cd 命令</p>
-<ul>
-<li><p>cd命令表示：change directory。</p>
-</li>
-<li><p>怎么用：cd 目录的路径。</p>
-</li>
-<li><p>cd.. 回到上级目录。</p>
-</li>
-<li><p>cd\ 直接回到根目录。</p>
-</li>
-<li><p>怎么切换盘符：</p>
-<p>d:回车。</p>
-</li>
-</ul>
+<li><p>去服务器的控制台开启6379端口</p>
 </li>
 </ol>
-</li>
-</ul>
 
             </div>
             <hr/>
@@ -539,7 +527,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://lcdzzz.github.io/2021/01/18/chang-jian-de-dos-ming-ling/">http://lcdzzz.github.io/2021/01/18/chang-jian-de-dos-ming-ling/</a>
+                    <a href="http://lcdzzz.github.io/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/">http://lcdzzz.github.io/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -576,11 +564,7 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/">
-                                    <span class="chip bg-color">2021寒假自学笔记</span>
-                                </a>
-                            
+                            <span class="chip bg-color">No tag</span>
                         </div>
                     
                 </div>
@@ -752,13 +736,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2021/07/04/git-bash-bu-fen-ming-ling-xing-de-cao-zuo/">
+                <a href="/2022/01/20/springbootwmm/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="git github git bash内容随记">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="SpringBootWMM">
                         
-                        <span class="card-title">git github git bash内容随记</span>
+                        <span class="card-title">SpringBootWMM</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -769,14 +753,14 @@
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-07-04
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
                         </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/git/" class="post-category">
-                                    git
+                            <a href="/categories/java/" class="post-category">
+                                    java
                                 </a>
                             
                             
@@ -793,13 +777,13 @@
                 Next&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/11/28/acm-bu-fen-zuo-ti-ji-lu/">
+                <a href="/2022/01/20/springsecurity-sui-ji/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="acm部分做题记录">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="SpringSecurity">
                         
-                        <span class="card-title">acm部分做题记录</span>
+                        <span class="card-title">SpringSecurity</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -810,14 +794,14 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-11-28
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
                             </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/acm/" class="post-category">
-                                    acm
+                            <a href="/categories/java/" class="post-category">
+                                    java
                                 </a>
                             
                             
@@ -1030,7 +1014,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">41.1k</span>&nbsp;字
+                class="white-color">51.6k</span>&nbsp;字
             
             
             

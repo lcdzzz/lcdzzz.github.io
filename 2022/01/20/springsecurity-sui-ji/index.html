@@ -467,14 +467,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>Word Count:&nbsp;&nbsp;
-                    1k
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
-                    4 Min
+                    5 Min
                 </div>
                 
 
@@ -610,7 +610,108 @@
 </ol>
 </li>
 </ol>
-<h2 id="Spring-Security结合OAuth2协议"><a href="#Spring-Security结合OAuth2协议" class="headerlink" title="Spring Security结合OAuth2协议"></a>Spring Security结合OAuth2协议</h2>
+<h2 id="Spring-Security结合OAuth2协议"><a href="#Spring-Security结合OAuth2协议" class="headerlink" title="Spring Security结合OAuth2协议"></a>Spring Security结合OAuth2协议</h2><ol>
+<li><p>生成一个加密后的密码，明文“123”</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootTest</span>
+<span class="token keyword">class</span> <span class="token class-name">Oauth2ApplicationTests</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">contextLoads</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">BCryptPasswordEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">encode</span><span class="token punctuation">(</span><span class="token string">"123"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>配置授权服务器<strong>AuthorizationServerConfig</strong>继承<strong>AuthorizationServerConfigurerAdapter</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@EnableAuthorizationServer</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AuthorizationServerConfig</span> <span class="token keyword">extends</span> <span class="token class-name">AuthorizationServerConfigurerAdapter</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">AuthenticationManager</span> authenticationManager<span class="token punctuation">;</span><span class="token comment">//主要用来支持password的认证模式</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">UserDetailsService</span> userDetailsService<span class="token punctuation">;</span><span class="token comment">//刷新token的时候会用到</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token class-name">PasswordEncoder</span> <span class="token function">passwordEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">BCryptPasswordEncoder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span><span class="token class-name">ClientDetailsServiceConfigurer</span> clients<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+        clients<span class="token punctuation">.</span><span class="token function">inMemory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token comment">//配置在内存里边的</span>
+                <span class="token punctuation">.</span><span class="token function">withClient</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">)</span><span class="token comment">//认证模式为password模式</span>
+                <span class="token punctuation">.</span><span class="token function">authorizedGrantTypes</span><span class="token punctuation">(</span><span class="token string">"password"</span><span class="token punctuation">,</span> <span class="token string">"refresh_token"</span><span class="token punctuation">)</span><span class="token comment">//配授权模式，两种</span>
+                <span class="token punctuation">.</span><span class="token function">accessTokenValiditySeconds</span><span class="token punctuation">(</span><span class="token number">1800</span><span class="token punctuation">)</span><span class="token comment">//token的过期时间，1800秒</span>
+                <span class="token punctuation">.</span><span class="token function">resourceIds</span><span class="token punctuation">(</span><span class="token string">"rid"</span><span class="token punctuation">)</span><span class="token comment">//给资源取个名字</span>
+                <span class="token punctuation">.</span><span class="token function">scopes</span><span class="token punctuation">(</span><span class="token string">"all"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">secret</span><span class="token punctuation">(</span><span class="token string">"c405d914-f9cf-42d5-972e-0ffd4a1522bd"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//一会需要的密码</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token comment">/**
+     * 配置令牌的存储，待会把令牌存到哪去！
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span><span class="token class-name">AuthorizationServerEndpointsConfigurer</span> endpoints<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+        endpoints<span class="token punctuation">.</span><span class="token function">tokenStore</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RedisTokenStore</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">authenticationManager</span><span class="token punctuation">(</span>authenticationManager<span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">userDetailsService</span><span class="token punctuation">(</span>userDetailsService<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span><span class="token class-name">AuthorizationServerSecurityConfigurer</span> security<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+        security<span class="token punctuation">.</span><span class="token function">allowFormAuthenticationForClients</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//表示支持登录认证</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>配置资源服务器<strong>ResourceServerConfig</strong>继承<strong>ResourceServerConfigurerAdapter</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 资源服务器
+ */</span>
+<span class="token annotation punctuation">@Configuration</span> <span class="token comment">//表示是个配置类</span>
+<span class="token annotation punctuation">@EnableResourceServer</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ResourceServerConfig</span> <span class="token keyword">extends</span> <span class="token class-name">ResourceServerConfigurerAdapter</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span><span class="token class-name">ResourceServerSecurityConfigurer</span> resources<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+        resources<span class="token punctuation">.</span><span class="token function">resourceId</span><span class="token punctuation">(</span><span class="token string">"rid"</span><span class="token punctuation">)</span><span class="token comment">//指定资源id，就是在授权服务器里面配置的 rid  【.resourceIds("rid")】</span>
+                <span class="token punctuation">.</span><span class="token function">stateless</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//意思是这些资源是基于令牌来认证的</span>
+    <span class="token punctuation">&#125;</span>
+
+
+    <span class="token comment">/**
+     * 这就是我提供的资源！
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">configure</span><span class="token punctuation">(</span><span class="token class-name">HttpSecurity</span> http<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
+        http<span class="token punctuation">.</span><span class="token function">authorizeRequests</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">antMatchers</span><span class="token punctuation">(</span><span class="token string">"/admin/**"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hasRole</span><span class="token punctuation">(</span><span class="token string">"admin"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">antMatchers</span><span class="token punctuation">(</span><span class="token string">"/user/**"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">hasRole</span><span class="token punctuation">(</span><span class="token string">"user"</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">anyRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">authenticated</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//剩下其他的请求都是（authenticated）登录之后就可以访问</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>1</p>
+</li>
+<li><p>1</p>
+</li>
+</ol>
+
             </div>
             <hr/>
 
@@ -840,18 +941,17 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;Current
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
             <div class="card">
-                <a href="/2022/01/20/springsecurity-sui-ji/">
+                <a href="/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="SpringSecurity">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="解决主机java项目无法连接linux上redis服务的问题">
                         
-                        <span class="card-title">SpringSecurity</span>
+                        <span class="card-title">解决主机java项目无法连接linux上redis服务的问题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -861,22 +961,21 @@
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-20
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/java/" class="post-category">
-                                    java
+                            <a href="/categories/%E8%A7%A3%E5%86%B3%E7%9A%84%E9%94%99%E8%AF%AF/" class="post-category">
+                                    解决的错误
                                 </a>
                             
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -1124,7 +1223,7 @@ code[class*="language-"], pre[class*="language-"] { white-space: pre !important;
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">41.1k</span>&nbsp;字
+                class="white-color">51.6k</span>&nbsp;字
             
             
             
