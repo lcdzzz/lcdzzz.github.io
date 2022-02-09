@@ -9932,6 +9932,113 @@ value：map集合key对应的value值
 
 </li>
 </ol>
+<h2 id="定义资源文件"><a href="#定义资源文件" class="headerlink" title="定义资源文件"></a>定义资源文件</h2><ol>
+<li>告诉maven，我的配置文件不仅仅在resource目录下，还在上面的java目录下</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token generics"><span class="token punctuation">&lt;</span>resources<span class="token punctuation">></span></span>
+         <span class="token generics"><span class="token punctuation">&lt;</span>resource<span class="token punctuation">></span></span>
+             <span class="token generics"><span class="token punctuation">&lt;</span>directory<span class="token punctuation">></span></span>src<span class="token operator">/</span>main<span class="token operator">/</span>java<span class="token operator">&lt;</span><span class="token operator">/</span>directory<span class="token operator">></span>
+             <span class="token generics"><span class="token punctuation">&lt;</span>includes<span class="token punctuation">></span></span>
+                 <span class="token generics"><span class="token punctuation">&lt;</span>include<span class="token punctuation">></span></span><span class="token operator">*</span><span class="token operator">*</span><span class="token comment">/*.xml&lt;/include>
+             &lt;/includes>
+         &lt;/resource>
+         &lt;resource>
+             &lt;directory>src/main/resources&lt;/directory>
+         &lt;/resource>
+     &lt;/resources></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>文件目录如图</p>
+<p><img src="%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6.png"></p>
+<ol start="2">
+<li><p>也可以直接指定mapper在哪里，如下图</p>
+<p><img src="mybatis.mapper-locations.png"></p>
+</li>
+</ol>
+<h2 id="Spring-Boot-整合-MyBatis-多数据源"><a href="#Spring-Boot-整合-MyBatis-多数据源" class="headerlink" title="Spring Boot 整合 MyBatis 多数据源"></a>Spring Boot 整合 MyBatis 多数据源</h2><ol>
+<li><p>在配置数据库的properties里配置数据库的连接信息</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">spring.datasource.one.jdbcUrl</span><span class="token punctuation">=</span><span class="token attr-value">jdbc:mysql:///test01?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai</span>
+<span class="token attr-name">spring.datasource.one.username</span><span class="token punctuation">=</span><span class="token attr-value">root</span>
+<span class="token attr-name">spring.datasource.one.password</span><span class="token punctuation">=</span><span class="token attr-value">wqeq</span>
+
+<span class="token attr-name">spring.datasource.two.jdbcUrl</span><span class="token punctuation">=</span><span class="token attr-value">jdbc:mysql:///test02?useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=Asia/Shanghai</span>
+<span class="token attr-name">spring.datasource.two.username</span><span class="token punctuation">=</span><span class="token attr-value">root</span>
+<span class="token attr-name">spring.datasource.two.password</span><span class="token punctuation">=</span><span class="token attr-value">wqeq</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>在config包中的DataSourceConfig创建DataSource的实例【DataSourceConfig】</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Configuration</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataSourceConfig</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.datasource.one"</span><span class="token punctuation">)</span>
+    <span class="token class-name">DataSource</span> <span class="token function">dsOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">HikariDataSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span> <span class="token string">"spring.datasource.two"</span><span class="token punctuation">)</span>
+    <span class="token class-name">DataSource</span> <span class="token function">dsTwo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">HikariDataSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>配置mybatis实例【MyBatisConfigOne 、MyBatisConfigTwo】</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">
+<span class="token annotation punctuation">@Configuration</span>
+<span class="token annotation punctuation">@MapperScan</span><span class="token punctuation">(</span>basePackages <span class="token operator">=</span> <span class="token string">"org.javaboy.mybatismulti.mapper1"</span><span class="token punctuation">,</span>sqlSessionFactoryRef <span class="token operator">=</span> <span class="token string">"sqlSessionFactory1"</span><span class="token punctuation">,</span>sqlSessionTemplateRef <span class="token operator">=</span> <span class="token string">"sqlSessionTemplate1"</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyBatisConfigOne</span> <span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token annotation punctuation">@Qualifier</span><span class="token punctuation">(</span><span class="token string">"dsOne"</span><span class="token punctuation">)</span>
+    <span class="token class-name">DataSource</span> ds<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token class-name">SqlSessionFactory</span> <span class="token function">sqlSessionFactory1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SqlSessionFactory</span> sqlSessionFactory <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">SqlSessionFactoryBean</span> bean <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SqlSessionFactoryBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            bean<span class="token punctuation">.</span><span class="token function">setDataSource</span><span class="token punctuation">(</span>ds<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            sqlSessionFactory <span class="token operator">=</span> bean<span class="token punctuation">.</span><span class="token function">getObject</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">return</span> sqlSessionFactory<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token annotation punctuation">@Bean</span>
+    <span class="token class-name">SqlSessionTemplate</span> <span class="token function">sqlSessionTemplate1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">SqlSessionTemplate</span><span class="token punctuation">(</span><span class="token function">sqlSessionFactory1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>mapper包下，【UserMapper1和UserMapper1.xml】【UserMapper2和UserMapper2.xml】</p>
+</li>
+<li><p>综上↑，项目结构如图所示</p>
+<p><img src="%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E9%A1%B9%E7%9B%AE%E7%9A%84%E7%BB%93%E6%9E%84.png"></p>
+</li>
+<li><p>测试代码</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootTest</span>
+<span class="token keyword">class</span> <span class="token class-name">MybatismultiApplicationTests</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">UserMapper1</span> userMapper1<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">UserMapper2</span> userMapper2<span class="token punctuation">;</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">contextLoads</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"userMapper1.getAllUsers() = "</span> <span class="token operator">+</span> userMapper1<span class="token punctuation">.</span><span class="token function">getAllUsers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"userMapper2.getAllUsers() = "</span> <span class="token operator">+</span> userMapper2<span class="token punctuation">.</span><span class="token function">getAllUsers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+</li>
+</ol>
+<ol start="7">
+<li><p>测试结果</p>
+<p><img src="%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90%E6%B5%8B%E8%AF%95.png"></p>
+</li>
+</ol>
 ]]></content>
   </entry>
   <entry>
