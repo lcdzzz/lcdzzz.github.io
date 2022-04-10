@@ -11418,7 +11418,52 @@ spring.redis.port&#x3D;6379<span aria-hidden="true" class="line-numbers-rows"><s
 </li>
 </ol>
 <p><br><br><br><br><br><br></p>
-<h1 id="Spring-Boot-与消息中间件"><a href="#Spring-Boot-与消息中间件" class="headerlink" title="Spring Boot 与消息中间件"></a>Spring Boot 与消息中间件</h1>]]></content>
+<h1 id="Spring-Boot-与消息中间件"><a href="#Spring-Boot-与消息中间件" class="headerlink" title="Spring Boot 与消息中间件"></a>Spring Boot 与消息中间件</h1><h2 id="用docker安装rabbitmq"><a href="#用docker安装rabbitmq" class="headerlink" title="用docker安装rabbitmq"></a>用docker安装rabbitmq</h2><ul>
+<li><p><img src="docker%E5%AE%89%E8%A3%85RabbitMQ.png"></p>
+</li>
+<li><p>其中代码可以查看官网<a href="https://hub.docker.com/_/rabbitmq">https://hub.docker.com/_/rabbitmq</a> </p>
+<p><img src="docker%E5%AE%89%E8%A3%85rabbitmq%E5%AE%98%E7%BD%91.png"></p>
+</li>
+<li><p>docker运行rabbitmq时端口的介绍</p>
+<p><img src="docker%E8%BF%90%E8%A1%8Crabbitmq%E6%97%B6%E7%AB%AF%E5%8F%A3%E7%9A%84%E4%BB%8B%E7%BB%8D.png"></p>
+</li>
+<li><p>测试</p>
+<ul>
+<li><p>管理端端口，账号密码都是guest</p>
+<p><img src="%E7%AE%A1%E7%90%86%E7%AB%AF.png"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><br><br><br></p>
+<h2 id="SpringBoot整合RabbitMQ"><a href="#SpringBoot整合RabbitMQ" class="headerlink" title="SpringBoot整合RabbitMQ"></a>SpringBoot整合RabbitMQ</h2><ol>
+<li><p>依赖</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-amqp<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>test<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>application.properties配置</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">spring.rabbitmq.host</span><span class="token punctuation">=</span><span class="token attr-value">8.142.93.194</span>
+<span class="token attr-name">spring.rabbitmq.username</span><span class="token punctuation">=</span><span class="token attr-value">guest</span>
+<span class="token attr-name">spring.rabbitmq.password</span><span class="token punctuation">=</span><span class="token attr-value">guest</span>
+<span class="token attr-name">spring.rabbitmq.port</span><span class="token punctuation">=</span><span class="token attr-value">49156</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+</li>
+</ol>
+]]></content>
   </entry>
   <entry>
     <title>图书管理系统介绍</title>
