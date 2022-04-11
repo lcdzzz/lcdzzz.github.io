@@ -1,28 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/11/24/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><blockquote>
-<p>$ hexo new “My New Post”</p>
-</blockquote>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><blockquote>
-<p>$ hexo server</p>
-</blockquote>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><blockquote>
-<p>$ hexo generate</p>
-</blockquote>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><blockquote>
-<p>$ hexo deploy</p>
-</blockquote>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>解决 java “错误：编码GBK 的不可映射字符”</title>
     <url>/2021/07/04/jie-jue-java-cuo-wu-bian-ma-gbk-de-bu-ke-ying-she-zi-fu/</url>
     <content><![CDATA[<h2 id="解决-java-“错误：编码GBK-的不可映射字符”"><a href="#解决-java-“错误：编码GBK-的不可映射字符”" class="headerlink" title="解决 java “错误：编码GBK 的不可映射字符”"></a>解决 java “错误：编码GBK 的不可映射字符”</h2><ul>
@@ -83,10 +61,14 @@
       <categories>
         <category>解决的错误</category>
       </categories>
+      <tags>
+        <tag>解决的错误</tag>
+        <tag>java报错</tag>
+      </tags>
   </entry>
   <entry>
     <title>hexo部分命令</title>
-    <url>/2020/11/24/hexo-bu-fen-ming-ling/</url>
+    <url>/2021/07/04/hexo-bu-fen-ming-ling/</url>
     <content><![CDATA[<p><code>hexo clean&amp;&amp; hexo g &amp;&amp; hexo d</code></p>
 <p><code>hexo clean</code>#清理各种缓存和旧文件</p>
 <p><code>hexo g</code>#生成静态文件</p>
@@ -112,7 +94,7 @@
   </entry>
   <entry>
     <title>java语法随记</title>
-    <url>/2020/11/25/java-yu-fa-sui-ji/</url>
+    <url>/2021/07/04/java-yu-fa-sui-ji/</url>
     <content><![CDATA[<h2 id="java-math-BigDecimal的用法"><a href="#java-math-BigDecimal的用法" class="headerlink" title="java.math.BigDecimal的用法"></a>java.math.BigDecimal的用法</h2><ol>
 <li><p>BigDecimal类型用来存储金额等有小数，需要精度的数据</p>
 </li>
@@ -463,9 +445,6 @@
 </li>
 </ul>
 ]]></content>
-      <categories>
-        <category>dos命令</category>
-      </categories>
       <tags>
         <tag>2021寒假自学笔记</tag>
       </tags>
@@ -5188,6 +5167,9 @@ public class ReflectTest11 &#123;
       <categories>
         <category>java</category>
       </categories>
+      <tags>
+        <tag>框架</tag>
+      </tags>
   </entry>
   <entry>
     <title>Spring5自学</title>
@@ -5475,6 +5457,9 @@ public class ReflectTest11 &#123;
       <categories>
         <category>java</category>
       </categories>
+      <tags>
+        <tag>框架</tag>
+      </tags>
   </entry>
   <entry>
     <title>Redis</title>
@@ -6728,6 +6713,9 @@ spring.redis.port<span class="token operator">=</span><span class="token number"
       <categories>
         <category>nosql</category>
       </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
   </entry>
   <entry>
     <title>解决主机java项目无法连接linux上redis服务的问题</title>
@@ -6749,6 +6737,11 @@ spring.redis.port<span class="token operator">=</span><span class="token number"
       <categories>
         <category>解决的错误</category>
       </categories>
+      <tags>
+        <tag>解决的错误</tag>
+        <tag>linux</tag>
+        <tag>redis</tag>
+      </tags>
   </entry>
   <entry>
     <title>SpringBootWMM</title>
@@ -8296,6 +8289,9 @@ value：map集合key对应的value值
       <categories>
         <category>java</category>
       </categories>
+      <tags>
+        <tag>框架</tag>
+      </tags>
   </entry>
   <entry>
     <title>微人事项目笔记</title>
@@ -8960,7 +8956,7 @@ value：map集合key对应的value值
 </ol>
 ]]></content>
       <categories>
-        <category>java项目</category>
+        <category>项目实战</category>
       </categories>
   </entry>
   <entry>
@@ -11540,5 +11536,13 @@ spring.redis.port&#x3D;6379<span aria-hidden="true" class="line-numbers-rows"><s
 </li>
 </ul>
 ]]></content>
+      <categories>
+        <category>项目实战</category>
+      </categories>
+      <tags>
+        <tag>项目实战</tag>
+        <tag>java</tag>
+        <tag>springboot</tag>
+      </tags>
   </entry>
 </search>
