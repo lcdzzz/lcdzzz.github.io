@@ -6,7 +6,7 @@
   <link href="http://lcdzzz.github.io/atom.xml" rel="self"/>
   
   <link href="http://lcdzzz.github.io/"/>
-  <updated>2022-04-11T07:03:38.133Z</updated>
+  <updated>2022-04-11T08:00:57.060Z</updated>
   <id>http://lcdzzz.github.io/</id>
   
   <author>
@@ -17,12 +17,21 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>“如何使用Docker，安装java调试环境的docker”</title>
+    <title>如何使用Docker，安装java调试环境的docker</title>
     <link href="http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/"/>
     <id>http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/</id>
     <published>2022-04-11T07:00:15.000Z</published>
-    <updated>2022-04-11T07:03:38.133Z</updated>
+    <updated>2022-04-11T08:00:57.060Z</updated>
     
+    <content type="html"><![CDATA[<h2 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h2><ol><li><p><strong>查看系统的内核</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[roo@www ~]$ uname -r3.10.0-1160.59.1.el7.x86_64<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p><img src="%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%85%E6%A0%B8.png"></p><p><br><br></p></li><li><p><strong>查看系统配置</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cat &#x2F;etc&#x2F;os-release<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE.png"></p><p><br><br></p></li><li><p><strong>卸载旧的版本</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# yum remove docker \&gt;                   docker-client \&gt;                   docker-client-latest \&gt;                   docker-common \&gt;                   docker-latest \&gt;                   docker-latest-logrotate \&gt;                   docker-logrotate \&gt;                   docker-engine<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><img src="%E5%8D%B8%E8%BD%BD%E6%97%A7%E7%9A%84%E7%89%88%E6%9C%AC.png"></p><p><br><br></p></li><li><p><strong>下载需要的安装包</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum install -y yum-utils<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="%E4%B8%8B%E8%BD%BD.png"></p><p><br><br></p></li><li><p><strong>设置镜像的仓库</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum-config-manager \    --add-repo \    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo  #国外的地址        # 设置阿里云的Docker镜像仓库yum-config-manager \    --add-repo \    https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo  #国内的地址<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><img src="%E9%95%9C%E5%83%8F%E9%85%8D%E7%BD%AE.png"></p><p><br><br></p></li><li><p><strong>更新yum软件包索引</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum makecache fast<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="%E6%9B%B4%E6%96%B0.png"></p><p><br><br></p></li><li><p><strong>安装docker相关的配置</strong></p><p>docker-ce 是社区版，docker-ee 企业版</p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum install docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="%E5%AE%89%E8%A3%85docker%E7%9B%B8%E5%85%B3%E7%9A%84%E9%85%8D%E7%BD%AE.png"></p><p>出现了completed即安装成功</p><p><br><br></p></li><li><p><strong>启动Docker</strong></p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">systemctl start docker# 查看当前版本号，是否启动成功docker version# 设置开机自启动systemctl enable docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><img src="%E5%90%AF%E5%8A%A8docker.png"></p></li><li><p>hello-world</p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# docker run hello-world<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><img src="%E8%BF%90%E8%A1%8Chelloworld.png"></p></li><li><p>查看一下下载的这个hello-world镜像</p><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# docker imagesREPOSITORY    TAG       IMAGE ID       CREATED        SIZEhello-world   latest    feb5d9fea6a5   6 months ago   13.3kB<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li></ol><ol start="11"><li><p>1</p></li><li><p>1</p></li><li><p>1</p></li><li><p>1</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h2 id=&quot;Docker的安装&quot;&gt;&lt;a href=&quot;#Docker的安装&quot; class=&quot;headerlink&quot; title=&quot;Docker的安装&quot;&gt;&lt;/a&gt;Docker的安装&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;查看系统的内核&lt;/strong&gt;&lt;/p&gt;
+&lt;pre</summary>
+      
     
     
     
