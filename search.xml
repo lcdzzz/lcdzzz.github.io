@@ -11773,7 +11773,7 @@ docker build -t diytomcat .<span aria-hidden="true" class="line-numbers-rows"><s
 &lt;body&gt;
 Hello World!&lt;br&#x2F;&gt;
 &lt;%
-System.out.println(&quot;---my test web logs---&quot;)
+System.out.println(&quot;---my test web logs---&quot;);
 %&gt;
 &lt;&#x2F;body&gt;
 &lt;&#x2F;html&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -11783,7 +11783,12 @@ System.out.println(&quot;---my test web logs---&quot;)
 </li>
 </ol>
 <ol start="8">
-<li></li>
+<li><p>项目部署成功，直接访问就ok</p>
+<p>先通过 <code>ifconfig</code> 查看虚拟机的ip地址</p>
+<p><img src="%E6%9F%A5%E7%9C%8B%E8%99%9A%E6%8B%9F%E6%9C%BAip%E5%9C%B0%E5%9D%80.png"></p>
+<p>访问</p>
+<p><img src="%E8%AE%BF%E9%97%AE.png"></p>
+</li>
 </ol>
 ]]></content>
       <tags>
