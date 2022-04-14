@@ -11565,13 +11565,13 @@ spring.redis.port&#x3D;6379<span aria-hidden="true" class="line-numbers-rows"><s
 </li>
 <li><p><strong>卸载旧的版本</strong></p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# yum remove docker \
-&gt;                   docker-client \
-&gt;                   docker-client-latest \
-&gt;                   docker-common \
-&gt;                   docker-latest \
-&gt;                   docker-latest-logrotate \
-&gt;                   docker-logrotate \
-&gt;                   docker-engine
+                   docker-client \
+                   docker-client-latest \
+                   docker-common \
+                   docker-latest \
+                   docker-latest-logrotate \
+                   docker-logrotate \
+                   docker-engine
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E5%8D%B8%E8%BD%BD%E6%97%A7%E7%9A%84%E7%89%88%E6%9C%AC.png"></p>
@@ -11692,12 +11692,98 @@ docker build -f mydockerfile-centos -t mycentos:0.1 .<span aria-hidden="true" cl
 <li><p><strong>我们可以列出本地进行的变更历史 docker history 镜像id</strong></p>
 <p><img src="%E5%8F%98%E6%9B%B4%E5%8E%86%E5%8F%B2.png"></p>
 </li>
-<li><p>1</p>
+</ol>
+<p><br><br><br><br></p>
+<h2 id="Dockerfile制作tomcat镜像"><a href="#Dockerfile制作tomcat镜像" class="headerlink" title="Dockerfile制作tomcat镜像"></a>Dockerfile制作tomcat镜像</h2><ol>
+<li><p>准备镜像文件tomcat压缩包，jdk压缩包</p>
+<p><img src="%E5%87%86%E5%A4%87%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%EF%BC%8C%E5%8E%8B%E7%BC%A9%E5%8C%85.png"></p>
+<p><br><br></p>
 </li>
-<li><p>1</p>
+<li><p>编写dockerfile文件，官方命名<code>Dockerfile</code>,build会自动寻找这个文件，就不需要 -f 去指定了</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">FROM centos:7
+MAINTAINER lcdzzz&lt;1473220685@qq.com&gt;
+
+COPY readme.txt &#x2F;usr&#x2F;local&#x2F;readme.txt
+
+ADD jdk-10.0.1_linux-x64_bin.tar.gz &#x2F;usr&#x2F;local&#x2F; #docker在add时会自动解压
+ADD apache-tomcat-9.0.62.tar.gz &#x2F;usr&#x2F;local&#x2F;
+
+RUN yum -y install vim
+
+ENV MYPATH &#x2F;usr&#x2F;local
+
+WORKDIR $MYPATH
+
+#配置环境
+ENV JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk-18
+ENV CLASSPATH $JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools&#x2F;jar
+ENV CATALINA_HOME &#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62
+ENV CATALINA_BASE &#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62
+ENV PATH $PATH:$JAVA_HOME&#x2F;bin:$CATALINA_HOME&#x2F;lib:$CATALINA_HOME&#x2F;bin
+
+#暴露端口
+EXPOSE 8080
+
+CMD &#x2F;usr&#x2F;local&#x2F;apche-tomcat-9.0.62&#x2F;bin&#x2F;startup.sh &amp;&amp; tail -F &#x2F;usr&#x2F;local&#x2F;apche-tomcat-9.0.62&#x2F;bin&#x2F;logs&#x2F;catalina.out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><br><br></p>
 </li>
-<li><p>1</p>
+<li><p>构建镜像,前面说了，build会自动寻找文件，所以不需要指定</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#docker build -t diytomcat .
+docker build -t diytomcat .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>显示successfully代表成功</p>
+<p><img src="%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F.png"></p>
+<p><br><br></p>
 </li>
+<li><p>运行镜像</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -d -p 9090:8080 --name lcdzzztomcat -v &#x2F;home&#x2F;lcdzzz&#x2F;build&#x2F;test:&#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62&#x2F;webapps&#x2F;test -v &#x2F;home&#x2F;lcdzzz&#x2F;build&#x2F;tomcatlogs&#x2F;:&#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62&#x2F;logs diytomcat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><img src="%E8%BF%90%E8%A1%8C%E9%95%9C%E5%83%8F.png"></p>
+<p><br><br></p>
+</li>
+<li><p>进入容器</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker exec -it 1d24f83eec24c5 &#x2F;bin&#x2F;bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><br><br></p>
+</li>
+<li><p>访问测试,在宿主机上测试，不是在容器里</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">curl localhost:9090<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><br><br></p>
+</li>
+<li><p>发布项目（由于做了卷挂载，我们直接在本地编写项目就可以发布了）</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>web-app</span> 
+	<span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://java.sun.com/xml/ns/javaee<span class="token punctuation">"</span></span>
+    <span class="token attr-name"><span class="token namespace">xmlns:</span>xsi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="token punctuation">"</span></span>
+	<span class="token attr-name"><span class="token namespace">xsi:</span>schemaLocation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://java.sun.com/xml/ns/javaee 
+						http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd<span class="token punctuation">"</span></span> 
+	<span class="token attr-name">version</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>2.5<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>web-app</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-jsp" data-language="jsp"><code class="language-jsp">&lt;%@ page language&#x3D;&quot;java&quot; contentType&#x3D;&quot;text&#x2F;html; charset&#x3D;UTF-8&quot;
+    pageEncoding&#x3D;&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset&#x3D;&quot;utf-8&quot;&gt;
+&lt;title&gt;hello.lcdzzz&lt;&#x2F;title&gt;
+&lt;&#x2F;head&gt;
+&lt;body&gt;
+Hello World!&lt;br&#x2F;&gt;
+&lt;%
+System.out.println(&quot;---my test web logs---&quot;)
+%&gt;
+&lt;&#x2F;body&gt;
+&lt;&#x2F;html&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+</li>
+</ol>
+<ol start="8">
+<li></li>
 </ol>
 ]]></content>
       <tags>
