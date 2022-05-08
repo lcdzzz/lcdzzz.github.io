@@ -4935,6 +4935,223 @@ spring.redis.port&#x3D;6379<span aria-hidden="true" class="line-numbers-rows"><s
 <p><img src="rabbitmq%E4%B9%8Bheader02.png"></p>
 </li>
 </ul>
+<p><br><br><br><br></p>
+<h1 id="Spring-Boot企业级开发"><a href="#Spring-Boot企业级开发" class="headerlink" title="Spring Boot企业级开发"></a>Spring Boot企业级开发</h1><h2 id="邮件发送"><a href="#邮件发送" class="headerlink" title="邮件发送"></a>邮件发送</h2><p>提前准备：<a href="http://itboyhub.com/2021/01/25/java-mail/">http://itboyhub.com/2021/01/25/java-mail/</a></p>
+<h3 id="发送简单邮件"><a href="#发送简单邮件" class="headerlink" title="发送简单邮件"></a>发送简单邮件</h3><ul>
+<li><p>依赖</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-mail<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span> <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>配置</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">spring.mail.host</span><span class="token punctuation">=</span><span class="token attr-value">smtp.qq.com</span>
+<span class="token attr-name">spring.mail.port</span><span class="token punctuation">=</span><span class="token attr-value">465</span>
+<span class="token attr-name">spring.mail.username</span><span class="token punctuation">=</span><span class="token attr-value">1473220685@qq.com</span>
+<span class="token attr-name">spring.mail.password</span><span class="token punctuation">=</span><span class="token attr-value">zytnklxrvfrjfgfd</span>
+<span class="token attr-name">spring.mail.default-encoding</span><span class="token punctuation">=</span><span class="token attr-value">utf-8</span>
+<span class="token comment">#一个加密连接的工具类</span>
+<span class="token attr-name">spring.mail.properties.mail.smtp.socketFactory.class</span><span class="token punctuation">=</span><span class="token attr-value">javax.net.ssl.SSLSocketFactory</span>
+<span class="token attr-name">spring.mail.properties.mail.debug</span><span class="token punctuation">=</span><span class="token attr-value">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>测试</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Autowired</span>
+<span class="token class-name">JavaMailSender</span> javaMailSender<span class="token punctuation">;</span>
+
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">contextLoads</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">SimpleMailMessage</span> simpMsg <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SimpleMailMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    simpMsg<span class="token punctuation">.</span><span class="token function">setFrom</span><span class="token punctuation">(</span><span class="token string">"1473220685@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    simpMsg<span class="token punctuation">.</span><span class="token function">setTo</span><span class="token punctuation">(</span><span class="token string">"1473220649@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    simpMsg<span class="token punctuation">.</span><span class="token function">setSentDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    simpMsg<span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"邮件主题-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    simpMsg<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span><span class="token string">"邮件内容-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    javaMailSender<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>simpMsg<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+</li>
+</ul>
+<h3 id="发送带附件的邮件"><a href="#发送带附件的邮件" class="headerlink" title="发送带附件的邮件"></a>发送带附件的邮件</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">MessagingException</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"E:\\photo\\微信图片_20220501212727.png"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">MimeMessage</span> mimeMessage <span class="token operator">=</span> javaMailSender<span class="token punctuation">.</span><span class="token function">createMimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//创建对象【附件邮件的对象没法new 】</span>
+    <span class="token class-name">MimeMessageHelper</span> helper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MimeMessageHelper</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//工具类，复合邮件</span>
+    helper<span class="token punctuation">.</span><span class="token function">setFrom</span><span class="token punctuation">(</span><span class="token string">"1473220685@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setTo</span><span class="token punctuation">(</span><span class="token string">"1741255713@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setSentDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"邮件主题-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span><span class="token string">"邮件内容-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">addAttachment</span><span class="token punctuation">(</span>file<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    javaMailSender<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+<h3 id="发送带图片资源的邮件【了解，不怎么用】"><a href="#发送带图片资源的邮件【了解，不怎么用】" class="headerlink" title="发送带图片资源的邮件【了解，不怎么用】"></a>发送带图片资源的邮件【了解，不怎么用】</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">MessagingException</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">File</span> file <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span><span class="token string">"E:\\photo\\微信图片_20220501212727.png"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">MimeMessage</span> mimeMessage <span class="token operator">=</span> javaMailSender<span class="token punctuation">.</span><span class="token function">createMimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">MimeMessageHelper</span> helper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MimeMessageHelper</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setFrom</span><span class="token punctuation">(</span><span class="token string">"1473220685@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setTo</span><span class="token punctuation">(</span><span class="token string">"1473220649@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setSentDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"邮件主题-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span><span class="token string">"&lt;div>hello ，这是一封带图片资源的邮件。。。&lt;/div>&lt;div>&lt;img src='cid:p01' />&lt;/div>"</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    helper<span class="token punctuation">.</span><span class="token function">addInline</span><span class="token punctuation">(</span><span class="token string">"p01"</span><span class="token punctuation">,</span> file<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    javaMailSender<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+<h3 id="使用freemarker-thymleaf做邮件模板"><a href="#使用freemarker-thymleaf做邮件模板" class="headerlink" title="使用freemarker/thymleaf做邮件模板"></a>使用freemarker/thymleaf做邮件模板</h3><h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><p>依赖：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-freemarker<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-thymeleaf<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>model</span><span class="token punctuation">;</span>
+
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">User</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> username<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">Double</span> salary<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> position<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token class-name">String</span> company<span class="token punctuation">;</span>
+
+   <span class="token comment">//get set方法省略</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h4 id="freemarker"><a href="#freemarker" class="headerlink" title="freemarker"></a>freemarker</h4><p>resource/mail下的mail.ftl文件</p>
+<pre class="line-numbers language-ftl" data-language="ftl"><code class="language-ftl"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>欢迎 <span class="token ftl language-ftl"><span class="token ftl-interpolation"><span class="token punctuation">$&#123;</span><span class="token content ftl">username</span><span class="token punctuation">&#125;</span></span></span> 加入 <span class="token ftl language-ftl"><span class="token ftl-interpolation"><span class="token punctuation">$&#123;</span><span class="token content ftl">company</span><span class="token punctuation">&#125;</span></span></span> 大家庭，您的入职信息如下：<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span> <span class="token attr-name">border</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>姓名<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token ftl language-ftl"><span class="token ftl-interpolation"><span class="token punctuation">$&#123;</span><span class="token content ftl">username</span><span class="token punctuation">&#125;</span></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>职位<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token ftl language-ftl"><span class="token ftl-interpolation"><span class="token punctuation">$&#123;</span><span class="token content ftl">position</span><span class="token punctuation">&#125;</span></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>薪水<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span><span class="token ftl language-ftl"><span class="token ftl-interpolation"><span class="token punctuation">$&#123;</span><span class="token content ftl">salary</span><span class="token punctuation">&#125;</span></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token style-attr language-css"><span class="token attr-name"> <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">color</span><span class="token punctuation">:</span> #ff0114<span class="token punctuation">;</span><span class="token property">font-size</span><span class="token punctuation">:</span> large</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>希望在未来的日子里携手奋进！<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+   <span class="token keyword">void</span> <span class="token function">test3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">MessagingException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">TemplateException</span> <span class="token punctuation">&#123;</span>
+       <span class="token class-name">MimeMessage</span> mimeMessage <span class="token operator">=</span> javaMailSender<span class="token punctuation">.</span><span class="token function">createMimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token class-name">MimeMessageHelper</span> helper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MimeMessageHelper</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       helper<span class="token punctuation">.</span><span class="token function">setFrom</span><span class="token punctuation">(</span><span class="token string">"1473220685@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       helper<span class="token punctuation">.</span><span class="token function">setTo</span><span class="token punctuation">(</span><span class="token string">"1473220649@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       helper<span class="token punctuation">.</span><span class="token function">setSentDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       helper<span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"邮件主题-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token class-name">Configuration</span> cfg <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Configuration</span><span class="token punctuation">(</span><span class="token class-name">Configuration</span><span class="token punctuation">.</span>VERSION_2_3_30<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//freemarker的配置</span>
+       cfg<span class="token punctuation">.</span><span class="token function">setClassLoaderForTemplateLoading</span><span class="token punctuation">(</span><span class="token class-name">DemoApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getClassLoader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"mail"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//第一个参数是类加载器，第二个参数是模板的位置</span>
+       <span class="token class-name">Template</span> template <span class="token operator">=</span> cfg<span class="token punctuation">.</span><span class="token function">getTemplate</span><span class="token punctuation">(</span><span class="token string">"mail.ftl"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//获取模板</span>
+       <span class="token class-name">User</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">User</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setCompany</span><span class="token punctuation">(</span><span class="token string">"xxx公司"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setUsername</span><span class="token punctuation">(</span><span class="token string">"javaboy"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setPosition</span><span class="token punctuation">(</span><span class="token string">"Java架构师"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setSalary</span><span class="token punctuation">(</span><span class="token number">999999.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token class-name">StringWriter</span> out <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//输出流，就是ftl渲染之后的内容</span>
+       template<span class="token punctuation">.</span><span class="token function">process</span><span class="token punctuation">(</span>user<span class="token punctuation">,</span> out<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token class-name">String</span> text <span class="token operator">=</span> out<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//toString里的就是邮件内容</span>
+       <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"text = "</span> <span class="token operator">+</span> text<span class="token punctuation">)</span><span class="token punctuation">;</span>
+       helper<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       javaMailSender<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h4 id="thymleaf"><a href="#thymleaf" class="headerlink" title="thymleaf"></a>thymleaf</h4><p>在templates文件夹下创建mail.html文件【默认的文件目录就是templates，放在其他地方还要再配置】</p>
+<pre class="line-numbers language-html" data-language="html"><code class="language-html"><span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">html</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>th</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.thymeleaf.org<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Title<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>欢迎 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name"><span class="token namespace">th:</span>text</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;username&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span> 加入 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name"><span class="token namespace">th:</span>text</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;company&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span> 大家庭，您的入职信息如下：<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>table</span> <span class="token attr-name">border</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>姓名<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name"><span class="token namespace">th:</span>text</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;username&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>职位<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name"><span class="token namespace">th:</span>text</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;position&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>tr</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span><span class="token punctuation">></span></span>薪水<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>td</span> <span class="token attr-name"><span class="token namespace">th:</span>text</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;salary&#125;<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>td</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>tr</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>table</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">src</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420110515%2F200524110515-2-1200.jpg&amp;refer=http%3A%2F%2Fimg.jj20.com&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=auto?sec=1654615656&amp;t=df22f9999a3f041f1a8c6798e460babd<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token style-attr language-css"><span class="token attr-name"> <span class="token attr-name">style</span></span><span class="token punctuation">="</span><span class="token attr-value"><span class="token property">color</span><span class="token punctuation">:</span> #ff0114<span class="token punctuation">;</span><span class="token property">font-size</span><span class="token punctuation">:</span> large</span><span class="token punctuation">"</span></span><span class="token punctuation">></span></span>希望在未来的日子里携手奋进！<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//↓↓↓模板引擎↓↓↓ 注入进来就可以直接用了</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">TemplateEngine</span> templateEngine<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">test4</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">MessagingException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">TemplateException</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">MimeMessage</span> mimeMessage <span class="token operator">=</span> javaMailSender<span class="token punctuation">.</span><span class="token function">createMimeMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">MimeMessageHelper</span> helper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MimeMessageHelper</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        helper<span class="token punctuation">.</span><span class="token function">setFrom</span><span class="token punctuation">(</span><span class="token string">"1473220685@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        helper<span class="token punctuation">.</span><span class="token function">setTo</span><span class="token punctuation">(</span><span class="token string">"1473220649@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        helper<span class="token punctuation">.</span><span class="token function">setSentDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        helper<span class="token punctuation">.</span><span class="token function">setSubject</span><span class="token punctuation">(</span><span class="token string">"邮件主题-测试邮件"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">/*  User user = new User();
+        user.setCompany("xxx公司");
+        user.setUsername("javaboy");
+        user.setPosition("Java架构师");
+        user.setSalary(999999.0);*/</span>
+        <span class="token class-name">Context</span> ctx <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Context</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ctx<span class="token punctuation">.</span><span class="token function">setVariable</span><span class="token punctuation">(</span><span class="token string">"username"</span><span class="token punctuation">,</span><span class="token string">"javaboy"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ctx<span class="token punctuation">.</span><span class="token function">setVariable</span><span class="token punctuation">(</span><span class="token string">"position"</span><span class="token punctuation">,</span><span class="token string">"Java工程师"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ctx<span class="token punctuation">.</span><span class="token function">setVariable</span><span class="token punctuation">(</span><span class="token string">"company"</span><span class="token punctuation">,</span><span class="token string">"xxx集团"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ctx<span class="token punctuation">.</span><span class="token function">setVariable</span><span class="token punctuation">(</span><span class="token string">"salary"</span><span class="token punctuation">,</span> <span class="token string">"999999"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        <span class="token class-name">String</span> text <span class="token operator">=</span> templateEngine<span class="token punctuation">.</span><span class="token function">process</span><span class="token punctuation">(</span><span class="token string">"mail.html"</span><span class="token punctuation">,</span> ctx<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//用templateEngine把html渲染出来。</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// ↑↑↑第一个参数是模板名，第二个参数是一个上下文，因为没有给放对象的机会↑↑↑</span>
+        helper<span class="token punctuation">.</span><span class="token function">setText</span><span class="token punctuation">(</span>text<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        javaMailSender<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>mimeMessage<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
   </entry>
   <entry>
@@ -7816,27 +8033,27 @@ value：map集合key对应的value值
     <url>/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/</url>
     <content><![CDATA[<h2 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h2><ol>
 <li><p><strong>查看系统的内核</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>roo@www ~<span class="token punctuation">]</span>$ <span class="token function">uname</span> -r
-<span class="token number">3.10</span>.0-1160.59.1.el7.x86_64
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[roo@www ~]$ uname -r
+3.10.0-1160.59.1.el7.x86_64
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%85%E6%A0%B8.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>查看系统配置</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">cat</span> /etc/os-release<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cat &#x2F;etc&#x2F;os-release<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>卸载旧的版本</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www ~<span class="token punctuation">]</span><span class="token comment"># yum remove docker \</span>
-                   docker-client <span class="token punctuation">\</span>
-                   docker-client-latest <span class="token punctuation">\</span>
-                   docker-common <span class="token punctuation">\</span>
-                   docker-latest <span class="token punctuation">\</span>
-                   docker-latest-logrotate <span class="token punctuation">\</span>
-                   docker-logrotate <span class="token punctuation">\</span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# yum remove docker \
+                   docker-client \
+                   docker-client-latest \
+                   docker-common \
+                   docker-latest \
+                   docker-latest-logrotate \
+                   docker-logrotate \
                    docker-engine
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
@@ -7844,20 +8061,20 @@ value：map集合key对应的value值
 <p><br><br></p>
 </li>
 <li><p><strong>下载需要的安装包</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum <span class="token function">install</span> -y yum-utils<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum install -y yum-utils<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E4%B8%8B%E8%BD%BD.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>设置镜像的仓库</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum-config-manager <span class="token punctuation">\</span>
-    --add-repo <span class="token punctuation">\</span>
-    https://download.docker.com/linux/centos/docker-ce.repo  <span class="token comment">#国外的地址</span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum-config-manager \
+    --add-repo \
+    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo  #国外的地址
     
-    <span class="token comment"># 设置阿里云的Docker镜像仓库</span>
-yum-config-manager <span class="token punctuation">\</span>
-    --add-repo <span class="token punctuation">\</span>
-    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo  <span class="token comment">#国内的地址</span>
+    # 设置阿里云的Docker镜像仓库
+yum-config-manager \
+    --add-repo \
+    https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo  #国内的地址
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E9%95%9C%E5%83%8F%E9%85%8D%E7%BD%AE.png"></p>
@@ -7871,7 +8088,7 @@ yum-config-manager <span class="token punctuation">\</span>
 </li>
 <li><p><strong>安装docker相关的配置</strong></p>
 <p>docker-ce 是社区版，docker-ee 企业版</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum <span class="token function">install</span> docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum install docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E5%AE%89%E8%A3%85docker%E7%9B%B8%E5%85%B3%E7%9A%84%E9%85%8D%E7%BD%AE.png"></p>
 <p>出现了completed即安装成功</p>
@@ -7879,22 +8096,22 @@ yum-config-manager <span class="token punctuation">\</span>
 </li>
 <li><p><strong>启动Docker</strong></p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">systemctl start docker
-<span class="token comment"># 查看当前版本号，是否启动成功</span>
+# 查看当前版本号，是否启动成功
 docker version
-<span class="token comment"># 设置开机自启动</span>
-systemctl <span class="token builtin class-name">enable</span> docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+# 设置开机自启动
+systemctl enable docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E5%90%AF%E5%8A%A8docker.png"></p>
 </li>
 <li><p>hello-world</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www ~<span class="token punctuation">]</span><span class="token comment"># docker run hello-world</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# docker run hello-world<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E8%BF%90%E8%A1%8Chelloworld.png"></p>
 </li>
 <li><p>查看一下下载的这个hello-world镜像</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www ~<span class="token punctuation">]</span><span class="token comment"># docker images</span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# docker images
 REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
-hello-world   latest    feb5d9fea6a5   <span class="token number">6</span> months ago   <span class="token number">13</span>.3kB
+hello-world   latest    feb5d9fea6a5   6 months ago   13.3kB
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
@@ -7903,51 +8120,51 @@ hello-world   latest    feb5d9fea6a5   <span class="token number">6</span> month
 <p><br><br><br><br></p>
 <h2 id="构建自己的centos"><a href="#构建自己的centos" class="headerlink" title="构建自己的centos"></a>构建自己的centos</h2><ol>
 <li><p><strong>在/home目录下创建一个dockerfile目录，到时候所有东西就放这儿</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www /<span class="token punctuation">]</span><span class="token comment"># cd /home</span>
-<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># ls</span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www &#x2F;]# cd &#x2F;home
+[root@www home]# ls
 ceshi  docker-test-volume  hziee  mysql  roo
-<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># mkdir dockerfile</span>
-<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># ls</span>
+[root@www home]# mkdir dockerfile
+[root@www home]# ls
 ceshi  dockerfile  docker-test-volume  hziee  mysql  roo
-<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># cd dockerfile/</span>
-<span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># </span>
+[root@www home]# cd dockerfile&#x2F;
+[root@www dockerfile]# 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84centos%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>创建一个名为mydockerfile-centos的文件，在里面编写DockerFile的指令</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># vim mydockerfile-centos</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www dockerfile]# vim mydockerfile-centos<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p><strong>编写dockerfile的配置文件</strong></p>
 <p>cat 指令表示查看mydockerfile-centos这个文件里面的内容，所以返回值就是配置文件的内容</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># vim mydockerfile-centos </span>
-<span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># cat mydockerfile-centos </span>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www dockerfile]# vim mydockerfile-centos 
+[root@www dockerfile]# cat mydockerfile-centos 
 FROM centos:7
-MAINTAINER lcdzzz<span class="token operator">&lt;</span><span class="token number">1473220685</span>@qq.com<span class="token operator">></span>
+MAINTAINER lcdzzz&lt;1473220685@qq.com&gt;
 
-ENV MYPATH /usr/local
-WORKDIR <span class="token variable">$MYPATH</span>
+ENV MYPATH &#x2F;usr&#x2F;local
+WORKDIR $MYPATH
 
-RUN yum -y <span class="token function">install</span> <span class="token function">vim</span>
-RUN yum -y <span class="token function">install</span> net-tools
+RUN yum -y install vim
+RUN yum -y install net-tools
 
-EXPOSE <span class="token number">80</span>
+EXPOSE 80
 
-CMD <span class="token builtin class-name">echo</span> <span class="token variable">$MYPATH</span>
-CMD <span class="token builtin class-name">echo</span> <span class="token string">"---end---"</span>
-CMD /bin/bash
+CMD echo $MYPATH
+CMD echo &quot;---end---&quot;
+CMD &#x2F;bin&#x2F;bash
 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p><strong>通过这个文件构建镜像</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#↓↓↓运行这个命令↓↓↓，注意有 “.”</span>
-<span class="token comment">#命令 docker build -f dockerfile文件路径 -t 镜像名:[tag]</span>
-docker build -f mydockerfile-centos -t mycentos:0.1 <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#↓↓↓运行这个命令↓↓↓，注意有 “.”
+#命令 docker build -f dockerfile文件路径 -t 镜像名:[tag]
+docker build -f mydockerfile-centos -t mycentos:0.1 .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F.png"></p>
 <p>显示successfully代表成功</p>
@@ -7967,54 +8184,54 @@ docker build -f mydockerfile-centos -t mycentos:0.1 <span class="token builtin c
 </li>
 <li><p>编写dockerfile文件，官方命名<code>Dockerfile</code>,build会自动寻找这个文件，就不需要 -f 去指定了</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">FROM centos:7
-MAINTAINER lcdzzz<span class="token operator">&lt;</span><span class="token number">1473220685</span>@qq.com<span class="token operator">></span>
+MAINTAINER lcdzzz&lt;1473220685@qq.com&gt;
 
-COPY readme.txt /usr/local/readme.txt
+COPY readme.txt &#x2F;usr&#x2F;local&#x2F;readme.txt
 
-ADD jdk-10.0.1_linux-x64_bin.tar.gz /usr/local/ <span class="token comment">#docker在add时会自动解压</span>
-ADD apache-tomcat-9.0.62.tar.gz /usr/local/
+ADD jdk-10.0.1_linux-x64_bin.tar.gz &#x2F;usr&#x2F;local&#x2F; #docker在add时会自动解压
+ADD apache-tomcat-9.0.62.tar.gz &#x2F;usr&#x2F;local&#x2F;
 
-RUN yum -y <span class="token function">install</span> <span class="token function">vim</span>
+RUN yum -y install vim
 
-ENV MYPATH /usr/local
+ENV MYPATH &#x2F;usr&#x2F;local
 
-WORKDIR <span class="token variable">$MYPATH</span>
+WORKDIR $MYPATH
 
-<span class="token comment">#配置环境</span>
-ENV <span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/usr/java/jdk-18
-ENV CLASSPATH <span class="token variable">$JAVA_HOME</span>/lib/dt.jar:<span class="token variable">$JAVA_HOME</span>/lib/tools/jar
-ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.62
-ENV CATALINA_BASE /usr/local/apache-tomcat-9.0.62
-ENV <span class="token environment constant">PATH</span> <span class="token environment constant">$PATH</span><span class="token builtin class-name">:</span><span class="token variable">$JAVA_HOME</span>/bin:<span class="token variable">$CATALINA_HOME</span>/lib:<span class="token variable">$CATALINA_HOME</span>/bin
+#配置环境
+ENV JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk-18
+ENV CLASSPATH $JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools&#x2F;jar
+ENV CATALINA_HOME &#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62
+ENV CATALINA_BASE &#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62
+ENV PATH $PATH:$JAVA_HOME&#x2F;bin:$CATALINA_HOME&#x2F;lib:$CATALINA_HOME&#x2F;bin
 
-<span class="token comment">#暴露端口</span>
-EXPOSE <span class="token number">8080</span>
+#暴露端口
+EXPOSE 8080
 
-CMD /usr/local/apche-tomcat-9.0.62/bin/startup.sh <span class="token operator">&amp;&amp;</span> <span class="token function">tail</span> -F /usr/local/apche-tomcat-9.0.62/bin/logs/catalina.out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+CMD &#x2F;usr&#x2F;local&#x2F;apche-tomcat-9.0.62&#x2F;bin&#x2F;startup.sh &amp;&amp; tail -F &#x2F;usr&#x2F;local&#x2F;apche-tomcat-9.0.62&#x2F;bin&#x2F;logs&#x2F;catalina.out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p>构建镜像,前面说了，build会自动寻找文件，所以不需要指定</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#docker build -t diytomcat .</span>
-docker build -t diytomcat <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#docker build -t diytomcat .
+docker build -t diytomcat .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>显示successfully代表成功</p>
 <p><img src="%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F.png"></p>
 <p><br><br></p>
 </li>
 <li><p>运行镜像</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -d -p <span class="token number">9090</span>:8080 --name lcdzzztomcat -v /home/lcdzzz/build/test:/usr/local/apache-tomcat-9.0.62/webapps/test -v /home/lcdzzz/build/tomcatlogs/:/usr/local/apache-tomcat-9.0.62/logs diytomcat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -d -p 9090:8080 --name lcdzzztomcat -v &#x2F;home&#x2F;lcdzzz&#x2F;build&#x2F;test:&#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62&#x2F;webapps&#x2F;test -v &#x2F;home&#x2F;lcdzzz&#x2F;build&#x2F;tomcatlogs&#x2F;:&#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62&#x2F;logs diytomcat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E8%BF%90%E8%A1%8C%E9%95%9C%E5%83%8F.png"></p>
 <p><br><br></p>
 </li>
 <li><p>进入容器</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker <span class="token builtin class-name">exec</span> -it 1d24f83eec24c5 /bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker exec -it 1d24f83eec24c5 &#x2F;bin&#x2F;bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p>访问测试,在宿主机上测试，不是在容器里</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> localhost:9090<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">curl localhost:9090<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
@@ -12954,5 +13171,11 @@ public class ReflectTest11 &#123;
       <tags>
         <tag>2021寒假自学笔记</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>歪比巴卜</title>
+    <url>/2022/05/04/wai-bi-ba-bu/</url>
+    <content><![CDATA[<p><img src="1.png"></p>
+]]></content>
   </entry>
 </search>
