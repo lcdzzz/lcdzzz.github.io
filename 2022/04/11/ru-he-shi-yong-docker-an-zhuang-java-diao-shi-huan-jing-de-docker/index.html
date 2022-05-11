@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>如何使用Docker，安装java调试环境的docker | lcdzzz的博客</title><meta name="keywords" content="java,docker,linux"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Docker的安装 查看系统的内核 [roo@www ~]$ uname -r 3.10.0-1160.59.1.el7.x86_64      查看系统配置 cat &#x2F;etc&#x2F;os-release     卸载旧的版本 [root@www ~]# yum remove docker \                    docker-client \">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>如何使用Docker，安装java调试环境的docker | lcdzzz的博客</title><meta name="keywords" content="java,docker,linux"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Docker的安装 查看系统的内核 [roo@www ~]$ uname -r 3.10.0-1160.59.1.el7.x86_64      查看系统配置 cat &#x2F;etc&#x2F;os-release     卸载旧的版本 [root@www ~]# yum remove docker \                    docker-client \                    d">
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
 <meta property="og:title" content="如何使用Docker，安装java调试环境的docker">
 <meta property="og:url" content="http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/index.html">
 <meta property="og:site_name" content="lcdzzz的博客">
-<meta property="og:description" content="Docker的安装 查看系统的内核 [roo@www ~]$ uname -r 3.10.0-1160.59.1.el7.x86_64      查看系统配置 cat &#x2F;etc&#x2F;os-release     卸载旧的版本 [root@www ~]# yum remove docker \                    docker-client \">
+<meta property="og:description" content="Docker的安装 查看系统的内核 [roo@www ~]$ uname -r 3.10.0-1160.59.1.el7.x86_64      查看系统配置 cat &#x2F;etc&#x2F;os-release     卸载旧的版本 [root@www ~]# yum remove docker \                    docker-client \                    d">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto">
 <meta property="article:published_time" content="2022-04-11T07:00:15.000Z">
@@ -145,29 +145,29 @@
     }
     detectApple()
     })(window)</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="lcdzzz的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lcdzzz的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">如何使用Docker，安装java调试环境的docker</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-11T07:00:15.000Z" title="发表于 2022-04-11 15:00:15">2022-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-04T12:53:20.733Z" title="更新于 2022-05-04 20:53:20">2022-05-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="如何使用Docker，安装java调试环境的docker"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h2><ol>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lcdzzz的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">如何使用Docker，安装java调试环境的docker</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-04-11T07:00:15.000Z" title="发表于 2022-04-11 15:00:15">2022-04-11</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-04T12:53:20.733Z" title="更新于 2022-05-04 20:53:20">2022-05-04</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="如何使用Docker，安装java调试环境的docker"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="Docker的安装"><a href="#Docker的安装" class="headerlink" title="Docker的安装"></a>Docker的安装</h2><ol>
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><li><p><strong>查看系统的内核</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[roo@www ~]$ uname -r
-3.10.0-1160.59.1.el7.x86_64
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>roo@www ~<span class="token punctuation">]</span>$ <span class="token function">uname</span> -r
+<span class="token number">3.10</span>.0-1160.59.1.el7.x86_64
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E7%9A%84%E5%86%85%E6%A0%B8.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>查看系统配置</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cat &#x2F;etc&#x2F;os-release<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">cat</span> /etc/os-release<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E9%85%8D%E7%BD%AE.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>卸载旧的版本</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# yum remove docker \
-                   docker-client \
-                   docker-client-latest \
-                   docker-common \
-                   docker-latest \
-                   docker-latest-logrotate \
-                   docker-logrotate \
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www ~<span class="token punctuation">]</span><span class="token comment"># yum remove docker \</span>
+                   docker-client <span class="token punctuation">\</span>
+                   docker-client-latest <span class="token punctuation">\</span>
+                   docker-common <span class="token punctuation">\</span>
+                   docker-latest <span class="token punctuation">\</span>
+                   docker-latest-logrotate <span class="token punctuation">\</span>
+                   docker-logrotate <span class="token punctuation">\</span>
                    docker-engine
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
@@ -175,20 +175,20 @@
 <p><br><br></p>
 </li>
 <li><p><strong>下载需要的安装包</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum install -y yum-utils<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum <span class="token function">install</span> -y yum-utils<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E4%B8%8B%E8%BD%BD.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>设置镜像的仓库</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum-config-manager \
-    --add-repo \
-    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo  #国外的地址
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum-config-manager <span class="token punctuation">\</span>
+    --add-repo <span class="token punctuation">\</span>
+    https://download.docker.com/linux/centos/docker-ce.repo  <span class="token comment">#国外的地址</span>
     
-    # 设置阿里云的Docker镜像仓库
-yum-config-manager \
-    --add-repo \
-    https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo  #国内的地址
+    <span class="token comment"># 设置阿里云的Docker镜像仓库</span>
+yum-config-manager <span class="token punctuation">\</span>
+    --add-repo <span class="token punctuation">\</span>
+    https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo  <span class="token comment">#国内的地址</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E9%95%9C%E5%83%8F%E9%85%8D%E7%BD%AE.png"></p>
@@ -202,7 +202,7 @@ yum-config-manager \
 </li>
 <li><p><strong>安装docker相关的配置</strong></p>
 <p>docker-ce 是社区版，docker-ee 企业版</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum install docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yum <span class="token function">install</span> docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E5%AE%89%E8%A3%85docker%E7%9B%B8%E5%85%B3%E7%9A%84%E9%85%8D%E7%BD%AE.png"></p>
 <p>出现了completed即安装成功</p>
@@ -210,22 +210,22 @@ yum-config-manager \
 </li>
 <li><p><strong>启动Docker</strong></p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">systemctl start docker
-# 查看当前版本号，是否启动成功
+<span class="token comment"># 查看当前版本号，是否启动成功</span>
 docker version
-# 设置开机自启动
-systemctl enable docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token comment"># 设置开机自启动</span>
+systemctl <span class="token builtin class-name">enable</span> docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E5%90%AF%E5%8A%A8docker.png"></p>
 </li>
 <li><p>hello-world</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# docker run hello-world<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www ~<span class="token punctuation">]</span><span class="token comment"># docker run hello-world</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E8%BF%90%E8%A1%8Chelloworld.png"></p>
 </li>
 <li><p>查看一下下载的这个hello-world镜像</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www ~]# docker images
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www ~<span class="token punctuation">]</span><span class="token comment"># docker images</span>
 REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
-hello-world   latest    feb5d9fea6a5   6 months ago   13.3kB
+hello-world   latest    feb5d9fea6a5   <span class="token number">6</span> months ago   <span class="token number">13</span>.3kB
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
@@ -234,51 +234,51 @@ hello-world   latest    feb5d9fea6a5   6 months ago   13.3kB
 <p><br><br><br><br></p>
 <h2 id="构建自己的centos"><a href="#构建自己的centos" class="headerlink" title="构建自己的centos"></a>构建自己的centos</h2><ol>
 <li><p><strong>在/home目录下创建一个dockerfile目录，到时候所有东西就放这儿</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www &#x2F;]# cd &#x2F;home
-[root@www home]# ls
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www /<span class="token punctuation">]</span><span class="token comment"># cd /home</span>
+<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># ls</span>
 ceshi  docker-test-volume  hziee  mysql  roo
-[root@www home]# mkdir dockerfile
-[root@www home]# ls
+<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># mkdir dockerfile</span>
+<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># ls</span>
 ceshi  dockerfile  docker-test-volume  hziee  mysql  roo
-[root@www home]# cd dockerfile&#x2F;
-[root@www dockerfile]# 
+<span class="token punctuation">[</span>root@www home<span class="token punctuation">]</span><span class="token comment"># cd dockerfile/</span>
+<span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># </span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84centos%E5%87%86%E5%A4%87%E9%98%B6%E6%AE%B5.png"></p>
 <p><br><br></p>
 </li>
 <li><p><strong>创建一个名为mydockerfile-centos的文件，在里面编写DockerFile的指令</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www dockerfile]# vim mydockerfile-centos<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># vim mydockerfile-centos</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p><strong>编写dockerfile的配置文件</strong></p>
 <p>cat 指令表示查看mydockerfile-centos这个文件里面的内容，所以返回值就是配置文件的内容</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">[root@www dockerfile]# vim mydockerfile-centos 
-[root@www dockerfile]# cat mydockerfile-centos 
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># vim mydockerfile-centos </span>
+<span class="token punctuation">[</span>root@www dockerfile<span class="token punctuation">]</span><span class="token comment"># cat mydockerfile-centos </span>
 FROM centos:7
-MAINTAINER lcdzzz&lt;1473220685@qq.com&gt;
+MAINTAINER lcdzzz<span class="token operator">&lt;</span><span class="token number">1473220685</span>@qq.com<span class="token operator">></span>
 
-ENV MYPATH &#x2F;usr&#x2F;local
-WORKDIR $MYPATH
+ENV MYPATH /usr/local
+WORKDIR <span class="token variable">$MYPATH</span>
 
-RUN yum -y install vim
-RUN yum -y install net-tools
+RUN yum -y <span class="token function">install</span> <span class="token function">vim</span>
+RUN yum -y <span class="token function">install</span> net-tools
 
-EXPOSE 80
+EXPOSE <span class="token number">80</span>
 
-CMD echo $MYPATH
-CMD echo &quot;---end---&quot;
-CMD &#x2F;bin&#x2F;bash
+CMD <span class="token builtin class-name">echo</span> <span class="token variable">$MYPATH</span>
+CMD <span class="token builtin class-name">echo</span> <span class="token string">"---end---"</span>
+CMD /bin/bash
 
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p><strong>通过这个文件构建镜像</strong></p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#↓↓↓运行这个命令↓↓↓，注意有 “.”
-#命令 docker build -f dockerfile文件路径 -t 镜像名:[tag]
-docker build -f mydockerfile-centos -t mycentos:0.1 .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#↓↓↓运行这个命令↓↓↓，注意有 “.”</span>
+<span class="token comment">#命令 docker build -f dockerfile文件路径 -t 镜像名:[tag]</span>
+docker build -f mydockerfile-centos -t mycentos:0.1 <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="%E9%80%9A%E8%BF%87%E6%96%87%E4%BB%B6%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F.png"></p>
 <p>显示successfully代表成功</p>
@@ -298,54 +298,54 @@ docker build -f mydockerfile-centos -t mycentos:0.1 .<span aria-hidden="true" cl
 </li>
 <li><p>编写dockerfile文件，官方命名<code>Dockerfile</code>,build会自动寻找这个文件，就不需要 -f 去指定了</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">FROM centos:7
-MAINTAINER lcdzzz&lt;1473220685@qq.com&gt;
+MAINTAINER lcdzzz<span class="token operator">&lt;</span><span class="token number">1473220685</span>@qq.com<span class="token operator">></span>
 
-COPY readme.txt &#x2F;usr&#x2F;local&#x2F;readme.txt
+COPY readme.txt /usr/local/readme.txt
 
-ADD jdk-10.0.1_linux-x64_bin.tar.gz &#x2F;usr&#x2F;local&#x2F; #docker在add时会自动解压
-ADD apache-tomcat-9.0.62.tar.gz &#x2F;usr&#x2F;local&#x2F;
+ADD jdk-10.0.1_linux-x64_bin.tar.gz /usr/local/ <span class="token comment">#docker在add时会自动解压</span>
+ADD apache-tomcat-9.0.62.tar.gz /usr/local/
 
-RUN yum -y install vim
+RUN yum -y <span class="token function">install</span> <span class="token function">vim</span>
 
-ENV MYPATH &#x2F;usr&#x2F;local
+ENV MYPATH /usr/local
 
-WORKDIR $MYPATH
+WORKDIR <span class="token variable">$MYPATH</span>
 
-#配置环境
-ENV JAVA_HOME&#x3D;&#x2F;usr&#x2F;java&#x2F;jdk-18
-ENV CLASSPATH $JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools&#x2F;jar
-ENV CATALINA_HOME &#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62
-ENV CATALINA_BASE &#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62
-ENV PATH $PATH:$JAVA_HOME&#x2F;bin:$CATALINA_HOME&#x2F;lib:$CATALINA_HOME&#x2F;bin
+<span class="token comment">#配置环境</span>
+ENV <span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/usr/java/jdk-18
+ENV CLASSPATH <span class="token variable">$JAVA_HOME</span>/lib/dt.jar:<span class="token variable">$JAVA_HOME</span>/lib/tools/jar
+ENV CATALINA_HOME /usr/local/apache-tomcat-9.0.62
+ENV CATALINA_BASE /usr/local/apache-tomcat-9.0.62
+ENV <span class="token environment constant">PATH</span> <span class="token environment constant">$PATH</span><span class="token builtin class-name">:</span><span class="token variable">$JAVA_HOME</span>/bin:<span class="token variable">$CATALINA_HOME</span>/lib:<span class="token variable">$CATALINA_HOME</span>/bin
 
-#暴露端口
-EXPOSE 8080
+<span class="token comment">#暴露端口</span>
+EXPOSE <span class="token number">8080</span>
 
-CMD &#x2F;usr&#x2F;local&#x2F;apche-tomcat-9.0.62&#x2F;bin&#x2F;startup.sh &amp;&amp; tail -F &#x2F;usr&#x2F;local&#x2F;apche-tomcat-9.0.62&#x2F;bin&#x2F;logs&#x2F;catalina.out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+CMD /usr/local/apche-tomcat-9.0.62/bin/startup.sh <span class="token operator">&amp;&amp;</span> <span class="token function">tail</span> -F /usr/local/apche-tomcat-9.0.62/bin/logs/catalina.out<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p>构建镜像,前面说了，build会自动寻找文件，所以不需要指定</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">#docker build -t diytomcat .
-docker build -t diytomcat .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token comment">#docker build -t diytomcat .</span>
+docker build -t diytomcat <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p>显示successfully代表成功</p>
 <p><img src="%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F.png"></p>
 <p><br><br></p>
 </li>
 <li><p>运行镜像</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -d -p 9090:8080 --name lcdzzztomcat -v &#x2F;home&#x2F;lcdzzz&#x2F;build&#x2F;test:&#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62&#x2F;webapps&#x2F;test -v &#x2F;home&#x2F;lcdzzz&#x2F;build&#x2F;tomcatlogs&#x2F;:&#x2F;usr&#x2F;local&#x2F;apache-tomcat-9.0.62&#x2F;logs diytomcat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -d -p <span class="token number">9090</span>:8080 --name lcdzzztomcat -v /home/lcdzzz/build/test:/usr/local/apache-tomcat-9.0.62/webapps/test -v /home/lcdzzz/build/tomcatlogs/:/usr/local/apache-tomcat-9.0.62/logs diytomcat<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="%E8%BF%90%E8%A1%8C%E9%95%9C%E5%83%8F.png"></p>
 <p><br><br></p>
 </li>
 <li><p>进入容器</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker exec -it 1d24f83eec24c5 &#x2F;bin&#x2F;bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker <span class="token builtin class-name">exec</span> -it 1d24f83eec24c5 /bin/bash<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
 <li><p>访问测试,在宿主机上测试，不是在容器里</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">curl localhost:9090<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token function">curl</span> localhost:9090<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><br><br></p>
 </li>
@@ -412,4 +412,4 @@ System.out.println(&quot;---my test web logs---&quot;);
 <p><img src="%E6%80%BB%E7%BB%93%E5%9C%A8%E5%AE%BF%E4%B8%BB%E6%9C%BA%E4%B8%8A%E4%BF%AE%E6%94%B9%E4%BB%A3%E7%A0%81.png"></p>
 </li>
 </ul>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/">http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/docker/">docker</a><a class="post-meta__tags" href="/tags/linux/">linux</a></div><div class="post_share"><div class="social-share" data-image="https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/04/26/java-chang-yong-util-gong-ju-lei/"><img class="prev-cover" src="https://images.wallpaperscraft.com/image/single/city_vector_panorama_119914_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">java常用util工具类</div></div></a></div><div class="next-post pull-right"><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/"><img class="next-cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">图书管理系统介绍</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img class="cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">图书管理系统介绍</div></div></a></div><div><a href="/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/" title="解决主机java项目无法连接linux上redis服务的问题"><img class="cover" src="https://images.wallpaperscraft.com/image/single/mountains_river_sun_143529_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-20</div><div class="title">解决主机java项目无法连接linux上redis服务的问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">18</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">Docker的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84centos"><span class="toc-number">2.</span> <span class="toc-text">构建自己的centos</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile%E5%88%B6%E4%BD%9Ctomcat%E9%95%9C%E5%83%8F"><span class="toc-number">3.</span> <span class="toc-text">Dockerfile制作tomcat镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/11/pictures/" title="pictures"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pictures"/></a><div class="content"><a class="title" href="/2022/05/11/pictures/" title="pictures">pictures</a><time datetime="2022-05-11T13:26:56.000Z" title="发表于 2022-05-11 21:26:56">2022-05-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/04/wai-bi-ba-bu/" title="歪比巴卜"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="歪比巴卜"/></a><div class="content"><a class="title" href="/2022/05/04/wai-bi-ba-bu/" title="歪比巴卜">歪比巴卜</a><time datetime="2022-05-04T12:54:16.000Z" title="发表于 2022-05-04 20:54:16">2022-05-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/26/java-chang-yong-util-gong-ju-lei/" title="java常用util工具类"><img src="https://images.wallpaperscraft.com/image/single/city_vector_panorama_119914_300x168.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java常用util工具类"/></a><div class="content"><a class="title" href="/2022/04/26/java-chang-yong-util-gong-ju-lei/" title="java常用util工具类">java常用util工具类</a><time datetime="2022-04-26T04:09:40.000Z" title="发表于 2022-04-26 12:09:40">2022-04-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/" title="如何使用Docker，安装java调试环境的docker"><img src="https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何使用Docker，安装java调试环境的docker"/></a><div class="content"><a class="title" href="/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/" title="如何使用Docker，安装java调试环境的docker">如何使用Docker，安装java调试环境的docker</a><time datetime="2022-04-11T07:00:15.000Z" title="发表于 2022-04-11 15:00:15">2022-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图书管理系统介绍"/></a><div class="content"><a class="title" href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍">图书管理系统介绍</a><time datetime="2022-02-07T05:08:59.000Z" title="发表于 2022-02-07 13:08:59">2022-02-07</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/">http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/docker/">docker</a><a class="post-meta__tags" href="/tags/linux/">linux</a></div><div class="post_share"><div class="social-share" data-image="https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/04/26/java-chang-yong-util-gong-ju-lei/"><img class="prev-cover" src="https://images.wallpaperscraft.com/image/single/city_vector_panorama_119914_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">java常用util工具类</div></div></a></div><div class="next-post pull-right"><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/"><img class="next-cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">图书管理系统介绍</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img class="cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">图书管理系统介绍</div></div></a></div><div><a href="/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/" title="解决主机java项目无法连接linux上redis服务的问题"><img class="cover" src="https://images.wallpaperscraft.com/image/single/mountains_river_sun_143529_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-20</div><div class="title">解决主机java项目无法连接linux上redis服务的问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">17</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">11</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">6</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Docker%E7%9A%84%E5%AE%89%E8%A3%85"><span class="toc-number">1.</span> <span class="toc-text">Docker的安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84centos"><span class="toc-number">2.</span> <span class="toc-text">构建自己的centos</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Dockerfile%E5%88%B6%E4%BD%9Ctomcat%E9%95%9C%E5%83%8F"><span class="toc-number">3.</span> <span class="toc-text">Dockerfile制作tomcat镜像</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/11/pictures/" title="pictures"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="pictures"/></a><div class="content"><a class="title" href="/2022/05/11/pictures/" title="pictures">pictures</a><time datetime="2022-05-11T13:26:56.000Z" title="发表于 2022-05-11 21:26:56">2022-05-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/26/java-chang-yong-util-gong-ju-lei/" title="java常用util工具类"><img src="https://images.wallpaperscraft.com/image/single/city_vector_panorama_119914_300x168.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="java常用util工具类"/></a><div class="content"><a class="title" href="/2022/04/26/java-chang-yong-util-gong-ju-lei/" title="java常用util工具类">java常用util工具类</a><time datetime="2022-04-26T04:09:40.000Z" title="发表于 2022-04-26 12:09:40">2022-04-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/" title="如何使用Docker，安装java调试环境的docker"><img src="https://bkimg.cdn.bcebos.com/pic/f703738da977391281957edbf0198618377ae2dd?x-bce-process=image/watermark,image_d2F0ZXIvYmFpa2UxODA=,g_7,xp_5,yp_5/format,f_auto" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何使用Docker，安装java调试环境的docker"/></a><div class="content"><a class="title" href="/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/" title="如何使用Docker，安装java调试环境的docker">如何使用Docker，安装java调试环境的docker</a><time datetime="2022-04-11T07:00:15.000Z" title="发表于 2022-04-11 15:00:15">2022-04-11</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="图书管理系统介绍"/></a><div class="content"><a class="title" href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍">图书管理系统介绍</a><time datetime="2022-02-07T05:08:59.000Z" title="发表于 2022-02-07 13:08:59">2022-02-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/26/2022springboot-zi-xue-bi-ji/" title="2022springboot自学笔记"><img src="https://images.wallpaperscraft.com/image/single/soldier_helmet_art_123765_300x168.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="2022springboot自学笔记"/></a><div class="content"><a class="title" href="/2022/01/26/2022springboot-zi-xue-bi-ji/" title="2022springboot自学笔记">2022springboot自学笔记</a><time datetime="2022-01-26T03:42:38.000Z" title="发表于 2022-01-26 11:42:38">2022-01-26</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>

@@ -16,13 +16,6 @@
   </url>
   
   <url>
-    <loc>http://lcdzzz.github.io/2022/05/04/wai-bi-ba-bu/</loc>
-    
-    <lastmod>2022-05-04</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://lcdzzz.github.io/2022/04/11/ru-he-shi-yong-docker-an-zhuang-java-diao-shi-huan-jing-de-docker/</loc>
     
     <lastmod>2022-05-04</lastmod>
@@ -193,13 +186,6 @@
   </url>
   
   <url>
-    <loc>http://lcdzzz.github.io/tags/%E6%A1%86%E6%9E%B6/</loc>
-    <lastmod>2022-05-11</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://lcdzzz.github.io/tags/java%E5%B7%A5%E5%85%B7%E7%B1%BB/</loc>
     <lastmod>2022-05-11</lastmod>
     <changefreq>daily</changefreq>
@@ -207,7 +193,7 @@
   </url>
   
   <url>
-    <loc>http://lcdzzz.github.io/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/</loc>
+    <loc>http://lcdzzz.github.io/tags/%E6%A1%86%E6%9E%B6/</loc>
     <lastmod>2022-05-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -229,6 +215,13 @@
   
   <url>
     <loc>http://lcdzzz.github.io/tags/springboot/</loc>
+    <lastmod>2022-05-11</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://lcdzzz.github.io/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2022-05-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -272,14 +265,14 @@
   </url>
   
   <url>
-    <loc>http://lcdzzz.github.io/categories/java/</loc>
+    <loc>http://lcdzzz.github.io/categories/hexo/</loc>
     <lastmod>2022-05-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://lcdzzz.github.io/categories/hexo/</loc>
+    <loc>http://lcdzzz.github.io/categories/java/</loc>
     <lastmod>2022-05-11</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
