@@ -13422,7 +13422,60 @@ signal(semaphore *S)&#123;
 <td>线程效率就比较高，可以频繁切换</td>
 </tr>
 </tbody></table>
-]]></content>
+<h1 id="处理机调度与死锁"><a href="#处理机调度与死锁" class="headerlink" title="处理机调度与死锁"></a>处理机调度与死锁</h1><h2 id="处理机调度的层次和调度算法的目标"><a href="#处理机调度的层次和调度算法的目标" class="headerlink" title="处理机调度的层次和调度算法的目标"></a>处理机调度的层次和调度算法的目标</h2><h3 id="处理机调度的层次"><a href="#处理机调度的层次" class="headerlink" title="处理机调度的层次"></a>处理机调度的层次</h3><ol>
+<li><p>高级调度（长程调度、作业调度） 调度对象是作业</p>
+<p>决定将外存上处于后背队列中的哪几个作业调入内存</p>
+</li>
+<li><p>低级调度（短程调度、进程调度） 调度对象是进程</p>
+<p>决定就绪队列中的哪个进程应获得处理机</p>
+</li>
+<li><p>中级调度 （内存调度）</p>
+<p>提高内存利用率和系统吞吐量</p>
+</li>
+</ol>
+<h3 id="调度算法的目标"><a href="#调度算法的目标" class="headerlink" title="调度算法的目标"></a>调度算法的目标</h3><p>处理机点都算法的共同目标</p>
+<ul>
+<li>资源利用率<br>$$<br>cpu的利用率=cpu有效工作时间/（cpu有效工作时间+cpu空闲等待时间）<br>$$</li>
+</ul>
+<ul>
+<li><p>公平性</p>
+</li>
+<li><p>平衡性</p>
+</li>
+<li><p>策略强制执行</p>
+</li>
+</ul>
+<h3 id="各类时间"><a href="#各类时间" class="headerlink" title="各类时间"></a>各类时间</h3><p>周转时间=完成时间-到达时间</p>
+<p>等待时间=周转时间-运行时间</p>
+<p>带权周转时间=周转时间/运行时间</p>
+<h2 id="作业与作业调度"><a href="#作业与作业调度" class="headerlink" title="作业与作业调度"></a>作业与作业调度</h2><h3 id="作业"><a href="#作业" class="headerlink" title="作业"></a>作业</h3><p><strong>作业</strong>：一个比程序更为广泛的概念。包含了通常的程序和数据，还配有一份作业说明书</p>
+<p><strong>作业步</strong>：作业步组成做鱼</p>
+<p><strong>JCB作业控制块</strong> ：作业在系统中存在的标志</p>
+<p><strong>作业运行的三个阶段和三个状态</strong>：</p>
+<ul>
+<li>收容、运行、完成 三个阶段</li>
+<li>后备、运行、完成 三个状态</li>
+</ul>
+<h3 id="作业调度"><a href="#作业调度" class="headerlink" title="作业调度"></a>作业调度</h3><p>作业调度的任务：</p>
+<ul>
+<li>根据JCB中的信息，检查系统能不能满足作业对资源的需求。再通过调度算法，从外存的后背队列中选取某些作业调入内存，并为它们创建进程、分配资源。</li>
+<li>每次执行作业调度时，要决定 <strong>介绍多少个作业</strong> 和<strong>接纳哪些作业</strong></li>
+</ul>
+<h3 id="调度算法"><a href="#调度算法" class="headerlink" title="调度算法"></a>调度算法</h3><h4 id="先来先服务作业-FCFS-first-come-first-served"><a href="#先来先服务作业-FCFS-first-come-first-served" class="headerlink" title="先来先服务作业 (FCFS)first come first served"></a>先来先服务作业 (FCFS)first come first served</h4><h4 id="短作业优先-SJF-short-job-first"><a href="#短作业优先-SJF-short-job-first" class="headerlink" title="短作业优先 (SJF) short job first"></a>短作业优先 (SJF) short job first</h4><h4 id="优先级调度算法-PSA-priority-scheduling-algorithm"><a href="#优先级调度算法-PSA-priority-scheduling-algorithm" class="headerlink" title="优先级调度算法 (PSA) priority scheduling algorithm"></a>优先级调度算法 (PSA) priority scheduling algorithm</h4><h4 id="高响应比优先算法-HRRN-highest-response-ratio-next"><a href="#高响应比优先算法-HRRN-highest-response-ratio-next" class="headerlink" title="高响应比优先算法 (HRRN)highest response ratio next"></a>高响应比优先算法 (HRRN)highest response ratio next</h4><ul>
+<li><p>FCFS算法只考虑作业的等待时间，没有考虑作业运行时间，而SJF刚好相反。</p>
+</li>
+<li><p>HRRN则两者都考虑到了</p>
+</li>
+<li><p>响应比 （优先权）：这是个动态优先级<br>$$<br>响应比=（等待时间+要求服务时间）/要求服务时间<br>$$</p>
+</li>
+</ul>
+<ul>
+<li>等待时间+服务时间=响应时间<br>$$<br>响应比Rp=响应时间/要求服务时间<br>$$</li>
+</ul>
+<ul>
+<li>↑↑↑就这玩意↑↑↑ 这玩意高的先上处理机</li>
+</ul>
+<h2 id="进程调度"><a href="#进程调度" class="headerlink" title="进程调度"></a>进程调度</h2>]]></content>
       <categories>
         <category>操作系统</category>
       </categories>
