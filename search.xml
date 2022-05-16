@@ -13777,6 +13777,10 @@ signal(semaphore *S)&#123;
 <li>先来先服务</li>
 <li>最短寻道时间优先</li>
 </ul>
+<h3 id="基于扫描的磁盘调度算法"><a href="#基于扫描的磁盘调度算法" class="headerlink" title="基于扫描的磁盘调度算法"></a>基于扫描的磁盘调度算法</h3><ul>
+<li>扫描算法</li>
+<li>循环扫描算法</li>
+</ul>
 ]]></content>
       <categories>
         <category>操作系统</category>
