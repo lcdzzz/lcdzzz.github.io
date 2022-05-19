@@ -3780,7 +3780,9 @@ spring.redis.port<span class="token operator">=</span><span class="token number"
 </ol>
 <p><br><br><br><br></p>
 <h2 id="Spring-Data-Jpa-多数据源"><a href="#Spring-Data-Jpa-多数据源" class="headerlink" title="Spring Data Jpa 多数据源"></a>Spring Data Jpa 多数据源</h2><p>这方面比较简单是写起来又复杂，直接参考松哥的博客（关键是自己懒）</p>
-<p><a href="http://springboot.javaboy.org/2019/0407/springboot-jpa-multi">http://springboot.javaboy.org/2019/0407/springboot-jpa-multi</a></p>
+<p><a href="http://itboyhub.com/2021/01/25/spring-boot2-spring-data-jpa/">http://itboyhub.com/2021/01/25/spring-boot2-spring-data-jpa/</a></p>
+<p><a href="http://itboyhub.com/2021/01/25/spring-boot2-jpa/">http://itboyhub.com/2021/01/25/spring-boot2-jpa/</a></p>
+<p><a href="http://itboyhub.com/2021/01/25/spring-boot2-multi-jpa/">http://itboyhub.com/2021/01/25/spring-boot2-multi-jpa/</a></p>
 <p><br><br><br><br><br><br></p>
 <h1 id="Spring-Boot-整合-NoSQL"><a href="#Spring-Boot-整合-NoSQL" class="headerlink" title="Spring Boot 整合 NoSQL"></a>Spring Boot 整合 NoSQL</h1><h2 id="Spring-Boot-整合-Redis"><a href="#Spring-Boot-整合-Redis" class="headerlink" title="Spring Boot 整合 Redis"></a>Spring Boot 整合 Redis</h2><ol>
 <li><p>配置redis基本信息</p>
@@ -13206,7 +13208,7 @@ public class ReflectTest11 &#123;
 <li>进程通信</li>
 <li>调度</li>
 </ul>
-<h4 id="处理机管理功能-1"><a href="#处理机管理功能-1" class="headerlink" title="处理机管理功能"></a>处理机管理功能</h4><ul>
+<h4 id="存储器管理功能"><a href="#存储器管理功能" class="headerlink" title="存储器管理功能"></a>存储器管理功能</h4><ul>
 <li>内存分配</li>
 <li>内存保护</li>
 <li>地址映射</li>
@@ -13629,13 +13631,13 @@ signal(semaphore *S)&#123;
 <li>空间局部性（因为很多数据在内存中都是连续存放的，并且程序的指令也是顺序地在内存中存放）</li>
 </ul>
 <h4 id="虚拟存储器的基本工作情况"><a href="#虚拟存储器的基本工作情况" class="headerlink" title="虚拟存储器的基本工作情况"></a>虚拟存储器的基本工作情况</h4><ol>
-<li>基于局部性原理可知，运行之前没必要把全部装入内存，而仅须将当前要运行的少数页面或段先装入内存</li>
+<li>基于局部性原理可知，运行之前没必要把全部装入内存，而仅须将当前要运行的少数页面或段先装入内存（部分调入内存）</li>
 <li>程序运行时如果它要访问的页（段）已调入内存，便继续执行</li>
 <li>如果程序要访问的页、段尚未调入内存，便发出缺页（段）终端请求</li>
 <li>此时OS利用<strong>请求调页（段）功能</strong>将他们调入内存</li>
 <li>如果内存已满，OS利用<strong>页（段）置换功能</strong>，将内存中不要的页（段）调至盘上</li>
 </ol>
-<h3 id="虚拟存储器的定义和特征"><a href="#虚拟存储器的定义和特征" class="headerlink" title="虚拟存储器的定义和特征"></a>虚拟存储器的定义和特征</h3><h4 id="虚拟存储器的定义"><a href="#虚拟存储器的定义" class="headerlink" title="虚拟存储器的定义"></a>虚拟存储器的定义</h4><p>所谓虚拟存储器，是指具有请求<strong>调入功能</strong>和置换功能，能从<strong>逻辑上</strong>对内存容量加以扩充的一种存储器系统</p>
+<h3 id="虚拟存储器的定义和特征"><a href="#虚拟存储器的定义和特征" class="headerlink" title="虚拟存储器的定义和特征"></a>虚拟存储器的定义和特征</h3><h4 id="虚拟存储器的定义"><a href="#虚拟存储器的定义" class="headerlink" title="虚拟存储器的定义"></a>虚拟存储器的定义</h4><p>所谓虚拟存储器，是指具有请求<strong>调入功能</strong>和<strong>置换功能</strong>，能从<strong>逻辑上</strong>对内存容量加以扩充的一种存储器系统</p>
 <h4 id="虚拟存储器的特征"><a href="#虚拟存储器的特征" class="headerlink" title="虚拟存储器的特征"></a>虚拟存储器的特征</h4><ul>
 <li>多次性</li>
 <li>对换性</li>
@@ -13788,5 +13790,15 @@ signal(semaphore *S)&#123;
       <tags>
         <tag>操作系统</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>点餐系统学习随记</title>
+    <url>/2022/05/16/dian-can-xi-tong-xue-xi-sui-ji/</url>
+    <content><![CDATA[<h3 id="StringUtils-pathEquals"><a href="#StringUtils-pathEquals" class="headerlink" title="StringUtils.pathEquals"></a>StringUtils.pathEquals</h3><p>相对equals来说，这个方法能避免空指针异常</p>
+<h3 id="java8特性-stream-的使用"><a href="#java8特性-stream-的使用" class="headerlink" title="java8特性 .stream()的使用"></a>java8特性 .stream()的使用</h3><p><a href="https://blog.csdn.net/Hathwayoung/article/details/113514840">https://blog.csdn.net/Hathwayoung/article/details/113514840</a></p>
+<h3 id="Collectors-toList"><a href="#Collectors-toList" class="headerlink" title="Collectors.toList()"></a>Collectors.toList()</h3><p><a href="https://blog.csdn.net/L_fly_J/article/details/120099739">https://blog.csdn.net/L_fly_J/article/details/120099739</a></p>
+<h3 id="EntityListeners-AuditingEntityListener-class"><a href="#EntityListeners-AuditingEntityListener-class" class="headerlink" title="@EntityListeners(AuditingEntityListener.class)"></a>@EntityListeners(AuditingEntityListener.class)</h3><p><a href="https://blog.csdn.net/XU906722/article/details/84778788?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-1-84778788-blog-91438971.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2~default~CTRLIST~default-1-84778788-blog-91438971.pc_relevant_default&amp;utm_relevant_index=2">https://blog.csdn.net/XU906722/article/details/84778788?spm=1001.2101.3001.6650.1&amp;utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-84778788-blog-91438971.pc_relevant_default&amp;depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-84778788-blog-91438971.pc_relevant_default&amp;utm_relevant_index=2</a></p>
+<h3 id="BeanUtils-copyProperties"><a href="#BeanUtils-copyProperties" class="headerlink" title="BeanUtils.copyProperties()"></a>BeanUtils.copyProperties()</h3><p><a href="https://blog.csdn.net/dfshsdr/article/details/90513676">https://blog.csdn.net/dfshsdr/article/details/90513676</a></p>
+]]></content>
   </entry>
 </search>
