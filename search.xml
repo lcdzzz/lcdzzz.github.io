@@ -101,9 +101,16 @@
 </ul>
 <p><strong>三种基本状态</strong></p>
 <ul>
-<li>就绪状态</li>
-<li>执行状态</li>
-<li>阻塞状态</li>
+<li><p>就绪状态</p>
+<p>已准备好运行，即进程已分配到除CPU以外的所有必要资源，只要获得CPU，便可立即执行。系统中若有多个进程处于就绪状态，通常将他们按一定的策略【如优先级策略】排成队列，该队列为就绪队列。</p>
+</li>
+<li><p>执行状态</p>
+<p>进程获得CPU。对于<strong>时刻</strong>而言，在单处理机系统中，只有一个进程处于执行状态。在多处理机系统中，有多个进程处于执行状态。</p>
+</li>
+<li><p>阻塞状态</p>
+<p>指正在执行的进程由于发生某时间（如I/O请求、申请缓冲区失败等）暂时无法执行时的状态，亦即进程的执行收到阻塞</p>
+<p>此时引起进程调度，OS把处理机分配给另一个就绪进程，而让受阻进程处于暂停状态，一般这种暂停状态称为阻塞状态【等待状态、封锁状态】，阻塞队列</p>
+</li>
 </ul>
 <p><strong>基本状态的转换</strong></p>
 <p><strong>除三种基本状态以外还有一个重要操作【挂起操作】</strong></p>
@@ -14100,13 +14107,13 @@ authentication <span class="token operator">=</span> authenticationManager
 </li>
 <li><p>所谓的jwt，其实返回的仅仅只是uuid【相当于sessionid】，以后来回都传uuid</p>
 </li>
-<li><p><strong>以后发送请求时，都会携带jwt字符串</strong></p>
+<li><p>以后发送请求时，都会携带jwt字符串</p>
 </li>
 <li><p>登录成功后，f12查看token</p>
 <p><img src="f12%E7%9A%84token.png"></p>
 <p>这个token是一个jwt字符串，而jwt字符串是分为了三部分【都是用base64编码】,如下</p>
-<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">eyJhbGciOiJIUzUxMiJ9 
-.eyJsb2dpbl91c2VyX2tleSI6ImYwOTg1ZjljLWQ0YmEtNDZlYy05MWZkLTFkZWE4ZmQxNTFkNCJ9
+<pre class="line-numbers language-txt" data-language="txt"><code class="language-txt">eyJhbGciOiJIUzUxMiJ9 &#x2F;&#x2F;指定算法名字
+.eyJsb2dpbl91c2VyX2tleSI6ImYwOTg1ZjljLWQ0YmEtNDZlYy05MWZkLTFkZWE4ZmQxNTFkNCJ9 &#x2F;&#x2F;核心信息&#x3D;&#x3D;&gt;json对象
 .y_wTovMxjSdh2XDFFoS8Y_ANo2p3iYjrhU-rK72LfG63OrL1L-d05-NNNBBOSJsgA4G410uOYl8PustxtN3DaQ<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
@@ -14118,7 +14125,39 @@ authentication <span class="token operator">=</span> authenticationManager
 <p><img src="token%E7%9A%84base64%E8%A7%A3%E7%A0%81.png"></p>
 </li>
 </ol>
-<h3 id="jwt校验"><a href="#jwt校验" class="headerlink" title="jwt校验"></a>jwt校验</h3><p>eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6ImYwOTg1ZjljLWQ0YmEtNDZlYy05MWZkLTFkZWE4ZmQxNTFkNCJ9.y_wTovMxjSdh2XDFFoS8Y_ANo2p3iYjrhU-rK72LfG63OrL1L-d05-NNNBBOSJsgA4G410uOYl8PustxtN3DaQ</p>
+<h3 id="流程分析总结"><a href="#流程分析总结" class="headerlink" title="流程分析总结"></a>流程分析总结</h3><p><em>综上，登录流程就是：登录成功后，返回一个jwt字符串，以后每次发送请求都会携带它。jwt字符串分为三部分，第一部分是算法，第二部分是核心信息，核心信息里面只有一个uuid。</em></p>
+<p><em>同时，它把用户信息存入redis里面中【登录信息，管理员，名字，leader，部门等等，都存在redis里面】，如图【左边相等于id，右边则是信息】</em></p>
+<p><img src="redis%E4%B8%AD%E7%9A%84%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF.png"></p>
+<ul>
+<li><p>以后每次访问接口时，都要带上jwt字符串</p>
+<p><img src="%E5%9C%A8%E8%AF%B7%E6%B1%82%E5%A4%B4%E9%87%8C%E7%9A%84jwt%E5%AD%97%E7%AC%A6%E4%B8%B2.png"></p>
+</li>
+<li><p>所谓的jwt说白了就像用session时的jsessionid一样。只不过jsessionid是浏览器自动携带，而现在是自己手动加上jwt参数的</p>
+</li>
+<li><p>每次请求都需要校验参数，而这个是在哪里校验的呢？</p>
+</li>
+</ul>
+<h3 id="jwt校验"><a href="#jwt校验" class="headerlink" title="jwt校验"></a>jwt校验</h3><p>核心部分就是framework.security.filter下的JwtAuthenticationTokenFilter</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Override</span>
+   <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">doFilterInternal</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">FilterChain</span> chain<span class="token punctuation">)</span>
+           <span class="token keyword">throws</span> <span class="token class-name">ServletException</span><span class="token punctuation">,</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
+       <span class="token class-name">LoginUser</span> loginUser <span class="token operator">=</span> tokenService<span class="token punctuation">.</span><span class="token function">getLoginUser</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//根据请求，来获取登录用户</span>
+       <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isNotNull</span><span class="token punctuation">(</span>loginUser<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token comment">/*这玩意为null，代表没有登录*/</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isNull</span><span class="token punctuation">(</span><span class="token class-name">SecurityUtils</span><span class="token punctuation">.</span><span class="token function">getAuthentication</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+           <span class="token comment">//令牌续签</span>
+           tokenService<span class="token punctuation">.</span><span class="token function">verifyToken</span><span class="token punctuation">(</span>loginUser<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//验证用户，看看有没有过期</span>
+           <span class="token comment">//构建一个UsernamePasswordAuthenticationToken存放用户信息，然后存入SecurityContextHolder</span>
+           <span class="token class-name">UsernamePasswordAuthenticationToken</span> authenticationToken <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UsernamePasswordAuthenticationToken</span><span class="token punctuation">(</span>loginUser<span class="token punctuation">,</span> <span class="token keyword">null</span><span class="token punctuation">,</span> loginUser<span class="token punctuation">.</span><span class="token function">getAuthorities</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           authenticationToken<span class="token punctuation">.</span><span class="token function">setDetails</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebAuthenticationDetailsSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">buildDetails</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token class-name">SecurityContextHolder</span><span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">setAuthentication</span><span class="token punctuation">(</span>authenticationToken<span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token comment">//此时SecurityContextHolder就有了用信息</span>
+           <span class="token comment">//这样以后【接下来层级的过滤器，就不需要从请求头里获取用户信息了】</span>
+           <span class="token comment">//当当前请求完毕时，SecurityContextHolder里的用户信息会被清楚掉。当下个请求来了，再周而复始，走来时路</span>
+       <span class="token punctuation">&#125;</span>
+       chain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><em>每次请求的时候，都带上jwt，然后拿着jwt，去redis里面查看用户信息，，然后存到SecurityContextHolder里面去</em></p>
+<h3 id="springsecurity登录配置分析"><a href="#springsecurity登录配置分析" class="headerlink" title="springsecurity登录配置分析"></a>springsecurity登录配置分析</h3><p>详见framework.config下的SecurityConfig类，以后准备再看看springsecurity</p>
 ]]></content>
       <categories>
         <category>项目实战</category>
