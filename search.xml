@@ -14468,4 +14468,19 @@ spring:
         <tag>解决的错误</tag>
       </tags>
   </entry>
+  <entry>
+    <title>MybatisPlus</title>
+    <url>/2022/06/22/mybatisplus/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>sql</category>
+      </categories>
+      <tags>
+        <tag>java</tag>
+        <tag>springboot</tag>
+        <tag>MybatisPlus</tag>
+        <tag>分页</tag>
+        <tag>插件</tag>
+      </tags>
+  </entry>
 </search>

@@ -6,7 +6,7 @@
   <link href="http://lcdzzz.github.io/atom.xml" rel="self"/>
   
   <link href="http://lcdzzz.github.io/"/>
-  <updated>2022-06-19T17:22:46.470Z</updated>
+  <updated>2022-06-22T07:46:07.022Z</updated>
   <id>http://lcdzzz.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MybatisPlus</title>
+    <link href="http://lcdzzz.github.io/2022/06/22/mybatisplus/"/>
+    <id>http://lcdzzz.github.io/2022/06/22/mybatisplus/</id>
+    <published>2022-06-22T07:44:17.000Z</published>
+    <updated>2022-06-22T07:46:07.022Z</updated>
+    
+    
+    
+    
+    <category term="sql" scheme="http://lcdzzz.github.io/categories/sql/"/>
+    
+    
+    <category term="java" scheme="http://lcdzzz.github.io/tags/java/"/>
+    
+    <category term="springboot" scheme="http://lcdzzz.github.io/tags/springboot/"/>
+    
+    <category term="MybatisPlus" scheme="http://lcdzzz.github.io/tags/MybatisPlus/"/>
+    
+    <category term="分页" scheme="http://lcdzzz.github.io/tags/%E5%88%86%E9%A1%B5/"/>
+    
+    <category term="插件" scheme="http://lcdzzz.github.io/tags/%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
   
   <entry>
     <title>自定义多数据源</title>
@@ -506,30 +531,6 @@
     
     
     <category term="2021寒假自学笔记" scheme="http://lcdzzz.github.io/tags/2021%E5%AF%92%E5%81%87%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>hexo部分命令</title>
-    <link href="http://lcdzzz.github.io/2021/07/04/hexo-bu-fen-ming-ling/"/>
-    <id>http://lcdzzz.github.io/2021/07/04/hexo-bu-fen-ming-ling/</id>
-    <published>2021-07-04T07:56:34.134Z</published>
-    <updated>2022-04-10T15:59:00.295Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>hexo clean&amp;&amp; hexo g &amp;&amp; hexo d</code></p><p><code>hexo clean</code>#清理各种缓存和旧文件</p><p><code>hexo g</code>#生成静态文件</p><p><code>hexo s</code>#开启服务器预览</p><p><code>hexo new &quot;postName&quot;</code> #新建文章</p><p><code>hexo new page &quot;pageName&quot;</code> #新建页面</p><p><code>hexo generate</code> #生成静态页面至public目录</p><p><code>hexo server</code> #开启预览访问端口（默认端口4000，’ctrl + c’关闭server）</p><p><code>hexo deploy</code> #将.deploy目录部署到GitHub</p><p><code>hexo help</code>  # 查看帮助</p><p><code>hexo version</code>  #查看Hexo的版本</p><p><code>hexo deploy -g</code>  #生成加部署</p><p><code>hexo server -g</code>  #生成加预览</p><p>命令的简写</p><p><code>hexo n</code> == <code>hexo new</code> </p><p><code>hexo g</code> == <code>hexo generate</code>  #生成文件</p><p><code>hexo s</code> == <code>hexo server</code> #运行本地服务器</p><p><code>hexo d</code> == <code>hexo deploy</code> #上传到服务器</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;&lt;code&gt;hexo clean&amp;amp;&amp;amp; hexo g &amp;amp;&amp;amp; hexo d&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;hexo clean&lt;/code&gt;#清理各种缓存和旧文件&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;hexo g&lt;/code&gt;#生成静态文件&lt;/p</summary>
-      
-    
-    
-    
-    <category term="hexo" scheme="http://lcdzzz.github.io/categories/hexo/"/>
-    
     
   </entry>
   
