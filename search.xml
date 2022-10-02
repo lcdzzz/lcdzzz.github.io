@@ -14502,7 +14502,7 @@ System.out.println(&quot;---my test web logs---&quot;);
   <entry>
     <title>工作流workflow</title>
     <url>/2022/10/01/gong-zuo-liu/</url>
-    <content><![CDATA[<h1 id="状态机解决流程问题"><a href="#状态机解决流程问题" class="headerlink" title="状态机解决流程问题"></a>状态机解决流程问题</h1><p>工作流：一个可以处理复杂情况的状态机</p>
+    <content><![CDATA[<h2 id="状态机解决流程问题"><a href="#状态机解决流程问题" class="headerlink" title="状态机解决流程问题"></a>状态机解决流程问题</h2><p>工作流：一个可以处理复杂情况的状态机</p>
 <blockquote>
 <p>例如，员工请假这个流程，首先员工请假提交申请，假设有项目经理进行审批，审批有两种结果：通过或者拒绝。</p>
 </blockquote>
@@ -14520,12 +14520,12 @@ System.out.println(&quot;---my test web logs---&quot;);
 <li>2 代表拒绝</li>
 </ul>
 <p>上面这个例子，status就是状态码，通过这个子弹的值来控制流程的状态，这个方式我们可以称之为使用状态机来解决流程问题，但是这种思路只能解决非常简单的流程问题。</p>
-<h1 id="一些复杂的流程"><a href="#一些复杂的流程" class="headerlink" title="一些复杂的流程"></a>一些复杂的流程</h1><h2 id="报销审批的流程"><a href="#报销审批的流程" class="headerlink" title="报销审批的流程"></a>报销审批的流程</h2><p><img src="%E5%AE%A1%E6%89%B9%E6%B5%81%E7%A8%8B%E5%9B%BE.png"></p>
+<h3 id="一些复杂的流程"><a href="#一些复杂的流程" class="headerlink" title="一些复杂的流程"></a>一些复杂的流程</h3><h4 id="报销审批的流程"><a href="#报销审批的流程" class="headerlink" title="报销审批的流程"></a>报销审批的流程</h4><p><img src="%E5%AE%A1%E6%89%B9%E6%B5%81%E7%A8%8B%E5%9B%BE.png"></p>
 <p>在这个流程中，已经没法使用status去描述这个报销走到哪一步了。如果非要用status，namestatus可能会有很多个取值 。</p>
 <p><br><br></p>
-<h2 id="笔记本电脑生产流程"><a href="#笔记本电脑生产流程" class="headerlink" title="笔记本电脑生产流程"></a>笔记本电脑生产流程</h2><p><img src="image-20221001165041877.png" alt="image-20221001165041877"></p>
+<h4 id="笔记本电脑生产流程"><a href="#笔记本电脑生产流程" class="headerlink" title="笔记本电脑生产流程"></a>笔记本电脑生产流程</h4><p><img src="image-20221001165041877.png" alt="image-20221001165041877"></p>
 <p>这个流程中不仅有串行任务还有并行任务,虽然技术上来说也能实现，但是如果用status字段去描述，实现起来会非常非常复杂。</p>
-<h1 id="三大工作流"><a href="#三大工作流" class="headerlink" title="三大工作流"></a>三大工作流</h1><ul>
+<h2 id="三大工作流"><a href="#三大工作流" class="headerlink" title="三大工作流"></a>三大工作流</h2><ul>
 <li><p>Activiti:</p>
 <p>侧重于云，即更靠拢spring cloud、docker、k8s等。</p>
 </li>
@@ -14538,13 +14538,13 @@ System.out.println(&quot;---my test web logs---&quot;);
 </blockquote>
 </li>
 </ul>
-<h1 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h1><p>工作流执行的基础是流程图</p>
+<h2 id="流程图"><a href="#流程图" class="headerlink" title="流程图"></a>流程图</h2><p>工作流执行的基础是流程图</p>
 <p>一个完整的流程，要干嘛，先得画出来一个完整的流程图</p>
 <p>上卖弄介绍了三种不同的工作流，那么三种不同的流程图绘制的方式是否一样？</p>
 <p>其实，流程图的绘制，有一套统一的标准：<strong>BPMN</strong>（Business Process Model And Notation）,中文译为<strong>业务流程模型和标记法</strong>。</p>
 <p>BPMN 就是一套图形化表示发，用图形来绘制、梳理业务流程模型。就是说，BPMN其实是一个非常古老的流程图规范，Activiti、Camunada、Flowable都是支持这个规范的，所以，无论使用哪一个流程图，都可以依照BPMN去绘制流程图。</p>
 <p>虽然BPMN大家都支持，但是，在具体的使用细节上，不同的流程引擎还是有差别的。</p>
-<h1 id="BPMN流程图怎么画"><a href="#BPMN流程图怎么画" class="headerlink" title="BPMN流程图怎么画"></a>BPMN流程图怎么画</h1><p><img src="image-20221001165041877.png" alt="image-20221001165041877"></p>
+<h2 id="BPMN流程图怎么画"><a href="#BPMN流程图怎么画" class="headerlink" title="BPMN流程图怎么画"></a>BPMN流程图怎么画</h2><p><img src="image-20221001165041877.png" alt="image-20221001165041877"></p>
 <p>从上图中，大致上可以归类出，流程分为：</p>
 <ul>
 <li>事件</li>
@@ -14552,14 +14552,14 @@ System.out.println(&quot;---my test web logs---&quot;);
 <li>任务</li>
 <li>网关</li>
 </ul>
-<h2 id="事件"><a href="#事件" class="headerlink" title="事件"></a><strong>事件</strong></h2><p>开始事件、结束时间等等。</p>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a><strong>事件</strong></h3><p>开始事件、结束时间等等。</p>
 <p><img src="image-20221001191908026.png" alt="image-20221001191908026"><img src="image-20221001191919293.png" alt="image-20221001191919293"></p>
 <p>这是我们上面用到的时间，实际上，还有很多其他类型的事件。</p>
 <p><img src="image-20221001192255139.png" alt="image-20221001192255139">、</p>
-<h2 id="连线"><a href="#连线" class="headerlink" title="连线"></a><strong>连线</strong></h2><p><img src="image-20221001192542935.png" alt="image-20221001192542935"></p>
+<h3 id="连线"><a href="#连线" class="headerlink" title="连线"></a><strong>连线</strong></h3><p><img src="image-20221001192542935.png" alt="image-20221001192542935"></p>
 <p>连接各个不同元素之间的线条，就是连线。</p>
 <p>注意：线条之上，可能会有条件。例如，在互斥网关上，满足一定条件，流程图就继续往下走；不满足条件，流程图就回到之前的某一个位置。</p>
-<h2 id="任务"><a href="#任务" class="headerlink" title="任务"></a><strong>任务</strong></h2><p>在上面的流程图，所有的矩形，都是任务，但是任务还有许多细分。</p>
+<h3 id="任务"><a href="#任务" class="headerlink" title="任务"></a><strong>任务</strong></h3><p>在上面的流程图，所有的矩形，都是任务，但是任务还有许多细分。</p>
 <ul>
 <li><p>用户任务</p>
 <p>需要人工参与才能完成的工作建模。</p>
@@ -14612,7 +14612,7 @@ System.out.println(&quot;---my test web logs---&quot;);
 </blockquote>
 <br>
 
-<h2 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h2><ul>
+<h3 id="网关"><a href="#网关" class="headerlink" title="网关"></a>网关</h3><ul>
 <li><p>互斥网关</p>
 <p>可以有多个入口，但只有一个有效出口。</p>
 </li>
