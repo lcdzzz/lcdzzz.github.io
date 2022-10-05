@@ -13940,7 +13940,7 @@ System.out.println(&quot;---my test web logs---&quot;);
 <p>启动之后，浏览器输入 <a href="http://localhost:8080/flowable-ui/idm/#/login">http://localhost:8080/flowable-ui/idm/#/login</a>.   如果看到如下页面，表示启动成功：</p>
 <p><img src="1662298798529-e1bcda3a-42fe-4d7b-8b42-a1a38cd3c654.png" alt="img"></p>
 <p>另外，我们也可以使用 docker 来安装，命令如下：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -p <span class="token number">8086</span>:8080 -d  flowable/flowable-ui<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -p 8086:8080 -d  flowable&#x2F;flowable-ui<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="1662298930060-f28c448e-ee5f-4b7a-b707-08e860bfcc9f.png" alt="img"></p>
 <p>最后访问<a href="http://localhost:8086/flowable-ui">http://localhost:8086/flowable-ui</a></p>
@@ -14043,6 +14043,22 @@ System.out.println(&quot;---my test web logs---&quot;);
 <li>流程（ProcessInstance）：一个启动了流程实例就是一个流程，流程可以是已经执行完毕的，也可以是正在执行中的。流程的定义相当于是一个类，而流程则相当于是一个对象。</li>
 <li>任务（Task）：一个 ProcessInstance 中，需要具体处理的节点就是一个任务。</li>
 </ul>
+<br>
+
+<h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a>:flowable/flowable-engine.gi<br>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。<br>先来看下源码的目录结构：<br>●LICENSE：开源协议。</p>
+<p>●README.md：flowable 介绍文档。</p>
+<p>●distro：主要是保存了不同环境下的信息。</p>
+<p>●docker：将 flowable 构建成 docker 镜像的脚本。</p>
+<p>●docs：flowable 的文档。</p>
+<p>●ide-settings：这是如果想在 Eclipse 或者 IDEA 中快速使用 flowable 时候的配置。</p>
+<p>●k8s：flowable 支持 k8s 的一些脚本和配置。</p>
+<p>●modules：flowable 中所有的核心功能代码都在这个里边。</p>
+<p>●pom.xml：maven 的坐标文件。</p>
+<p>●qa：提供了很多各种各样的配置模版，例如如果我们需要在传统的 SSM 中配置 flowable，配置文件可以直接参考 qa 中的，但是我们现在主要是 Spring Boot 开发，在 Spring Boot 中，基本上用不到 qa 中的配置模版。</p>
+<p>●scripts：这个目录下放了常用的脚本文件。</p>
+<p>●tooling：这个目录中列出来了单元测试的模版。</p>
+<p>项目编译要点：<br>1用 IDEA 打开项目。在 IDEA 中，直接 open 源码即可，不需要 Import Project。<br>2由于 IDEA 无法识别出所有的 Maven 工程，查看是否识别出来 Maven 工程的方式：（pom.xml 文件是蓝色的，或者工程名加粗了），如果有 IDEA 未识别出来的 Maven 工程，都需要挨个手动添加，添加方式就是打开项目的 pom.xml 文件，右键单击，选择 Add as Maven Project。<br>3对于 Maven 工程，IDEA 会自动去下载所需要的依赖，但是由于这里需要下载的依赖比较多，所以下载的时候比较费时间，耐心等一下。最终也有可能会下载失败：i：先去本地 Maven 仓库，搜索以 .lastupdated结尾的文件，并删除。</p>
 ]]></content>
       <categories>
         <category>后端</category>
