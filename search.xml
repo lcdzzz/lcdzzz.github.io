@@ -14046,19 +14046,206 @@ System.out.println(&quot;---my test web logs---&quot;);
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a>:flowable/flowable-engine.gi<br>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。<br>先来看下源码的目录结构：<br>●LICENSE：开源协议。</p>
-<p>●README.md：flowable 介绍文档。</p>
-<p>●distro：主要是保存了不同环境下的信息。</p>
-<p>●docker：将 flowable 构建成 docker 镜像的脚本。</p>
-<p>●docs：flowable 的文档。</p>
-<p>●ide-settings：这是如果想在 Eclipse 或者 IDEA 中快速使用 flowable 时候的配置。</p>
-<p>●k8s：flowable 支持 k8s 的一些脚本和配置。</p>
-<p>●modules：flowable 中所有的核心功能代码都在这个里边。</p>
-<p>●pom.xml：maven 的坐标文件。</p>
-<p>●qa：提供了很多各种各样的配置模版，例如如果我们需要在传统的 SSM 中配置 flowable，配置文件可以直接参考 qa 中的，但是我们现在主要是 Spring Boot 开发，在 Spring Boot 中，基本上用不到 qa 中的配置模版。</p>
-<p>●scripts：这个目录下放了常用的脚本文件。</p>
-<p>●tooling：这个目录中列出来了单元测试的模版。</p>
-<p>项目编译要点：<br>1用 IDEA 打开项目。在 IDEA 中，直接 open 源码即可，不需要 Import Project。<br>2由于 IDEA 无法识别出所有的 Maven 工程，查看是否识别出来 Maven 工程的方式：（pom.xml 文件是蓝色的，或者工程名加粗了），如果有 IDEA 未识别出来的 Maven 工程，都需要挨个手动添加，添加方式就是打开项目的 pom.xml 文件，右键单击，选择 Add as Maven Project。<br>3对于 Maven 工程，IDEA 会自动去下载所需要的依赖，但是由于这里需要下载的依赖比较多，所以下载的时候比较费时间，耐心等一下。最终也有可能会下载失败：i：先去本地 Maven 仓库，搜索以 .lastupdated结尾的文件，并删除。</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#x69;&#x74;&#64;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;">&#103;&#x69;&#x74;&#64;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a>:flowable/flowable-engine.gi</p>
+<p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
+<p>先来看下源码的目录结构：</p>
+<ul>
+<li><p>LICENSE：开源协议</p>
+</li>
+<li><p>README.md：flowable 介绍文档。</p>
+</li>
+<li><p>distro：主要是保存了不同环境下的信息。</p>
+</li>
+<li><p>docker：将 flowable 构建成 docker 镜像的脚本。</p>
+</li>
+<li><p>docs：flowable 的文档。</p>
+</li>
+<li><p>ide-settings：这是如果想在 Eclipse 或者 IDEA 中快速使用 flowable 时候的配置。</p>
+</li>
+<li><p>k8s：flowable 支持 k8s 的一些脚本和配置。</p>
+</li>
+<li><p>modules：flowable 中所有的核心功能代码都在这个里边。</p>
+</li>
+<li><p>pom.xml：maven 的坐标文件。</p>
+</li>
+<li><p>qa：提供了很多各种各样的配置模版，例如如果我们需要在传统的 SSM 中配置 flowable，配置文件可以直接参考 qa 中的，但是我们现在主要是 Spring Boot 开发，在 Spring Boot 中，基本上用不到 qa 中的配置模版。</p>
+</li>
+<li><p>scripts：这个目录下放了常用的脚本文件。</p>
+</li>
+<li><p>tooling：这个目录中列出来了单元测试的模版。</p>
+</li>
+</ul>
+<p>项目编译要点：</p>
+<ol>
+<li><p>用 IDEA 打开项目。在 IDEA 中，直接 open 源码即可，不需要 Import Project。</p>
+</li>
+<li><p>由于 IDEA 无法识别出所有的 Maven 工程，查看是否识别出来 Maven 工程的方式：（pom.xml 文件是蓝色的，或者工程名加粗了），如果有 IDEA 未识别出来的 Maven 工程，都需要挨个手动添加，添加方式就是打开项目的 pom.xml 文件，右键单击，选择 Add as Maven Project。</p>
+</li>
+<li><p>对于 Maven 工程，IDEA 会自动去下载所需要的依赖，但是由于这里需要下载的依赖比较多，所以下载的时候比较费时间，耐心等一下。最终也有可能会下载失败：i：先去本地 Maven 仓库，搜索以 .lastupdated结尾的文件，并删除。</p>
+</li>
+<li></li>
+<li><ol>
+<li><img src="%E5%B7%A5%E4%BD%9C%E6%B5%81/1663501393227-89768ba1-e7e9-419c-9c5d-2603e7b8687e.png" alt="img"></li>
+<li>然后再去项目中，重新导入依赖。</li>
+<li><img src="%E5%B7%A5%E4%BD%9C%E6%B5%81/1663501440148-348f0606-ae72-4dcc-aad1-79f402202d79.png" alt="img"></li>
+</ol>
+</li>
+</ol>
+<p>ii：如果前面步骤不管用，那么就去 settings.xml 文件中，修改远程仓库地址，切换为 阿里云或者华为云等提供的镜像站，<strong>然后再重新导入。</strong></p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mirrors</span><span class="token punctuation">></span></span>
+  <span class="token comment">&lt;!-- mirror
+   | Specifies a repository mirror site to use instead of a given repository. The repository that
+   | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used
+   | for inheritance and direct lookup purposes, and must be unique across the set of mirrors.
+   |
+  &lt;mirror>
+    &lt;id>mirrorId&lt;/id>
+    &lt;mirrorOf>repositoryId&lt;/mirrorOf>
+    &lt;name>Human Readable Name for this Mirror.&lt;/name>
+    &lt;url>http://my.repository.com/repo/path&lt;/url>
+  &lt;/mirror>
+   --></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mirror</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>id</span><span class="token punctuation">></span></span>alimaven<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>id</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>aliyun maven<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>url</span><span class="token punctuation">></span></span>http://maven.aliyun.com/nexus/content/groups/public/<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>url</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>mirrorOf</span><span class="token punctuation">></span></span>central<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mirrorOf</span><span class="token punctuation">></span></span>        
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mirror</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>mirrors</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="H2-数据库"><a href="#H2-数据库" class="headerlink" title="H2 数据库"></a>H2 数据库</h3><ol>
+<li>Java 编写的数据库。</li>
+<li>可以基于内存来使用。</li>
+<li>也可以基于文件，基于文件，类似于移动端的 Sqlite。</li>
+</ol>
+<h1 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h1><p>依赖</p>
+<p>除去springboot的一些基本依赖外，还要有mysql驱动</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>mysql<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>mysql-connector-java<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>runtime<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span> 
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.flowable<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>flowable-spring-boot-starter<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>6.7.2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>配置</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">spring.datasource.username</span><span class="token punctuation">=</span><span class="token attr-value">root</span>
+<span class="token attr-name">spring.datasource.password</span><span class="token punctuation">=</span><span class="token attr-value">wqeq</span>
+<span class="token attr-name">spring.datasource.url</span><span class="token punctuation">=</span><span class="token attr-value">jdbc:mysql:///flowable_idm?serverTimezone=Asia/Shanghai&amp;userSSL=false&amp;nullCatalogMeansCurrent=true</span>
+<span class="token attr-name">server.port</span><span class="token punctuation">=</span><span class="token attr-value">8081</span>
+<span class="token attr-name">logging.level.org.flowable</span><span class="token punctuation">=</span><span class="token attr-value">debug</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="用户操作"><a href="#用户操作" class="headerlink" title="用户操作"></a>用户操作</h2><p>事先准备号service类和log</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+    * IdentityService 专门负责和用户相关的操作，例如添加、删除、修改用户和用户组等
+    */</span>
+   <span class="token annotation punctuation">@Autowired</span>
+   <span class="token class-name">IdentityService</span> identityService<span class="token punctuation">;</span>
+   <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">FlowableIdmApplicationTests</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+<h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+   <span class="token keyword">void</span> <span class="token function">test01</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+       <span class="token comment">//创建一个用户对象</span>
+       <span class="token class-name">UserEntityImpl</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UserEntityImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token string">"lcdzzz"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setDisplayName</span><span class="token punctuation">(</span><span class="token string">"隆成"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setEmail</span><span class="token punctuation">(</span><span class="token string">"1473220685@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setFirstName</span><span class="token punctuation">(</span><span class="token string">"mou"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setLastName</span><span class="token punctuation">(</span><span class="token string">"zhou"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       user<span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"wqeq"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment">//注意：如果是添加用户，一定要加revision属性为0，表示当前用户是一个新的用户 而不是更新的用户</span>
+       <span class="token comment">// flowable的用户表使用了乐观锁，而Revision字段其实就是配合乐观锁使用的</span>
+       user<span class="token punctuation">.</span><span class="token function">setRevision</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+       <span class="token comment">//保存一个用户</span>
+       <span class="token comment">//这里是有两方面的功能</span>
+       <span class="token comment">//1. 如果用户已经存在则更新</span>
+       <span class="token comment">//2. 如果用户不存在则添加</span>
+       identityService<span class="token punctuation">.</span><span class="token function">saveUser</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+   <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 更新用户信息
+ * &lt;p>
+ * saveUser方法可以用来更新用户信息，但是不可以用来更新密码
+ * 每更新一次，数据库的reversion会自增1
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">contextLoads</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">UserEntityImpl</span> user <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">UserEntityImpl</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    user<span class="token punctuation">.</span><span class="token function">setId</span><span class="token punctuation">(</span><span class="token string">"lcdzzz"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    user<span class="token punctuation">.</span><span class="token function">setDisplayName</span><span class="token punctuation">(</span><span class="token string">"隆成典周"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    user<span class="token punctuation">.</span><span class="token function">setEmail</span><span class="token punctuation">(</span><span class="token string">"6666@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//注意 修改的时候 需要确保reversion的版本号和数据库的版本号保持一致</span>
+    user<span class="token punctuation">.</span><span class="token function">setRevision</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    identityService<span class="token punctuation">.</span><span class="token function">saveUser</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+ <br>
+
+<p>但是每次user.setRevision(2);是写死的，所以我们可以这么写</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token class-name">Test02</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">User</span> lcdzzz <span class="token operator">=</span> identityService<span class="token punctuation">.</span><span class="token function">createUserQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">userId</span><span class="token punctuation">(</span><span class="token string">"lcdzzz"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">singleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lcdzzz<span class="token punctuation">.</span><span class="token function">setEmail</span><span class="token punctuation">(</span><span class="token string">"123321@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    identityService<span class="token punctuation">.</span><span class="token function">saveUser</span><span class="token punctuation">(</span>lcdzzz<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+<p>上面的方法无法连着密码一起更新，所以可以<code>updateUserPassword</code></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token class-name">Test03</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">User</span> lcdzzz <span class="token operator">=</span> identityService<span class="token punctuation">.</span><span class="token function">createUserQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">userId</span><span class="token punctuation">(</span><span class="token string">"lcdzzz"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">singleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lcdzzz<span class="token punctuation">.</span><span class="token function">setEmail</span><span class="token punctuation">(</span><span class="token string">"123321@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    lcdzzz<span class="token punctuation">.</span><span class="token function">setPassword</span><span class="token punctuation">(</span><span class="token string">"888"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//修改用户密码需要调用updateUserPassword这个方法，而且这个方法也能修改用户的其他属性</span>
+    identityService<span class="token punctuation">.</span><span class="token function">updateUserPassword</span><span class="token punctuation">(</span>lcdzzz<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><br><br></p>
+<h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token class-name">Test04</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    identityService<span class="token punctuation">.</span><span class="token function">deleteUser</span><span class="token punctuation">(</span><span class="token string">"lcdzzz"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h3 id="查"><a href="#查" class="headerlink" title="查"></a>查</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token class-name">Test07</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">></span></span> email <span class="token operator">=</span> identityService<span class="token punctuation">.</span><span class="token function">createNativeUserQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">sql</span><span class="token punctuation">(</span><span class="token string">"select * from ACT_ID_USER where EMAIL_=#&#123;email&#125;"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">parameter</span><span class="token punctuation">(</span><span class="token string">"email"</span><span class="token punctuation">,</span> <span class="token string">"javaboy@qq.com"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    email<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>i <span class="token operator">-></span> logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;;display:&#123;&#125;"</span><span class="token punctuation">,</span> i<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">.</span><span class="token function">getDisplayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">&#125;</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token class-name">Test06</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//根据id排序，并查询所有用户</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> identityService<span class="token punctuation">.</span><span class="token function">createUserQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">orderByUserId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">desc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>i <span class="token operator">-></span> logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;;display:&#123;&#125;"</span><span class="token punctuation">,</span> i<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">.</span><span class="token function">getDisplayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token class-name">Test05</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> identityService<span class="token punctuation">.</span><span class="token function">createUserQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">userDisplayName</span><span class="token punctuation">(</span><span class="token string">"%zhang%"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    list<span class="token punctuation">.</span><span class="token function">stream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>i <span class="token operator">-></span> logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;;display:&#123;&#125;"</span><span class="token punctuation">,</span> i<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> i<span class="token punctuation">.</span><span class="token function">getDisplayName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
 ]]></content>
       <categories>
         <category>后端</category>
