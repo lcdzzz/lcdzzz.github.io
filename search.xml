@@ -14046,7 +14046,7 @@ System.out.println(&quot;---my test web logs---&quot;);
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a>:flowable/flowable-engine.gi</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#105;&#116;&#64;&#x67;&#105;&#116;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#x6d;">&#103;&#105;&#116;&#64;&#x67;&#105;&#116;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#x6d;</a>:flowable/flowable-engine.gi</p>
 <p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
 <p>先来看下源码的目录结构：</p>
 <ul>
@@ -14765,6 +14765,214 @@ System.out.println(&quot;---my test web logs---&quot;);
         logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,category:&#123;&#125;,,name:&#123;&#125;,key:&#123;&#125;"</span><span class="token punctuation">,</span>d<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>d<span class="token punctuation">.</span><span class="token function">getCategory</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>d<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>d<span class="token punctuation">.</span><span class="token function">getKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><br><br></p>
+<h4 id="流程定义删除"><a href="#流程定义删除" class="headerlink" title="流程定义删除"></a>流程定义删除</h4><p>这个删除操作，涉及到流程定义的表，都会被删除掉。</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 删除一个流程部署
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test09</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Deployment</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> repositoryService<span class="token punctuation">.</span><span class="token function">createDeploymentQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Deployment</span> deployment <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        repositoryService<span class="token punctuation">.</span><span class="token function">deleteDeployment</span><span class="token punctuation">(</span>deployment<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><br><br></p>
+<h2 id="流程实例-Process-Instance"><a href="#流程实例-Process-Instance" class="headerlink" title="流程实例 Process Instance"></a>流程实例 Process Instance</h2><p>两个概念：</p>
+<ol>
+<li><p>流程实例：ProcessInstance：通过流程定义启动的一个流程，这个启动后的流程就是流程实例，这个表示一个流程从开始到结束的最大流程分支，<strong>在一个流程中，只存在一个流程实例（执行实例可能有多个）</strong>，前面说的流程定义相当于是 Java 类，这里的流程实例相当于是 Java 对象。</p>
+</li>
+<li><p>执行实例：Execution：简单来说，在一个流程中，开始节点和结束节点是流程实例，其余节点是执行实例。从类的继承关系来说，ProcessInstance 实际上是 Execution 的子类，所以，流程实例可以算是执行实例的一种特殊情况。</p>
+</li>
+<li><ol>
+<li>如果一个流程图中，只有一条线，那么一般来说，流程实例和执行实例就不同。</li>
+<li>如果一个流程图中，包含多条线，那么每一条线就是一个执行实例。</li>
+</ol>
+</li>
+</ol>
+<h3 id="启动流程"><a href="#启动流程" class="headerlink" title="启动流程"></a>启动流程</h3><p>启动流程方式如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@SpringBootTest</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ActRuTest</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//跟流程运行相关的操作，都在这个 Bean 中，在 Spring Boot 中，该 Bean 已经配置好，可以直接使用</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RuntimeService</span> runtimeService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">ActRuTest</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">test01</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//设置流程的发起人</span>
+        <span class="token class-name">Authentication</span><span class="token punctuation">.</span><span class="token function">setAuthenticatedUserId</span><span class="token punctuation">(</span><span class="token string">"wangwu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//这个流程定义的 key 实际上就是流程 XML 文件中的流程 id</span>
+        <span class="token class-name">String</span> processDefinitionKey <span class="token operator">=</span> <span class="token string">"leave"</span><span class="token punctuation">;</span>
+        <span class="token comment">//流程启动成功之后，可以获取到一个流程实例</span>
+        <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKey</span><span class="token punctuation">(</span>processDefinitionKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"definitionId:&#123;&#125;,id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getProcessDefinitionId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//也可以通过流程定义的 id 去启动一个流程，但是需要注意，流程定义的 id 需要自己去查询，这个 id 并不是 XML 文件中定义的流程 ID</span>
+<span class="token comment">//        String processDefinitionId = "";</span>
+<span class="token comment">//        runtimeService.startProcessInstanceById(processDefinitionId);</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+<p>当一个流程启动成功后，我们首先去查看 <code>ACT_RU_EXECUTION</code>表，该表中保存了所有的流程执行实例信息，包括启动节点以及其他的任务节点信息都保存在这个表中。同时，如果这个节点，还是一个 UserTask，那么这个节点的信息还会保存在 <code>ACT_RU_TASK</code>表中（该表用来保存 UserTask）。</p>
+<p>另外还有 <code>ACT_RU_ACTINST</code>表中，会保存流程活动的执行情况。</p>
+<p>当然，无论哪张表，只要流程执行结束，<code>ACT_RU_</code>相关的表中的数据都会被删除。</p>
+<p><strong>另外一种启动方式</strong></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">
+<span class="token annotation punctuation">@SpringBootTest</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ActRuTest</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token comment">//跟流程运行相关的操作，都在这个 Bean 中，在 Spring Boot 中，该 Bean 已经配置好，可以直接使用</span>
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RuntimeService</span> runtimeService<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">ActRuTest</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">IdentityService</span> identityService<span class="token punctuation">;</span>
+
+    <span class="token annotation punctuation">@Autowired</span>
+    <span class="token class-name">RepositoryService</span> repositoryService<span class="token punctuation">;</span>
+    <span class="token comment">/**
+     * 另外一种流程启动的例子和流程发起人设置的例子
+     */</span>
+    <span class="token annotation punctuation">@Test</span>
+    <span class="token keyword">void</span> <span class="token function">test02</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//设置流程的发起人</span>
+        identityService<span class="token punctuation">.</span><span class="token function">setAuthenticatedUserId</span><span class="token punctuation">(</span><span class="token string">"wangwu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//查询最新版本的 leave 流程的定义信息</span>
+        <span class="token class-name">ProcessDefinition</span> pd <span class="token operator">=</span> repositoryService<span class="token punctuation">.</span><span class="token function">createProcessDefinitionQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">processDefinitionKey</span><span class="token punctuation">(</span><span class="token string">"leave"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">latestVersion</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">singleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//也可以通过流程定义的 id 去启动一个流程，但是需要注意，流程定义的 id 需要自己去查询，这个 id 并不是 XML 文件中定义的流程 ID</span>
+        <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceById</span><span class="token punctuation">(</span>pd<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"definitionId:&#123;&#125;,id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getProcessDefinitionId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+<p>接下来，根据用户名去查询每一个用户需要处理的流程，并处理：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 查询 wangwu 需要执行的任务，并处理
+ *
+ * 查询 wangwu 需要处理的任务，对应的 SQL：
+ *
+ * : ==>  Preparing: SELECT RES.* from ACT_RU_TASK RES WHERE RES.ASSIGNEE_ = ? order by RES.ID_ asc
+ * : ==> Parameters: wangwu(String)
+ * : &lt;==      Total: 1
+ *
+ * wangwu 去处理任务：
+ *
+ * 首先去 ACT_RU_TASK 表中添加一条记录，这个新的记录，就是主管审批。
+ * 然后从 ACT_RU_TASK 表中删除掉之前的需要 wangwu 完成的记录。
+ *
+ * 上面这两个操作是在同一个事务中完成的。
+ *
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test03</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> taskService<span class="token punctuation">.</span><span class="token function">createTaskQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">taskAssignee</span><span class="token punctuation">(</span><span class="token string">"javaboy"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Task</span> task <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,assignee:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span>task<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>task<span class="token punctuation">.</span><span class="token function">getAssignee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>task<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">//王五完成自己的任务</span>
+        taskService<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+<h3 id="查看流程是否结束"><a href="#查看流程是否结束" class="headerlink" title="查看流程是否结束"></a>查看流程是否结束</h3><p>查的是ACT_RU_EXECUTION表的PROC_INST_ID属性</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 查询一个流程是否执行结束
+ * 如果 ACT_RU_EXECUTION 表中，由于关于这个流程的记录，说明这个流程还在执行中
+ * 如果 ACT_RU_EXECUTION 表中，没有关于这个流程的记录，说明这个流程已经执行结束了
+ *
+ * 注意，虽然我们是去 ACT_RU_EXECUTION 表中查询，且该表中同一个流程实例 ID 对应了多条记录，但是大家注意，这里查询到的其实还是一个流程实例。
+ *
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test04</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> processId <span class="token operator">=</span> <span class="token string">"cc189d50-3cac-11ed-8459-acde48001122"</span><span class="token punctuation">;</span>
+    <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">createProcessInstanceQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">processInstanceId</span><span class="token punctuation">(</span>processId<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">singleResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pi <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"流程执行结束"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"流程正在执行中"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+<h3 id="查看运行的活动节点"><a href="#查看运行的活动节点" class="headerlink" title="查看运行的活动节点"></a>查看运行的活动节点</h3><p>就是当前这个流程，走到哪一步了</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 查看运行活动节点，本质上其实就是查看 ACT_RU_EXECUTION 表
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test05</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Execution</span><span class="token punctuation">></span></span> executions <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">createExecutionQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Execution</span> execution <span class="token operator">:</span> executions<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//查询某一个执行实例的活动节点</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> activeActivityIds <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">getActiveActivityIds</span><span class="token punctuation">(</span>execution<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> activeActivityId <span class="token operator">:</span> activeActivityIds<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">//这里拿到的其实就是 ACT_RU_EXECUTION 表中的 ACT_ID_ 字段</span>
+            logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"activeActivityId:&#123;&#125;"</span><span class="token punctuation">,</span> activeActivityId<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<br>
+
+<h3 id="删除流程实例"><a href="#删除流程实例" class="headerlink" title="删除流程实例"></a>删除流程实例</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 
+ * 删除一个正在执行的流程，注意这个只会删除正在执行的流程实例信息，并不会删除历史流程信息（历史信息被更新）。
+ * 
+ * : ==>  Preparing: delete from ACT_RU_VARIABLE where EXECUTION_ID_ = ?
+ * : ==> Parameters: 87df7272-3cad-11ed-9026-acde48001122(String)
+ * : &lt;==    Updates: 1
+ * : ==>  Preparing: delete from ACT_RU_IDENTITYLINK where PROC_INST_ID_ = ?
+ * : ==> Parameters: 87df7272-3cad-11ed-9026-acde48001122(String)
+ * : &lt;==    Updates: 2
+ * : ==>  Preparing: delete from ACT_RU_TASK where ID_ = ? and REV_ = ?
+ * : ==> Parameters: 87e4c9a9-3cad-11ed-9026-acde48001122(String), 1(Integer)
+ * : &lt;==    Updates: 1
+ * : ==>  Preparing: delete from ACT_RU_TASK where EXECUTION_ID_ = ?
+ * : ==> Parameters: 87df7272-3cad-11ed-9026-acde48001122(String)
+ * : &lt;==    Updates: 0
+ * : ==>  Preparing: delete from ACT_RU_ACTINST where PROC_INST_ID_ = ?
+ * : ==> Parameters: 87df7272-3cad-11ed-9026-acde48001122(String)
+ * : &lt;==    Updates: 3
+ * : ==>  Preparing: delete from ACT_RU_ACTINST where PROC_INST_ID_ = ?
+ * : ==> Parameters: 87df7272-3cad-11ed-9026-acde48001122(String)
+ * : &lt;==    Updates: 0
+ * : ==>  Preparing: delete from ACT_RU_EXECUTION where ID_ = ? and REV_ = ?
+ * : ==> Parameters: 87e035c5-3cad-11ed-9026-acde48001122(String), 2(Integer)
+ * : &lt;==    Updates: 1
+ * : ==>  Preparing: delete from ACT_RU_EXECUTION where ID_ = ? and REV_ = ?
+ * : ==> Parameters: 87df7272-3cad-11ed-9026-acde48001122(String), 2(Integer)
+ * : &lt;==    Updates: 1
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test06</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">String</span> processInstanceId <span class="token operator">=</span> <span class="token string">"87df7272-3cad-11ed-9026-acde48001122"</span><span class="token punctuation">;</span>
+    <span class="token class-name">String</span> deleteReason <span class="token operator">=</span> <span class="token string">"想删除了"</span><span class="token punctuation">;</span>
+    runtimeService<span class="token punctuation">.</span><span class="token function">deleteProcessInstance</span><span class="token punctuation">(</span>processInstanceId<span class="token punctuation">,</span> deleteReason<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
 
 ]]></content>
       <categories>
