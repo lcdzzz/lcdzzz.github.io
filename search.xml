@@ -15301,7 +15301,7 @@ System.out.println(&quot;---my test web logs---&quot;);
 <p>启动之后，浏览器输入 <a href="http://localhost:8080/flowable-ui/idm/#/login">http://localhost:8080/flowable-ui/idm/#/login</a>.   如果看到如下页面，表示启动成功：</p>
 <p><img src="1662298798529-e1bcda3a-42fe-4d7b-8b42-a1a38cd3c654.png" alt="img"></p>
 <p>另外，我们也可以使用 docker 来安装，命令如下：</p>
-<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -p <span class="token number">8086</span>:8080 -d  flowable/flowable-ui<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">docker run -p 8086:8080 -d  flowable&#x2F;flowable-ui<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 
 <p><img src="1662298930060-f28c448e-ee5f-4b7a-b707-08e860bfcc9f.png" alt="img"></p>
 <p>最后访问<a href="http://localhost:8086/flowable-ui">http://localhost:8086/flowable-ui</a></p>
@@ -15407,7 +15407,7 @@ System.out.println(&quot;---my test web logs---&quot;);
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#105;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#x6f;&#109;</a>:flowable/flowable-engine.gi</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#x69;&#116;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#98;&#x2e;&#x63;&#x6f;&#109;">&#103;&#x69;&#116;&#x40;&#103;&#105;&#x74;&#x68;&#117;&#98;&#x2e;&#x63;&#x6f;&#109;</a>:flowable/flowable-engine.gi</p>
 <p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
 <p>先来看下源码的目录结构：</p>
 <ul>
@@ -16669,7 +16669,188 @@ System.out.println(&quot;---my test web logs---&quot;);
 <p><img src="1665905314464-2ea34644-52ed-45cd-937c-0bde38497dfa.png" alt="img"></p>
 <p>这种带信封图标的任务，就是一个 ReceiveTask，不同于 UserTask，这种 ReceiveTask 是不需要设置处理人的。</p>
 <p>绘制好流程图之后，部署并启动。</p>
-]]></content>
+<p>启动代码：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test01</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKeyAndTenantId</span><span class="token punctuation">(</span><span class="token string">"ReceiveTaskDemo"</span><span class="token punctuation">,</span> <span class="token string">"javaboy"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>启动成功之后，流程就会停在 统计今日销售额 这个节点上，然后执行如下代码，流程进入到下一个节点：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test02</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Execution</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">createExecutionQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">activityId</span><span class="token punctuation">(</span><span class="token string">"统计今日销售额节点 ID"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Execution</span> execution <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//触发一个 ReceiveTask 继续向下执行，但是这里需要的参数是一个</span>
+        runtimeService<span class="token punctuation">.</span><span class="token function">trigger</span><span class="token punctuation">(</span>execution<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>ps</strong>: 统计今日销售额节点 ID要在导出的xml文件里面copy</p>
+<p><img src="image-20221023112926052.png" alt="image-20221023112926052"></p>
+<p>再继续，执行最后一个节点：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test02</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Execution</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">createExecutionQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">activityId</span><span class="token punctuation">(</span><span class="token string">"发送报告给老板的节点 ID"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Execution</span> execution <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//触发一个 ReceiveTask 继续向下执行，但是这里需要的参数是一个</span>
+        runtimeService<span class="token punctuation">.</span><span class="token function">trigger</span><span class="token punctuation">(</span>execution<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>注意，</strong>ReceiveTask 是不进 <code>ACT_RU_TASK</code> 表的，它默认被记录在 <code>ACT_RU_EXECUTION</code>表和 <code>ACT_RU_ACTINST</code>表中。</p>
+<h2 id="UserTask"><a href="#UserTask" class="headerlink" title="UserTask"></a>UserTask</h2><p>这个就是用户任务，是 Flowable 中使用最多的一种任务类型，流程走到这个节点的时候，需要用户手动处理，然后才会继续向下走。</p>
+<h3 id="设置单个用户"><a href="#设置单个用户" class="headerlink" title="设置单个用户"></a>设置单个用户</h3><p>这种 UserTask，指定它的处理人，有四种不同的方式。</p>
+<h4 id="直接指定具体用户"><a href="#直接指定具体用户" class="headerlink" title="直接指定具体用户"></a>直接指定具体用户</h4><p><img src="1665906962035-ee90f0b1-a6d3-49d9-a6f5-f46dd503032c.png" alt="image.png"></p>
+<p>然后启动流程：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test01</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKey</span><span class="token punctuation">(</span><span class="token string">"UserTaskDemo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>流程启动成功之后，就自动进入到用户审批这个节点了，需要用户处理的 UserTask 都保存在 <code>ACT_RU_TASK</code>表中。</p>
+<p><img src="%E5%B7%A5%E4%BD%9C%E6%B5%81/1665907377359-ec50ec86-913e-4cc9-8f34-7b3b7d065cc5.png" alt="img"></p>
+<p>接下来，查询某一个用户需要处理的 Task：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 查询某一个用户需要处理的任务
+ *
+ * 这个查询对应的 SQL：
+ *
+ * SELECT RES.* from ACT_RU_TASK RES WHERE RES.ASSIGNEE_ = ? order by RES.ID_ asc
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test02</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> taskService<span class="token punctuation">.</span><span class="token function">createTaskQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">taskAssignee</span><span class="token punctuation">(</span><span class="token string">"javaboy"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Task</span> task <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"name:&#123;&#125;,assignee:&#123;&#125;"</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> task<span class="token punctuation">.</span><span class="token function">getAssignee</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>查询到用户需要处理的任务之后，有两种不同的处理思路：</p>
+<ol>
+<li>委派给其他人处理</li>
+<li>直接自己处理了</li>
+</ol>
+<h5 id="委派给其他人"><a href="#委派给其他人" class="headerlink" title="委派给其他人"></a>委派给其他人</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 将 javaboy 需要处理的任务委派给 zhangsan 去处理
+ * 
+ * 具体的 SQL 如下：
+ * 
+ * update ACT_RU_TASK SET REV_ = ?, ASSIGNEE_ = ? where ID_= ? and REV_ = ?
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test03</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> taskService<span class="token punctuation">.</span><span class="token function">createTaskQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">taskAssignee</span><span class="token punctuation">(</span><span class="token string">"javaboy"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Task</span> task <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//为某一个 Task 设置处理人</span>
+        taskService<span class="token punctuation">.</span><span class="token function">setAssignee</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"zhangsan"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这个委派，本质上就是修改了 <code>ACT_RU_TASK</code>表中相应的 Task 的记录的 <code>ASSIGNEE_</code>的值。</p>
+<h5 id="直接自己处理了"><a href="#直接自己处理了" class="headerlink" title="直接自己处理了"></a>直接自己处理了</h5><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 自己来处理任务
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test04</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Task</span><span class="token punctuation">></span></span> list <span class="token operator">=</span> taskService<span class="token punctuation">.</span><span class="token function">createTaskQuery</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">taskAssignee</span><span class="token punctuation">(</span><span class="token string">"zhangsan"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">list</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">Task</span> task <span class="token operator">:</span> list<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//查询到 zhangsan 的任务，并自己处理</span>
+        taskService<span class="token punctuation">.</span><span class="token function">complete</span><span class="token punctuation">(</span>task<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+<h4 id="通过变量来设置"><a href="#通过变量来设置" class="headerlink" title="通过变量来设置"></a>通过变量来设置</h4><p><img src="1665908544806-496c4162-0379-4dd5-b9d1-f0d81f9a9698.png" alt="img"></p>
+<p>设置任务的处理人的时候，使用变量，${xxx} 就是一个变量引用。</p>
+<p>对应的 XML 内容如下：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>userTask</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-E37FEEFF-D8D5-4450-9D2D-67F9B2EBEE2A<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>用户审批<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>assignee</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>$&#123;manager&#125;<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>formFieldValidation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>extensionElements</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">modeler:</span>initiator-can-complete</span> <span class="token attr-name"><span class="token namespace">xmlns:</span>modeler</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://flowable.org/modeler<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token cdata">&lt;![CDATA[false]]></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">modeler:</span>initiator-can-complete</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>extensionElements</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>userTask</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>启动流程，启动的时候顺便指定任务的处理人：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 启动一个流程，在启动的时候，指定任务的处理人
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test05</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> vars <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    vars<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"manager"</span><span class="token punctuation">,</span> <span class="token string">"lisi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">//在流程启动的时候，通过变量去指定任务的处理人</span>
+    <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKey</span><span class="token punctuation">(</span><span class="token string">"UserTaskDemo"</span><span class="token punctuation">,</span> vars<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>启动成功之后，在 <code>ACT_RU_TASK</code>表中，可以看到任务的处理人已经是 lisi 了。</p>
+<p><img src="1665908826405-aa62feea-4b22-4e20-89d5-bfc99d0c1145.png" alt="img"></p>
+<br>
+
+<h4 id="通过监听器来设置"><a href="#通过监听器来设置" class="headerlink" title="通过监听器来设置"></a>通过监听器来设置</h4><p>利用监听器，我们可以在一个任务创建的时候，为这个任务设置一个处理人。</p>
+<p><img src="1665909178130-900a5a18-9a73-4e4d-ae6b-5c8b695c849f.png" alt="img"></p>
+<p><img src="1665909193656-58eaca99-929d-477b-b784-ddc2a818a7bf.png" alt="img"></p>
+<p>此时对应的 UserTask 节点内容如下：</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>userTask</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>sid-E37FEEFF-D8D5-4450-9D2D-67F9B2EBEE2A<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>用户审批<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">flowable:</span>formFieldValidation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>true<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>extensionElements</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span><span class="token namespace">flowable:</span>taskListener</span> <span class="token attr-name">event</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>create<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>org.javaboy.flowableprocess.listener.MyTaskListener<span class="token punctuation">"</span></span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span><span class="token namespace">flowable:</span>taskListener</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>extensionElements</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>userTask</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>对应的监听器代码如下：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyTaskListener</span> <span class="token keyword">implements</span> <span class="token class-name">TaskListener</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">/**
+     * 当任务被创建的时候，这个方法会被触发
+     * @param delegateTask
+     */</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">notify</span><span class="token punctuation">(</span><span class="token class-name">DelegateTask</span> delegateTask<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">//可以在这里设置任务的处理人</span>
+        delegateTask<span class="token punctuation">.</span><span class="token function">setAssignee</span><span class="token punctuation">(</span><span class="token string">"wangwu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<br>
+
+
+
+<h4 id="设置为流程的发起人"><a href="#设置为流程的发起人" class="headerlink" title="设置为流程的发起人"></a>设置为流程的发起人</h4><p>首先在开始节点上，设置流程的发起人，这个地方给出的流程发起人，实际上是一个变量的名称，所以，这个名字怎么取都行。</p>
+<p><img src="1665909636067-7cfd5613-47f5-47b1-a17a-a546214160fc.png" alt="img"></p>
+<p>然后，给 UserTask 设置处理人的时候，采用第二种方案，然后变量的名称就是发起人这个变量名称：</p>
+<p><img src="1665909762289-4e9316c3-5297-4922-8beb-718250c95a49.png" alt="img"></p>
+<p>接下来，在流程启动的时候，需要指定流程的发起人：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+ * 启动一个流程，并设置流程的发起人
+ *
+ * 流程的发起人有两种不同的设置方式：
+ *
+ * 第一种：
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test06</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">//设置流程当前的处理人（一会流程启动的时候，会将这里设置的作为流程的发起人）</span>
+    <span class="token class-name">Authentication</span><span class="token punctuation">.</span><span class="token function">setAuthenticatedUserId</span><span class="token punctuation">(</span><span class="token string">"zhaoliu"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKey</span><span class="token punctuation">(</span><span class="token string">"UserTaskDemo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>Authentication.setAuthenticatedUserId(&quot;zhaoliu&quot;);</code>实际上就是用来指定流程的发起人的。</p>
+<p>第二种设置流程发起人的方式：</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Autowired</span>
+<span class="token class-name">IdentityService</span> identityService<span class="token punctuation">;</span>
+<span class="token comment">/**
+ * 第二种流程发起人的设置方式
+ */</span>
+<span class="token annotation punctuation">@Test</span>
+<span class="token keyword">void</span> <span class="token function">test07</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    identityService<span class="token punctuation">.</span><span class="token function">setAuthenticatedUserId</span><span class="token punctuation">(</span><span class="token string">"fengqi"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token class-name">ProcessInstance</span> pi <span class="token operator">=</span> runtimeService<span class="token punctuation">.</span><span class="token function">startProcessInstanceByKey</span><span class="token punctuation">(</span><span class="token string">"UserTaskDemo"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"id:&#123;&#125;,name:&#123;&#125;"</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> pi<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="设置多个用户"><a href="#设置多个用户" class="headerlink" title="设置多个用户"></a>设置多个用户</h3>]]></content>
       <categories>
         <category>后端</category>
       </categories>
