@@ -15602,7 +15602,7 @@ public class ReflectTest11 &#123;
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#x6f;&#109;</a>:flowable/flowable-engine.gi</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#105;&#116;&#64;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#109;">&#103;&#105;&#116;&#64;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#109;</a>:flowable/flowable-engine.gi</p>
 <p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
 <p>先来看下源码的目录结构：</p>
 <ul>
@@ -17701,8 +17701,8 @@ execution.setVariable("sum",sum);]]></span><span class="token tag"><span class="
 <li>临时流程变量</li>
 </ol>
 <p>在之前的案例中，凡是涉及到流程变量的地方，基本上都是全局流程变量。</p>
-<h3 id="全局流程变量"><a href="#全局流程变量" class="headerlink" title="全局流程变量"></a>全局流程变量</h3><p>注意，以下四种方式，都是设置全局流程变量。无论是通过哪种方式设置，本质上都是全局流程变量，这个不会变。全局流程变量，顾名思义，就是和流程实例/执行实例绑定的流程变量，和某个具体的 UserTask 是没有关系的。</p>
-<h4 id="启动时候设置"><a href="#启动时候设置" class="headerlink" title="启动时候设置"></a>启动时候设置</h4><p>流程启动的时候，设置全局流程变量：</p>
+<h2 id="全局流程变量"><a href="#全局流程变量" class="headerlink" title="全局流程变量"></a>全局流程变量</h2><p>注意，以下四种方式，都是设置全局流程变量。无论是通过哪种方式设置，本质上都是全局流程变量，这个不会变。全局流程变量，顾名思义，就是和流程实例/执行实例绑定的流程变量，和某个具体的 UserTask 是没有关系的。</p>
+<h3 id="启动时候设置"><a href="#启动时候设置" class="headerlink" title="启动时候设置"></a>启动时候设置</h3><p>流程启动的时候，设置全局流程变量：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
  * 在流程启动的时候，就可以设置流程变量
  *
@@ -17760,6 +17760,12 @@ execution.setVariable("sum",sum);]]></span><span class="token tag"><span class="
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<h3 id="通过-Task-设置"><a href="#通过-Task-设置" class="headerlink" title="通过 Task 设置"></a>通过 Task 设置</h3><p>给 Task 设置流程变量分两种：</p>
+<ul>
+<li>逐个设置</li>
+<li>通过 Map 批量设置</li>
+</ul>
+<p>无论是哪种方式，本质上都还是往 <code>ACT_RU_VARABLE</code>和 <code>ACT_HI_VARINST</code>表中插入数据。</p>
 ]]></content>
       <categories>
         <category>后端</category>
