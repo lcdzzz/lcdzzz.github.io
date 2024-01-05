@@ -20049,6 +20049,9 @@ kiu 明利某鸟西
     <span class="token keyword">return</span> stack<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">?</span> <span class="token boolean">true</span><span class="token operator">:</span><span class="token boolean">false</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span class="token comment">//抄的</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+
+
+<hr>
 <h2 id="21"><a href="#21" class="headerlink" title="21"></a>21</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ListNode</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">int</span> val<span class="token punctuation">;</span>
     <span class="token class-name">ListNode</span> next<span class="token punctuation">;</span>
@@ -20100,6 +20103,66 @@ kiu 明利某鸟西
     <span class="token punctuation">&#125;</span>
 <span class="token punctuation">&#125;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="22"><a href="#22" class="headerlink" title="22"></a>22</h2><h3 id="回溯法"><a href="#回溯法" class="headerlink" title="回溯法"></a>回溯法</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">ArrayList</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">Solution</span> solution <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Solution</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> strings <span class="token operator">=</span> solution<span class="token punctuation">.</span><span class="token function">generateParenthesis</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">generateParenthesis</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> result <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">backtracking</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>result<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">return</span> result<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">void</span> <span class="token function">backtracking</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">,</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> result<span class="token punctuation">,</span><span class="token keyword">int</span> left<span class="token punctuation">,</span><span class="token keyword">int</span> right<span class="token punctuation">,</span><span class="token class-name">String</span> str<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>right<span class="token operator">></span>left<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>left<span class="token operator">==</span>right<span class="token operator">&amp;&amp;</span>right<span class="token operator">==</span>n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            result<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>left<span class="token operator">&lt;</span>n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token function">backtracking</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>result<span class="token punctuation">,</span>left<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span>right<span class="token punctuation">,</span>str<span class="token operator">+</span><span class="token string">"("</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>right<span class="token operator">&lt;</span>n<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token function">backtracking</span><span class="token punctuation">(</span>n<span class="token punctuation">,</span>result<span class="token punctuation">,</span>left<span class="token punctuation">,</span>right<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span>str<span class="token operator">+</span><span class="token string">")"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<hr>
+<h2 id="24两两交换链表中的节点-链表交换"><a href="#24两两交换链表中的节点-链表交换" class="headerlink" title="24两两交换链表中的节点(链表交换)"></a>24两两交换链表中的节点(链表交换)</h2><h3 id="迭代法iteration"><a href="#迭代法iteration" class="headerlink" title="迭代法iteration"></a>迭代法iteration</h3><p><img src="leetcoce%E9%9A%8F%E8%AE%B0/image-20240105194730085.png" alt="image-20240105194730085"></p>
+<ol>
+<li><p>把res-&gt;1的指针断了，<u>让arr指向2</u>                                           <code>arr.next=next</code></p>
+</li>
+<li><p>把 2-&gt;3的指针断了，并 <u>让next（原本指向2的指针）</u>指向1 <code>next.next=head</code></p>
+</li>
+<li><p>把head.next的指针断了，<u>让它指向temp</u>                              <code>head.next=temp</code></p>
+</li>
+<li><p>此时链表为  <code>res-&gt;2-&gt;1-&gt;3-&gt;4</code></p>
+</li>
+<li><p>接下来同理。</p>
+<p><img src="leetcoce%E9%9A%8F%E8%AE%B0/image-20240105195533135.png" alt="image-20240105195533135"></p>
+</li>
+<li><p>↑↑ </p>
+<p> arr=head; </p>
+<p> head=head.next</p>
+</li>
+<li><p>然后 重复123步，得到链表<code>res-&gt;2-&gt;1-&gt;4-&gt;3</code></p>
+</li>
+</ol>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
 
 ]]></content>
   </entry>
