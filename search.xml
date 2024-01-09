@@ -20188,7 +20188,39 @@ kiu 明利某鸟西
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>注：真实链表一直是以res起头的，即<code>res-&gt;1-&gt;2-&gt;3-&gt;4</code>==&gt;<code>res-&gt;2-&gt;1-&gt;3-&gt;4</code>==&gt;<code>res-&gt;2-&gt;1-&gt;4-&gt;3</code>。所以返回的是<code>res.next</code>而不是<code>cur.next</code></p>
-<h3 id="递归法recursion"><a href="#递归法recursion" class="headerlink" title="递归法recursion"></a>递归法recursion</h3><p><img src="leetcoce%E9%9A%8F%E8%AE%B0/image-20240105223317624.png" alt="image-20240105223317624"></p>
+<h3 id="递归法recursion"><a href="#递归法recursion" class="headerlink" title="递归法recursion"></a>递归法recursion</h3><p><img src="image-20240105223317624.png" alt="image-20240105223317624"></p>
+<ol>
+<li><p>把1-&gt;2的指针切断，让1的next指向head.next.next。所以head.next就是递归自己即swapPairs(head.next.next);</p>
+<p>   ``ListNode next=head.next;`  (使得指针next对应2)</p>
+<pre><code>`head.next=swapPairs(head.next.next);`</code></pre>
+</li>
+<li><p>注意，此时的next指针的next应该不指向3了（2-&gt;3的关联别切断了），并且应该指向1，即<code>next.next=head</code></p>
+</li>
+</ol>
+<p>(具体请看图，如果看不懂就再画一次)。<del>周某，我知道你第二次或许还是看不懂，所以干脆再画一遍吧，第一次能画出来，那第二次一定可以的。</del></p>
+<p><img src="24%E4%B8%A4%E4%B8%A4%E4%BA%A4%E6%8D%A2%E9%93%BE%E8%A1%A8%E4%B8%AD%E7%9A%84%E8%8A%82%E7%82%B9%EF%BC%88%E9%80%92%E5%BD%92%E6%B3%95%EF%BC%89.png" alt="image-20240105223317624"></p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">Solution</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token class-name">ListNode</span> <span class="token function">swapPairs</span><span class="token punctuation">(</span><span class="token class-name">ListNode</span> head<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>head<span class="token operator">==</span><span class="token keyword">null</span><span class="token operator">||</span>head<span class="token punctuation">.</span>next<span class="token operator">==</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//递归终止条件</span>
+            <span class="token keyword">return</span> head<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token class-name">ListNode</span> next<span class="token operator">=</span>head<span class="token punctuation">.</span>next<span class="token punctuation">;</span>
+        head<span class="token punctuation">.</span>next<span class="token operator">=</span><span class="token function">swapPairs</span><span class="token punctuation">(</span>head<span class="token punctuation">.</span>next<span class="token punctuation">.</span>next<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        next<span class="token punctuation">.</span>next<span class="token operator">=</span>head<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> next<span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
 ]]></content>
   </entry>
 </search>
