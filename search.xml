@@ -1649,8 +1649,8 @@ authentication <span class="token operator">=</span> authenticationManager
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>springboot</tag>
+        <tag>java</tag>
         <tag>项目实战</tag>
         <tag>前后端分离</tag>
         <tag>ruoyi</tag>
@@ -1660,7 +1660,15 @@ authentication <span class="token operator">=</span> authenticationManager
   <entry>
     <title>Docker笔记</title>
     <url>/2024/06/05/docker-bi-ji/</url>
-    <content><![CDATA[<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 移除旧版本docker</span>
+    <content><![CDATA[<h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#【可选】centos8配置yum源</span>
+<span class="token builtin class-name">cd</span> /etc/yum.repos.d
+<span class="token function">rm</span> -rf ./*
+<span class="token function">curl</span> -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo 
+yum -y clean all <span class="token comment">#清除所有文件</span>
+yum -y makecache <span class="token comment">#建立缓存</span>
+yum repolist  <span class="token comment">#查看yum仓库信息</span>
+
+<span class="token comment"># 移除旧版本docker</span>
 <span class="token function">sudo</span> yum remove docker <span class="token punctuation">\</span>
                   docker-client <span class="token punctuation">\</span>
                   docker-client-latest <span class="token punctuation">\</span>
@@ -1683,7 +1691,16 @@ http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 <span class="token comment"># 启动&amp; 开机启动docker； enable + start 二合一</span>
 systemctl <span class="token builtin class-name">enable</span> docker --now
 
-<span class="token comment"># 配置加速</span>
+<span class="token comment">#选【1】或者【2】</span>
+<span class="token comment"># 配置加速【1】</span>
+<span class="token function">sudo</span> <span class="token function">mkdir</span> -p /etc/docker
+<span class="token function">sudo</span> <span class="token function">tee</span> /etc/docker/daemon.json <span class="token operator">&lt;&lt;-</span><span class="token string">'EOF'
+&#123;
+  "registry-mirrors": ["https://mirror.ccs.tencentyun.com"]
+&#125;
+EOF</span>
+
+<span class="token comment"># 配置加速【2】</span>
 <span class="token function">sudo</span> <span class="token function">mkdir</span> -p /etc/docker
 <span class="token function">sudo</span> <span class="token function">tee</span> /etc/docker/daemon.json <span class="token operator">&lt;&lt;-</span><span class="token string">'EOF'
 &#123;
@@ -1691,8 +1708,15 @@ systemctl <span class="token builtin class-name">enable</span> docker --now
 &#125;
 EOF</span>
 <span class="token function">sudo</span> systemctl daemon-reload
-<span class="token function">sudo</span> systemctl restart docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">sudo</span> systemctl restart docker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
+<blockquote>
+<p>如何获取专属镜像加速地址</p>
+</blockquote>
+<p>阿里云 - 容器Hub服务控制台：<a href="https://cr.console.aliyun.com/">https://cr.console.aliyun.com/</a></p>
+<p><img src="image-20240606135635513.png" alt="image-20240606135635513"></p>
+<p><img src="image-20240606140211837.png" alt="image-20240606140211837"></p>
+<hr>
 <h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>以nginx起手开始学习</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#查看运行中的容器</span>
 docker <span class="token function">ps</span>
@@ -1789,7 +1813,12 @@ docker network create mynet
 docker run -d -p <span class="token number">88</span>:80 --name app1 --network mynet nginx
 docker run -d -p <span class="token number">99</span>:80 --name app2 --network mynet nginx
 <span class="token comment"># 可再查看下容器详情</span>
-docker inspect app1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+docker inspect app1
+
+<span class="token comment"># 注意，在加入网络时可以通过--alias给容器起别名</span>
+<span class="token comment"># 这样该网络内的其它容器可以用别名互相访问！</span>
+<span class="token comment"># mysql容器，指定别名为db，另外每一个容器都有一个别名是容器名</span>
+docker network connect hmall mysql --alias db<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="image-20240605142708562.png" alt="image-20240605142708562"></p>
 <p>创建自定义网络，容器名就是稳定域名</p>
@@ -1860,8 +1889,7 @@ wordpress:latest<span aria-hidden="true" class="line-numbers-rows"><span></span>
 <p><img src="image-20240605160350842.png" alt="image-20240605160350842"></p>
 <p>其实就是参考docker run时候的参数，再在参考文档里面去找对应的语法，对应如图</p>
 <p><img src="image-20240605161334512.png" alt="image-20240605161334512"></p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> myblog
-<span class="token key atrule">services</span><span class="token punctuation">:</span> 
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">services</span><span class="token punctuation">:</span> 
   <span class="token key atrule">mysql</span><span class="token punctuation">:</span>
     <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mysql
     <span class="token key atrule">image</span><span class="token punctuation">:</span> mysql<span class="token punctuation">:</span><span class="token number">8.0</span>
@@ -1899,7 +1927,7 @@ wordpress:latest<span aria-hidden="true" class="line-numbers-rows"><span></span>
   <span class="token key atrule">wordpress</span><span class="token punctuation">:</span>
 
 <span class="token key atrule">networks</span><span class="token punctuation">:</span> <span class="token comment">#声明网络</span>
-  blog<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  blog<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>启动：</p>
 <pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># up:启动、上线；-d 以后台方式；文件名默认是compose.yaml，如果不是，就要-f指定</span>
@@ -1926,7 +1954,12 @@ docker compose -f compose.yaml
 <span class="token comment"># down为下线；up为上线【不删除卷】</span>
 docker compose -f compose.yaml down
 <span class="token comment"># 可 docker compose down --help</span>
-docker compose -f compose.yaml down --rmi all -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+docker compose -f compose.yaml down --rmi all -v
+
+<span class="token comment">#【可选】还可指定项目名称</span>
+docker compose -f compose.yaml -p myapp up -d
+
+<span class="token comment">#查看项目以下的容器docker compose -p myapp ps</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="image-20240605164041206.png" alt="image-20240605164041206"></p>
 <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p><img src="image-20240605164243442.png" alt="image-20240605164243442"></p>
@@ -4468,7 +4501,7 @@ hexo <span class="token builtin class-name">help</span>             <span class=
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#105;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#111;&#109;">&#103;&#105;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#111;&#109;</a>:flowable/flowable-engine.gi</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#109;">&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#109;</a>:flowable/flowable-engine.gi</p>
 <p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
 <p>先来看下源码的目录结构：</p>
 <ul>
@@ -7825,9 +7858,9 @@ execution.setVariable("sum",sum);]]></span><span class="token tag"><span class="
         <category>后端</category>
       </categories>
       <tags>
+        <tag>springboot</tag>
         <tag>MybatisPlus</tag>
         <tag>java</tag>
-        <tag>springboot</tag>
         <tag>分页</tag>
         <tag>插件</tag>
         <tag>sql</tag>
@@ -8328,8 +8361,8 @@ execution.setVariable("sum",sum);]]></span><span class="token tag"><span class="
 <p><img src="image-20240128162858928.png" alt="image-20240128162858928"></p>
 ]]></content>
       <tags>
-        <tag>java</tag>
         <tag>springboot</tag>
+        <tag>java</tag>
         <tag>sql</tag>
         <tag>项目实战</tag>
         <tag>tienchin</tag>
@@ -9608,8 +9641,8 @@ System.out.println(&quot;---my test web logs---&quot;);
       </categories>
       <tags>
         <tag>原创</tag>
-        <tag>java</tag>
         <tag>springboot</tag>
+        <tag>java</tag>
         <tag>项目实战</tag>
       </tags>
   </entry>
@@ -14182,8 +14215,8 @@ spring.redis.port&#x3D;6379<span aria-hidden="true" class="line-numbers-rows"><s
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>java</tag>
         <tag>springboot</tag>
+        <tag>java</tag>
         <tag>项目实战</tag>
       </tags>
   </entry>
