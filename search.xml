@@ -1658,20 +1658,6 @@ authentication <span class="token operator">=</span> authenticationManager
       </tags>
   </entry>
   <entry>
-    <title>prometheus&amp;&amp;consul监控与发现</title>
-    <url>/2024/09/26/prometheus-consul-jian-kong-yu-fa-xian/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>agent代理实现服务器文件上传和下载</title>
-    <url>/2024/08/29/agent-dai-li-shi-xian-fu-wu-qi-wen-jian-shang-chuan-he-xia-zai/</url>
-    <content><![CDATA[<blockquote>
-<p>服务端代码地址：</p>
-<p>客户端代码地址：</p>
-</blockquote>
-<h1 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a>服务端</h1>]]></content>
-  </entry>
-  <entry>
     <title>hadoop与hive的安装和配置</title>
     <url>/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/</url>
     <content><![CDATA[<h1 id="ssh登录过程"><a href="#ssh登录过程" class="headerlink" title="ssh登录过程"></a>ssh登录过程</h1><ol>
@@ -4839,7 +4825,7 @@ hexo <span class="token builtin class-name">help</span>             <span class=
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#103;&#x69;&#116;&#64;&#x67;&#105;&#116;&#104;&#117;&#98;&#46;&#x63;&#x6f;&#109;">&#103;&#x69;&#116;&#64;&#x67;&#105;&#116;&#104;&#117;&#98;&#46;&#x63;&#x6f;&#109;</a>:flowable/flowable-engine.gi</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#111;&#x6d;">&#x67;&#105;&#x74;&#64;&#103;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#111;&#x6d;</a>:flowable/flowable-engine.gi</p>
 <p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
 <p>先来看下源码的目录结构：</p>
 <ul>
@@ -9434,6 +9420,7 @@ signal(semaphore *S)&#123;
     <url>/2022/05/11/pictures/</url>
     <content><![CDATA[<p><img src="lcdzzz.png"></p>
 <p><img src="diancan.png"></p>
+<p><img src="prometheus.png"></p>
 ]]></content>
   </entry>
   <entry>
