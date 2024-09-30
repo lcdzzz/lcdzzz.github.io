@@ -1,0 +1,542 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>prometheus&amp;consul&amp;blackboxTest | lcdzzz的博客</title><meta name="keywords" content="lcdzzz的博客"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="安装包地址：通过网盘分享的文件：软件链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1iBSiZ4baGzf8KWlhdnDv0w?pwd&#x3D;9i1u 提取码: 9i1u  代码地址见文章末尾 虚拟机关闭防火墙： systemctl status firewalldsystemctl stop firewalldsystemctl disable firewalld  Prometheus">
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
+<meta property="og:title" content="prometheus&amp;consul&amp;blackboxTest">
+<meta property="og:url" content="http://lcdzzz.github.io/2024/09/30/prometheus-consul-blackboxtest/index.html">
+<meta property="og:site_name" content="lcdzzz的博客">
+<meta property="og:description" content="安装包地址：通过网盘分享的文件：软件链接: https:&#x2F;&#x2F;pan.baidu.com&#x2F;s&#x2F;1iBSiZ4baGzf8KWlhdnDv0w?pwd&#x3D;9i1u 提取码: 9i1u  代码地址见文章末尾 虚拟机关闭防火墙： systemctl status firewalldsystemctl stop firewalldsystemctl disable firewalld  Prometheus">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png">
+<meta property="article:published_time" content="2024-09-30T09:03:24.000Z">
+<meta property="article:modified_time" content="2024-09-30T09:07:51.527Z">
+<meta property="article:author" content="lcdzzz">
+<meta property="article:tag" content="lcdzzz的博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2024/09/30/prometheus-consul-blackboxtest/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'prometheus&consul&blackboxTest',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-09-30 17:07:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="lcdzzz的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lcdzzz的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">prometheus&amp;consul&amp;blackboxTest</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-09-30T09:07:51.527Z" title="更新于 2024-09-30 17:07:51">2024-09-30</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="prometheus&amp;consul&amp;blackboxTest"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><blockquote>
+<!-- hexo-inject:begin --><!-- hexo-inject:end --><p>安装包地址：通过网盘分享的文件：软件<br>链接: <a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1iBSiZ4baGzf8KWlhdnDv0w?pwd=9i1u">https://pan.baidu.com/s/1iBSiZ4baGzf8KWlhdnDv0w?pwd=9i1u</a> 提取码: 9i1u </p>
+<p>代码地址见文章末尾</p>
+<p>虚拟机关闭防火墙：</p>
+<p>systemctl status firewalld<br>systemctl stop firewalld<br>systemctl disable firewalld</p>
+</blockquote>
+<h1 id="Prometheus"><a href="#Prometheus" class="headerlink" title="Prometheus"></a>Prometheus</h1><p>启动脚本startup-prometheus</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<span class="token builtin class-name">cd</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span>  <span class="token comment"># 替换为 Prometheus 的实际路径</span>
+<span class="token assign-left variable">BASE_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token builtin class-name">echo</span> <span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token comment"># 定义 Prometheus 的路径</span>
+<span class="token assign-left variable">PROMETHEUS_PATH</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/prometheus  <span class="token comment"># 替换为 Prometheus 的实际路径</span>
+<span class="token assign-left variable">PID_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/prometheus.pid  <span class="token comment"># 存储进程 ID 的文件</span>
+<span class="token assign-left variable">LOG_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/logs/prometheus.log  <span class="token comment"># 日志文件</span>
+<span class="token assign-left variable">CONFIG_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/prometheus.yml  <span class="token comment"># Prometheus 配置文件路径</span>
+<span class="token assign-left variable">DATA_DIR</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/data  <span class="token comment"># Prometheus 数据目录</span>
+
+<span class="token comment"># 检查是否已经在运行</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span> <span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token function">kill</span> -0 <span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Prometheus is already running."</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Starting Prometheus..."</span>
+    <span class="token function">nohup</span> <span class="token variable">$PROMETHEUS_PATH</span> --config.file<span class="token operator">=</span><span class="token variable">$CONFIG_FILE</span> --storage.tsdb.path<span class="token operator">=</span><span class="token variable">$DATA_DIR</span> <span class="token operator">></span> <span class="token variable">$LOG_FILE</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">&amp;</span>  <span class="token comment"># 后台运行</span>
+    <span class="token builtin class-name">echo</span> <span class="token variable">$!</span> <span class="token operator">></span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 将进程 ID 写入文件</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Prometheus started with PID <span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span>."</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>终止脚本shundown-prometheus</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<span class="token builtin class-name">cd</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span>  <span class="token comment"># 替换为 Prometheus 的实际路径</span>
+<span class="token assign-left variable">BASE_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token assign-left variable">PID_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/prometheus.pid  <span class="token comment"># 存储进程 ID 的文件</span>
+
+<span class="token comment"># 检查 PID 文件是否存在</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token assign-left variable">PID</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span>
+    <span class="token keyword">if</span> <span class="token function">kill</span> -0 <span class="token string">"<span class="token variable">$PID</span>"</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">then</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Stopping Prometheus..."</span>
+        <span class="token function">kill</span> <span class="token string">"<span class="token variable">$PID</span>"</span>
+        <span class="token function">rm</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 删除 PID 文件</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Prometheus stopped."</span>
+    <span class="token keyword">else</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Prometheus is not running."</span>
+        <span class="token function">rm</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 删除 PID 文件</span>
+    <span class="token keyword">fi</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Prometheus is not running."</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h1 id="consul"><a href="#consul" class="headerlink" title="consul"></a>consul</h1><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 下载 Consul</span>
+<span class="token function">wget</span> https://releases.hashicorp.com/consul/1.17.2/consul_1.17.2_linux_amd64.zip
+
+<span class="token comment"># 解压</span>
+<span class="token function">unzip</span> consul_1.17.2_linux_amd64.zip
+
+<span class="token comment"># 移动到 /usr/local/bin 目录</span>
+<span class="token function">sudo</span> <span class="token function">mv</span> consul /usr/local/bin/
+
+<span class="token comment"># 验证安装</span>
+consul version
+
+<span class="token comment"># 启动 Consul</span>
+consul agent -dev
+
+<span class="token comment">#在云服务器上启动了consul，但是访问不了8500端口，这里需要在服务器启动的时候，加上-client的指定</span>
+
+./consul agent -dev <span class="token comment">#这是最开始启动的命令 只能本机访问</span>
+
+<span class="token comment">#当使用下面命令的时候就可以其他机器进行访问了：</span>
+
+./consul agent -dev -client <span class="token number">0.0</span>.0.0 -ui <span class="token comment">#外部机器就可以访问</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="待被发现的java程序的要求"><a href="#待被发现的java程序的要求" class="headerlink" title="待被发现的java程序的要求"></a>待被发现的java程序的要求</h2><p>application.yml</p>
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">management</span><span class="token punctuation">:</span>
+  <span class="token key atrule">endpoints</span><span class="token punctuation">:</span>
+    <span class="token key atrule">web</span><span class="token punctuation">:</span>
+      <span class="token key atrule">exposure</span><span class="token punctuation">:</span>
+        <span class="token key atrule">include</span><span class="token punctuation">:</span> health<span class="token punctuation">,</span>info<span class="token punctuation">,</span>prometheus
+  <span class="token key atrule">metrics</span><span class="token punctuation">:</span>
+    <span class="token key atrule">export</span><span class="token punctuation">:</span>
+      <span class="token key atrule">prometheus</span><span class="token punctuation">:</span>
+        <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+
+<span class="token key atrule">spring</span><span class="token punctuation">:</span>
+  <span class="token key atrule">application</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> prometheus<span class="token punctuation">-</span>consul<span class="token punctuation">-</span>app  <span class="token comment"># 服务名称</span>
+  <span class="token key atrule">cloud</span><span class="token punctuation">:</span>
+    <span class="token key atrule">consul</span><span class="token punctuation">:</span>
+      <span class="token key atrule">discovery</span><span class="token punctuation">:</span>
+        <span class="token key atrule">instance-id</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span>spring.application.name<span class="token punctuation">&#125;</span><span class="token punctuation">-</span>$<span class="token punctuation">&#123;</span>spring.cloud.client.ip<span class="token punctuation">-</span>address<span class="token punctuation">&#125;</span><span class="token punctuation">-</span>$<span class="token punctuation">&#123;</span>server.port<span class="token punctuation">&#125;</span>  <span class="token comment"># 使用IP和端口生成唯一ID</span>
+        <span class="token key atrule">prefer-ip-address</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>  <span class="token comment"># 强制使用IP地址注册到Consul</span>
+        <span class="token key atrule">heartbeat</span><span class="token punctuation">:</span>
+          <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+        <span class="token key atrule">service-name</span><span class="token punctuation">:</span> $<span class="token punctuation">&#123;</span>spring.application.name<span class="token punctuation">&#125;</span>
+      <span class="token key atrule">host</span><span class="token punctuation">:</span> 192.168.15.128
+      <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8500</span>
+<span class="token key atrule">server</span><span class="token punctuation">:</span>
+  <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8111</span>
+<span class="token comment">#  address: 192.168.15.128 # 将这里的IP替换为你的机器实际的内网或外网IP地址</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>主程序</p>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">//@EnableDiscoveryClient 自springboot2.7x以后就不用了</span>
+<span class="token annotation punctuation">@EnableDiscoveryClient</span>
+<span class="token annotation punctuation">@SpringBootApplication</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PrometheusMonitoringDemoApplication</span> <span class="token punctuation">&#123;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">SpringApplication</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">PrometheusMonitoringDemoApplication</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>pom.xml</p>
+<pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="UTF-8"?></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>project</span> <span class="token attr-name">xmlns</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://maven.apache.org/POM/4.0.0<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">xmlns:</span>xsi</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://www.w3.org/2001/XMLSchema-instance<span class="token punctuation">"</span></span>
+         <span class="token attr-name"><span class="token namespace">xsi:</span>schemaLocation</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>modelVersion</span><span class="token punctuation">></span></span>4.0.0<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>modelVersion</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>parent</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-parent<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>2.7.4<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>relativePath</span><span class="token punctuation">/></span></span> 
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>parent</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.example<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>prometheus-monitoring-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>0.0.1-SNAPSHOT<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>name</span><span class="token punctuation">></span></span>prometheus-monitoring-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>name</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>description</span><span class="token punctuation">></span></span>prometheus-monitoring-demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>description</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>properties</span><span class="token punctuation">></span></span>
+         <span class="token comment">&lt;!-- springboot和springcloud有兼容要求、springboot和micrometer有兼容要求--></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>java.version</span><span class="token punctuation">></span></span>1.8<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>java.version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>micrometer.version</span><span class="token punctuation">></span></span>1.9.5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>micrometer.version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>spring-boot.version</span><span class="token punctuation">></span></span>2.7.4<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>spring-boot.version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>spring-cloud.version</span><span class="token punctuation">></span></span>2021.0.5<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>spring-cloud.version</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>properties</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencyManagement</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.cloud<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-cloud-dependencies<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>$&#123;spring-cloud.version&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>type</span><span class="token punctuation">></span></span>pom<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>type</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>scope</span><span class="token punctuation">></span></span>import<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>scope</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencyManagement</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependencies</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-web<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token comment">&lt;!-- 为应用程序提供了暴露管理端点的功能，这些端点包括健康检查、性能监控和指标。--></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-starter-actuator<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token comment">&lt;!-- 让应用程序通过 Micrometer 收集并格式化度量指标，以 Prometheus 可理解的方式暴露给 Prometheus。。--></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>io.micrometer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>micrometer-registry-prometheus<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>version</span><span class="token punctuation">></span></span>$&#123;micrometer.version&#125;<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>version</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+         <span class="token comment">&lt;!-- 让Spring Boot应用程序可以通过 Consul 服务发现机制来进行注册和发现服务。--></span>
+         <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>dependency</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.cloud<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-cloud-starter-consul-discovery<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependencies</span><span class="token punctuation">></span></span>
+
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>build</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugins</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>plugin</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>groupId</span><span class="token punctuation">></span></span>org.springframework.boot<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>groupId</span><span class="token punctuation">></span></span>
+                <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>artifactId</span><span class="token punctuation">></span></span>spring-boot-maven-plugin<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>artifactId</span><span class="token punctuation">></span></span>
+            <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugin</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>plugins</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>build</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>project</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="prometheus配置"><a href="#prometheus配置" class="headerlink" title="prometheus配置"></a>prometheus配置</h2><p>prometheus.yml</p>
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"><span class="token key atrule">global</span><span class="token punctuation">:</span>
+  <span class="token key atrule">scrape_interval</span><span class="token punctuation">:</span> 5s  <span class="token comment"># 默认抓取间隔</span>
+
+<span class="token key atrule">scrape_configs</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'prometheus-consul-app'</span>
+    <span class="token key atrule">consul_sd_configs</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">server</span><span class="token punctuation">:</span> <span class="token string">'192.168.15.128:8500'</span>
+        <span class="token key atrule">services</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'prometheus-consul-app'</span><span class="token punctuation">]</span>
+    <span class="token key atrule">metrics_path</span><span class="token punctuation">:</span> <span class="token string">'/actuator/prometheus'</span>  <span class="token comment"># Spring Boot 默认的 Prometheus 指标路径</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="consul启动终止脚本"><a href="#consul启动终止脚本" class="headerlink" title="consul启动终止脚本"></a>consul启动终止脚本</h2><p>startup-consul.sh</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash </span>
+<span class="token builtin class-name">cd</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span> <span class="token comment"># 替换为 consul 的实际路径</span>
+<span class="token assign-left variable">BASE_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token comment"># 定义 Consul 的路径</span>
+<span class="token assign-left variable">CONSUL_PATH</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/consul  <span class="token comment"># 替换为 consul 的实际路径</span>
+<span class="token assign-left variable">PID_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/consul.pid  <span class="token comment"># 存储进程 ID 的文件</span>
+<span class="token assign-left variable">LOG_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/logs/consul.log  <span class="token comment"># 日志文件</span>
+<span class="token assign-left variable">DATA_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/data
+<span class="token comment"># 检查是否已经在运行</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span> <span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token function">kill</span> -0 <span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Consul is already running."</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Starting Consul..."</span>
+    <span class="token function">nohup</span> <span class="token variable">$CONSUL_PATH</span> agent -dev -data-dir<span class="token operator">=</span><span class="token variable">$DATA_FILE</span> -client <span class="token number">0.0</span>.0.0 -ui <span class="token operator">></span> <span class="token variable">$LOG_FILE</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">&amp;</span>  <span class="token comment"># 后台运行</span>
+    <span class="token builtin class-name">echo</span> <span class="token variable">$!</span> <span class="token operator">></span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 将进程 ID 写入文件</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Consul started with PID <span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span>."</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>shutdown-consul.sh</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<span class="token builtin class-name">cd</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span>  <span class="token comment"># 替换为 consul 的实际路径</span>
+<span class="token assign-left variable">BASE_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token assign-left variable">PID_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/consul.pid  <span class="token comment"># 存储进程 ID 的文件</span>
+
+<span class="token comment"># 检查 PID 文件是否存在</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token assign-left variable">PID</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span>
+    <span class="token keyword">if</span> <span class="token function">kill</span> -0 <span class="token string">"<span class="token variable">$PID</span>"</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">then</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Stopping Consul..."</span>
+        <span class="token function">kill</span> <span class="token string">"<span class="token variable">$PID</span>"</span>
+        <span class="token function">rm</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 删除 PID 文件</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Consul stopped."</span>
+    <span class="token keyword">else</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Consul is not running."</span>
+        <span class="token function">rm</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 删除 PID 文件</span>
+    <span class="token keyword">fi</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Consul is not running."</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h1 id="Prometheus黑盒测试"><a href="#Prometheus黑盒测试" class="headerlink" title="Prometheus黑盒测试"></a>Prometheus黑盒测试</h1><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">wget</span> https://github.com/prometheus/blackbox_exporter/releases/download/v0.23.0/blackbox_exporter-0.23.
+<span class="token number">0</span>.linux-amd64.tar.gz
+<span class="token function">tar</span> -xvf blackbox_exporter-0.23.0.linux-amd64.tar.gz
+<span class="token builtin class-name">cd</span> blackbox_exporter-0.23.0.linux-amd64
+./blackbox_exporter
+
+<span class="token comment">#Blackbox Exporter 将在默认的 9115 端口上运行。</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>需要在 Prometheus 的配置文件 <code>prometheus.yml</code> 中添加 Blackbox Exporter 的配置，以监控指定的 IP 和端口。</p>
+<p>在 <code>prometheus.yml</code> 中，添加一个新的 <code>scrape_configs</code> 来配置 Prometheus 通过 Blackbox Exporter 进行 TCP 探测：</p>
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"><span class="token punctuation">-</span> <span class="token key atrule">job_name</span><span class="token punctuation">:</span> <span class="token string">'tcp_probes'</span>
+    <span class="token key atrule">metrics_path</span><span class="token punctuation">:</span> /probe  <span class="token comment"># 使用 Blackbox Exporter 的探测路径</span>
+    <span class="token key atrule">params</span><span class="token punctuation">:</span>
+      <span class="token key atrule">module</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>tcp_connect<span class="token punctuation">]</span>  <span class="token comment"># 指定使用 TCP 连接探测模块</span>
+
+    <span class="token key atrule">static_configs</span><span class="token punctuation">:</span>
+          <span class="token comment"># 添加更多要监控的服务地址</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">targets</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'localhost:9115'</span><span class="token punctuation">]</span>  <span class="token comment"># 本地运行的 Blackbox Exporter</span>
+    <span class="token key atrule">relabel_configs</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">source_labels</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>__address__<span class="token punctuation">]</span>
+        <span class="token key atrule">target_label</span><span class="token punctuation">:</span> __param_target<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<p>通过请求<code>http://localhost:9115/probe?target=111.229.25.127:6379&amp;module=tcp_connect</code></p>
+<p>会获得</p>
+<pre class="line-numbers language-none"><code class="language-none"># HELP probe_dns_lookup_time_seconds Returns the time taken for probe dns lookup in seconds
+# TYPE probe_dns_lookup_time_seconds gauge
+probe_dns_lookup_time_seconds 1.0149e-05
+# HELP probe_duration_seconds Returns how long the probe took to complete in seconds
+# TYPE probe_duration_seconds gauge
+probe_duration_seconds 0.029551479
+# HELP probe_failed_due_to_regex Indicates if probe failed due to regex
+# TYPE probe_failed_due_to_regex gauge
+probe_failed_due_to_regex 0
+# HELP probe_ip_addr_hash Specifies the hash of IP address. It&#39;s useful to detect if the IP address changes.
+# TYPE probe_ip_addr_hash gauge
+probe_ip_addr_hash 3.600422005e+09
+# HELP probe_ip_protocol Specifies whether probe ip protocol is IP4 or IP6
+# TYPE probe_ip_protocol gauge
+probe_ip_protocol 4
+# HELP probe_success Displays whether or not the probe was a success
+# TYPE probe_success gauge
+probe_success 1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><strong>成功状态</strong>：<code>probe_success</code> 的值为 <code>1</code>，表明被监控的服务可达且正常运行。</p>
+<p><strong>探测时间</strong>：<code>probe_duration_seconds</code> 和 <code>probe_dns_lookup_time_seconds</code> 的值都相对较小，表示响应时间快，这通常是健康服务的标志。</p>
+<p><strong>无正则错误</strong>：<code>probe_failed_due_to_regex</code> 的值为 <code>0</code>，表明探测没有因正则表达式问题而失败。</p>
+<h2 id="java实现"><a href="#java实现" class="headerlink" title="java实现"></a>java实现</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>blackboxexporter</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">BufferedReader</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">InputStreamReader</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>net<span class="token punctuation">.</span></span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>net<span class="token punctuation">.</span></span>URL<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">BlackboxProbe</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> PROBE_URL_TEMPLATE <span class="token operator">=</span> <span class="token string">"http://172.26.160.119:9115/probe?module=tcp_connect&amp;target=%s"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token comment">// 发起 HTTP GET 请求</span>
+            <span class="token class-name">String</span> target <span class="token operator">=</span> <span class="token string">"111.229.25.127:3306"</span><span class="token punctuation">;</span>
+            <span class="token class-name">String</span> probeUrl <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span>PROBE_URL_TEMPLATE<span class="token punctuation">,</span> target<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">HttpURLConnection</span> connection <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpURLConnection</span><span class="token punctuation">)</span> <span class="token keyword">new</span> <span class="token function">URL</span><span class="token punctuation">(</span>probeUrl<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">openConnection</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            connection<span class="token punctuation">.</span><span class="token function">setRequestMethod</span><span class="token punctuation">(</span><span class="token string">"GET"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 处理响应</span>
+            <span class="token class-name">BufferedReader</span> in <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span>connection<span class="token punctuation">.</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">String</span> inputLine<span class="token punctuation">;</span>
+            <span class="token class-name">StringBuilder</span> response <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>inputLine <span class="token operator">=</span> in<span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                response<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>inputLine<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            in<span class="token punctuation">.</span><span class="token function">close</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token comment">// 解析 Prometheus 格式的响应</span>
+            <span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> lines <span class="token operator">=</span> response<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> probeSuccess <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+            <span class="token keyword">double</span> probeDuration <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+
+            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> line <span class="token operator">:</span> lines<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span> <span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">"probe_success"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    probeSuccess <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">startsWith</span><span class="token punctuation">(</span><span class="token string">"probe_duration_seconds"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                    probeDuration <span class="token operator">=</span> <span class="token class-name">Double</span><span class="token punctuation">.</span><span class="token function">parseDouble</span><span class="token punctuation">(</span>line<span class="token punctuation">.</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">" "</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+
+            <span class="token comment">// 输出结果</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"probe_success: "</span> <span class="token operator">+</span> probeSuccess<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"probe_duration_seconds: "</span> <span class="token operator">+</span> probeDuration<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h2 id="blackbox-exporter启动终止脚本"><a href="#blackbox-exporter启动终止脚本" class="headerlink" title="blackbox_exporter启动终止脚本"></a>blackbox_exporter启动终止脚本</h2><p>startup-blackbox_exporter.sh</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash </span>
+<span class="token builtin class-name">cd</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span>/blackbox_exporter-0.23.0.linux-amd64
+<span class="token assign-left variable">BASE_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token comment"># 定义 blackbox_exporter 的路径</span>
+<span class="token assign-left variable">BLACKBOX_EXPORTER_PATH</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/blackbox_exporter  <span class="token comment"># 替换为 blackbox_exporter 的实际路径</span>
+<span class="token assign-left variable">PID_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/blackbox_exporter.pid  <span class="token comment"># 存储进程 ID 的文件</span>
+
+<span class="token comment"># 检查是否已经在运行</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span> <span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token function">kill</span> -0 <span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"blackbox_exporter is already running."</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"Starting blackbox_exporter..."</span>
+    <span class="token function">nohup</span> <span class="token variable">$BLACKBOX_EXPORTER_PATH</span> <span class="token operator">></span> <span class="token variable">$BASE_DIR</span>/<span class="token punctuation">..</span>/logs/blackbox_exporter.log <span class="token operator"><span class="token file-descriptor important">2</span>></span><span class="token file-descriptor important">&amp;1</span> <span class="token operator">&amp;</span>  <span class="token comment"># 后台运行</span>
+    <span class="token builtin class-name">echo</span> <span class="token variable">$!</span> <span class="token operator">></span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 将进程 ID 写入文件</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"blackbox_exporter started with PID <span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span>."</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>shutdown-blackbox_exporter.sh</p>
+<pre class="line-numbers language-shell" data-language="shell"><code class="language-shell"><span class="token shebang important">#!/bin/bash</span>
+<span class="token builtin class-name">cd</span> <span class="token variable"><span class="token variable">`</span><span class="token function">dirname</span> $0<span class="token variable">`</span></span>/blackbox_exporter-0.23.0.linux-amd64
+<span class="token assign-left variable">BASE_DIR</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token builtin class-name">pwd</span><span class="token variable">`</span></span>
+<span class="token assign-left variable">PID_FILE</span><span class="token operator">=</span><span class="token variable">$BASE_DIR</span>/blackbox_exporter.pid  <span class="token comment"># 存储进程 ID 的文件</span>
+
+<span class="token comment"># 检查 PID 文件是否存在</span>
+<span class="token keyword">if</span> <span class="token punctuation">[</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token assign-left variable">PID</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">cat</span> <span class="token string">"<span class="token variable">$PID_FILE</span>"</span><span class="token variable">)</span></span>
+    <span class="token keyword">if</span> <span class="token function">kill</span> -0 <span class="token string">"<span class="token variable">$PID</span>"</span> <span class="token operator"><span class="token file-descriptor important">2</span>></span>/dev/null<span class="token punctuation">;</span> <span class="token keyword">then</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"Stopping blackbox_exporter..."</span>
+        <span class="token function">kill</span> <span class="token string">"<span class="token variable">$PID</span>"</span>
+        <span class="token function">rm</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 删除 PID 文件</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"blackbox_exporter stopped."</span>
+    <span class="token keyword">else</span>
+        <span class="token builtin class-name">echo</span> <span class="token string">"blackbox_exporter is not running."</span>
+        <span class="token function">rm</span> -f <span class="token string">"<span class="token variable">$PID_FILE</span>"</span>  <span class="token comment"># 删除 PID 文件</span>
+    <span class="token keyword">fi</span>
+<span class="token keyword">else</span>
+    <span class="token builtin class-name">echo</span> <span class="token string">"blackbox_exporter is not running."</span>
+<span class="token keyword">fi</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<blockquote>
+<p>被监控的java程序示例：<a target="_blank" rel="noopener" href="https://gitee.com/lcdzzz/prometheus-consul-demo">https://gitee.com/lcdzzz/prometheus-consul-demo</a></p>
+<p>获取监控指标的java程序示例：<a target="_blank" rel="noopener" href="https://gitee.com/lcdzzz/client">https://gitee.com/lcdzzz/client</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2024/09/30/prometheus-consul-blackboxtest/">http://lcdzzz.github.io/2024/09/30/prometheus-consul-blackboxtest/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/"><img class="next-cover" src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">hadoop与hive的安装和配置</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Prometheus"><span class="toc-number">1.</span> <span class="toc-text">Prometheus</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#consul"><span class="toc-number">2.</span> <span class="toc-text">consul</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%85%E8%A2%AB%E5%8F%91%E7%8E%B0%E7%9A%84java%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%A6%81%E6%B1%82"><span class="toc-number">2.1.</span> <span class="toc-text">待被发现的java程序的要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#prometheus%E9%85%8D%E7%BD%AE"><span class="toc-number">2.2.</span> <span class="toc-text">prometheus配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#consul%E5%90%AF%E5%8A%A8%E7%BB%88%E6%AD%A2%E8%84%9A%E6%9C%AC"><span class="toc-number">2.3.</span> <span class="toc-text">consul启动终止脚本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Prometheus%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95"><span class="toc-number">3.</span> <span class="toc-text">Prometheus黑盒测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.1.</span> <span class="toc-text">java实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#blackbox-exporter%E5%90%AF%E5%8A%A8%E7%BB%88%E6%AD%A2%E8%84%9A%E6%9C%AC"><span class="toc-number">3.2.</span> <span class="toc-text">blackbox_exporter启动终止脚本</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
