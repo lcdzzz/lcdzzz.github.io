@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Docker笔记 | lcdzzz的博客</title><meta name="keywords" content="lcdzzz的博客"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基础安装#【可选】centos8配置yum源 cd &#x2F;etc&#x2F;yum.repos.d rm -rf .&#x2F;* curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo  yum -y clean all #清除所有文件 yum -y makecache #建立缓存 yum repol">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Docker笔记 | lcdzzz的博客</title><meta name="keywords" content="lcdzzz的博客"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基础安装#【可选】centos8配置yum源 cd &#x2F;etc&#x2F;yum.repos.d rm -rf .&#x2F;* curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo  yum -y">
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
 <meta property="og:title" content="Docker笔记">
 <meta property="og:url" content="http://lcdzzz.github.io/2024/06/05/docker-bi-ji/index.html">
 <meta property="og:site_name" content="lcdzzz的博客">
-<meta property="og:description" content="基础安装#【可选】centos8配置yum源 cd &#x2F;etc&#x2F;yum.repos.d rm -rf .&#x2F;* curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo  yum -y clean all #清除所有文件 yum -y makecache #建立缓存 yum repol">
+<meta property="og:description" content="基础安装#【可选】centos8配置yum源 cd &#x2F;etc&#x2F;yum.repos.d rm -rf .&#x2F;* curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo  yum -y">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img2.baidu.com/it/u=346135644,1115136735&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281">
 <meta property="article:published_time" content="2024-06-05T03:13:46.000Z">
@@ -143,74 +143,74 @@
     }
     detectApple()
     })(window)</script><meta name="generator" content="Hexo 5.2.0"><link rel="alternate" href="/atom.xml" title="lcdzzz的博客" type="application/atom+xml"><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lcdzzz的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Docker笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-21T01:10:57.656Z" title="更新于 2024-08-21 09:10:57">2024-08-21</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Docker笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#【可选】centos8配置yum源</span>
-<!-- hexo-inject:begin --><!-- hexo-inject:end --><span class="token builtin class-name">cd</span> /etc/yum.repos.d
-<span class="token function">rm</span> -rf ./*
-<span class="token function">curl</span> -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo 
-yum -y clean all <span class="token comment">#清除所有文件</span>
-yum -y makecache <span class="token comment">#建立缓存</span>
-yum repolist  <span class="token comment">#查看yum仓库信息</span>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">lcdzzz的博客</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Docker笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-21T01:10:57.656Z" title="更新于 2024-08-21 09:10:57">2024-08-21</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Docker笔记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><!-- hexo-inject:begin --><!-- hexo-inject:end -->#【可选】centos8配置yum源
+cd &#x2F;etc&#x2F;yum.repos.d
+rm -rf .&#x2F;*
+curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo 
+yum -y clean all #清除所有文件
+yum -y makecache #建立缓存
+yum repolist  #查看yum仓库信息
 
-<span class="token comment"># 移除旧版本docker</span>
-<span class="token function">sudo</span> yum remove docker <span class="token punctuation">\</span>
-                  docker-client <span class="token punctuation">\</span>
-                  docker-client-latest <span class="token punctuation">\</span>
-                  docker-common <span class="token punctuation">\</span>
-                  docker-latest <span class="token punctuation">\</span>
-                  docker-latest-logrotate <span class="token punctuation">\</span>
-                  docker-logrotate <span class="token punctuation">\</span>
+# 移除旧版本docker
+sudo yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
                   docker-engine
 
-<span class="token comment"># 配置docker yum源。</span>
-<span class="token function">sudo</span> yum <span class="token function">install</span> -y yum-utils
-<span class="token function">sudo</span> yum-config-manager <span class="token punctuation">\</span>
---add-repo <span class="token punctuation">\</span>
-http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+# 配置docker yum源。
+sudo yum install -y yum-utils
+sudo yum-config-manager \
+--add-repo \
+http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo
 
 
-<span class="token comment"># 安装 最新 docker</span>
-<span class="token function">sudo</span> yum <span class="token function">install</span> -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+# 安装 最新 docker
+sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-<span class="token comment"># 启动&amp; 开机启动docker； enable + start 二合一</span>
-systemctl <span class="token builtin class-name">enable</span> docker --now
+# 启动&amp; 开机启动docker； enable + start 二合一
+systemctl enable docker --now
 
-<span class="token comment">#选【1】或者【2】或者【3】</span>
-<span class="token comment"># 配置加速【1】</span>
-<span class="token function">sudo</span> <span class="token function">mkdir</span> -p /etc/docker
-<span class="token function">sudo</span> <span class="token function">tee</span> /etc/docker/daemon.json <span class="token operator">&lt;&lt;-</span><span class="token string">'EOF'
+#选【1】或者【2】或者【3】
+# 配置加速【1】
+sudo mkdir -p &#x2F;etc&#x2F;docker
+sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;
 &#123;
-  "registry-mirrors": ["https://mirror.ccs.tencentyun.com"]
+  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;mirror.ccs.tencentyun.com&quot;]
 &#125;
-EOF</span>
+EOF
 
-<span class="token comment"># 配置加速【2】</span>
-<span class="token function">sudo</span> <span class="token function">mkdir</span> -p /etc/docker
-<span class="token function">sudo</span> <span class="token function">tee</span> /etc/docker/daemon.json <span class="token operator">&lt;&lt;-</span><span class="token string">'EOF'
+# 配置加速【2】
+sudo mkdir -p &#x2F;etc&#x2F;docker
+sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;
 &#123;
-  "registry-mirrors": ["https://mirror.ccs.tencentyun.com"]
+  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;mirror.ccs.tencentyun.com&quot;]
 &#125;
-EOF</span>
-<span class="token function">sudo</span> systemctl daemon-reload
-<span class="token function">sudo</span> systemctl restart docker
+EOF
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 
-<span class="token comment"># 配置加速【3】</span>
-<span class="token function">sudo</span> <span class="token function">mkdir</span> -p /etc/docker
+# 配置加速【3】
+sudo mkdir -p &#x2F;etc&#x2F;docker
 
-<span class="token function">sudo</span> <span class="token function">tee</span> /etc/docker/daemon.json <span class="token operator">&lt;&lt;-</span><span class="token string">'EOF'
+sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;
 &#123;
-    "registry-mirrors": [
-        "https://do.nark.eu.org",
-        "https://dc.j8.work",
-        "https://docker.m.daocloud.io",
-        "https://dockerproxy.com",
-        "https://docker.mirrors.ustc.edu.cn",
-        "https://docker.nju.edu.cn"
+    &quot;registry-mirrors&quot;: [
+        &quot;https:&#x2F;&#x2F;do.nark.eu.org&quot;,
+        &quot;https:&#x2F;&#x2F;dc.j8.work&quot;,
+        &quot;https:&#x2F;&#x2F;docker.m.daocloud.io&quot;,
+        &quot;https:&#x2F;&#x2F;dockerproxy.com&quot;,
+        &quot;https:&#x2F;&#x2F;docker.mirrors.ustc.edu.cn&quot;,
+        &quot;https:&#x2F;&#x2F;docker.nju.edu.cn&quot;
     ]
 &#125;
-EOF</span>
+EOF
 
-<span class="token function">sudo</span> systemctl daemon-reload
-<span class="token function">sudo</span> systemctl restart docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <blockquote>
@@ -221,61 +221,61 @@ EOF</span>
 <p><img src="image-20240606140211837.png" alt="image-20240606140211837"></p>
 <hr>
 <h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>以nginx起手开始学习</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#查看运行中的容器</span>
-docker <span class="token function">ps</span>
-<span class="token comment">#查看所有容器</span>
-docker <span class="token function">ps</span> -a
-<span class="token comment">#搜索镜像</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#查看运行中的容器
+docker ps
+#查看所有容器
+docker ps -a
+#搜索镜像
 docker search nginx
-<span class="token comment">#下载镜像</span>
+#下载镜像
 docker pull nginx
-<span class="token comment">#下载指定版本镜像</span>
+#下载指定版本镜像
 docker pull nginx:1.26.0
-<span class="token comment">#查看所有镜像</span>
+#查看所有镜像
 docker images
-<span class="token comment">#删除指定id的镜像</span>
+#删除指定id的镜像
 docker rmi e784f4560448
 
 
-<span class="token comment">#运行一个新容器</span>
+#运行一个新容器
 docker run nginx
-<span class="token comment">#停止容器</span>
+#停止容器
 docker stop keen_blackwell
-<span class="token comment">#启动容器</span>
-docker start <span class="token number">592</span>
-<span class="token comment">#重启容器</span>
-docker restart <span class="token number">592</span>
-<span class="token comment">#查看容器资源占用情况</span>
-docker stats <span class="token number">592</span>
-<span class="token comment">#查看容器日志</span>
-docker logs <span class="token number">592</span>
-<span class="token comment">#删除指定容器</span>
-docker <span class="token function">rm</span> <span class="token number">592</span>
-<span class="token comment">#强制删除指定容器</span>
-docker <span class="token function">rm</span> -f <span class="token number">592</span>
-<span class="token comment"># 后台启动容器</span>
+#启动容器
+docker start 592
+#重启容器
+docker restart 592
+#查看容器资源占用情况
+docker stats 592
+#查看容器日志
+docker logs 592
+#删除指定容器
+docker rm 592
+#强制删除指定容器
+docker rm -f 592
+# 后台启动容器
 docker run -d --name mynginx nginx
-<span class="token comment"># 后台启动并暴露端口</span>
-docker run -d --name mynginx -p <span class="token number">80</span>:80 nginx
-<span class="token comment"># 进入容器内部</span>
-docker <span class="token builtin class-name">exec</span> -it mynginx /bin/bash
+# 后台启动并暴露端口
+docker run -d --name mynginx -p 80:80 nginx
+# 进入容器内部
+docker exec -it mynginx &#x2F;bin&#x2F;bash
 
-<span class="token comment"># 提交容器变化打成一个新的镜像</span>
-docker commit -m <span class="token string">"update index.html"</span> mynginx mynginx:v1.0
-<span class="token comment"># 保存镜像为指定文件</span>
+# 提交容器变化打成一个新的镜像
+docker commit -m &quot;update index.html&quot; mynginx mynginx:v1.0
+# 保存镜像为指定文件
 docker save -o mynginx.tar mynginx:v1.0
-<span class="token comment"># 删除多个镜像</span>
+# 删除多个镜像
 docker rmi bde7d154a67f 94543a6c1aef e784f4560448
-<span class="token comment"># 加载镜像</span>
+# 加载镜像
 docker load -i mynginx.tar 
 
 
-<span class="token comment"># 登录 docker hub</span>
+# 登录 docker hub
 docker login
-<span class="token comment"># 重新给镜像打标签</span>
-docker tag mynginx:v1.0 leifengyang/mynginx:v1.0
-<span class="token comment"># 推送镜像</span>
-docker push leifengyang/mynginx:v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+# 重新给镜像打标签
+docker tag mynginx:v1.0 leifengyang&#x2F;mynginx:v1.0
+# 推送镜像
+docker push leifengyang&#x2F;mynginx:v1.0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="存储"><a href="#存储" class="headerlink" title="存储"></a>存储</h2><p>删除容器时，目录挂载和卷映射里的文件都不会被删除</p>
 <p>两种方式，注意区分：</p>
@@ -287,157 +287,157 @@ docker push leifengyang/mynginx:v1.0<span aria-hidden="true" class="line-numbers
 <p>如此时就会放在/var/lib/docker/volumes/ngconf下</p>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">99</span>:80 <span class="token punctuation">\</span>
--v /app/nghtml:/usr/share/nginx/html <span class="token punctuation">\</span>
--v ngconf:/etc/nginx <span class="token punctuation">\</span>
---name app03 <span class="token punctuation">\</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">docker run -d -p 99:80 \
+-v &#x2F;app&#x2F;nghtml:&#x2F;usr&#x2F;share&#x2F;nginx&#x2F;html \
+-v ngconf:&#x2F;etc&#x2F;nginx \
+--name app03 \
 nginx
 
-<span class="token comment">#查看所有卷</span>
-docker volume <span class="token function">ls</span>
-<span class="token comment">#创建卷</span>
+#查看所有卷
+docker volume ls
+#创建卷
 docker volume create haha
-<span class="token comment">#查看卷详情</span>
+#查看卷详情
 docker volume inspect ngconf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>dokcer为每个容器分配唯一ip，使用容器ip+容器端口可以互相访问</p>
 <p>通过以下命令可以查看</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># linux查看网络</span>
-<span class="token function">ip</span> a
-<span class="token comment"># 查看容器的细节</span>
-docker container inspect <span class="token operator">&lt;</span>container_name<span class="token operator">></span>
-<span class="token comment"># 简写</span>
-docker inspect <span class="token operator">&lt;</span>container_name<span class="token operator">></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># linux查看网络
+ip a
+# 查看容器的细节
+docker container inspect &lt;container_name&gt;
+# 简写
+docker inspect &lt;container_name&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>因为ip由于各种原因可能会变化，而docker0默认不支持主机域名</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 创建网络 docker network --help</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># 创建网络 docker network --help
 docker network create mynet
-<span class="token comment"># 运行时指定网络</span>
-docker run -d -p <span class="token number">88</span>:80 --name app1 --network mynet nginx
-docker run -d -p <span class="token number">99</span>:80 --name app2 --network mynet nginx
-<span class="token comment"># 可再查看下容器详情</span>
+# 运行时指定网络
+docker run -d -p 88:80 --name app1 --network mynet nginx
+docker run -d -p 99:80 --name app2 --network mynet nginx
+# 可再查看下容器详情
 docker inspect app1
 
-<span class="token comment"># 注意，在加入网络时可以通过--alias给容器起别名</span>
-<span class="token comment"># 这样该网络内的其它容器可以用别名互相访问！</span>
-<span class="token comment"># mysql容器，指定别名为db，另外每一个容器都有一个别名是容器名</span>
+# 注意，在加入网络时可以通过--alias给容器起别名
+# 这样该网络内的其它容器可以用别名互相访问！
+# mysql容器，指定别名为db，另外每一个容器都有一个别名是容器名
 docker network connect hmall mysql --alias db<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="image-20240605142708562.png" alt="image-20240605142708562"></p>
 <p>创建自定义网络，容器名就是稳定域名</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在app1内部访问app2的80端口，此时不是暴露在外面的端口（99）</span>
-<span class="token function">curl</span> http://app2:80<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># 在app1内部访问app2的80端口，此时不是暴露在外面的端口（99）
+curl http:&#x2F;&#x2F;app2:80<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h3 id="Redis主从同步集群"><a href="#Redis主从同步集群" class="headerlink" title="Redis主从同步集群"></a>Redis主从同步集群</h3><p>导图：<img src="image-20240605144536266.png" alt="image-20240605144536266"></p>
 <p>使用bitnami的redis镜像，这里的镜像不需要修改配置文件，只需要定义一些环境变量</p>
 <p><a target="_blank" rel="noopener" href="https://hub.docker.com/r/bitnami/redis">bitnami的dockerhub地址</a></p>
 <blockquote>
 <p>redis单服务启动命令</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">docker run --name redis -p <span class="token number">6379</span>:6379 -d -e <span class="token assign-left variable">ALLOW_EMPTY_PASSWORD</span><span class="token operator">=</span>yes bitnami/redis:latest<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">docker run --name redis -p 6379:6379 -d -e ALLOW_EMPTY_PASSWORD&#x3D;yes bitnami&#x2F;redis:latest<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </blockquote>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#自定义网络</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#自定义网络
 docker network create mynet
-<span class="token comment">#主节点</span>
-docker run -d -p <span class="token number">6379</span>:6379 <span class="token punctuation">\</span>
--v /app/rd1:/bitnami/redis/data <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_REPLICATION_MODE</span><span class="token operator">=</span>master <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_PASSWORD</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token punctuation">\</span>
---network mynet --name redis01 <span class="token punctuation">\</span>
-bitnami/redis
+#主节点
+docker run -d -p 6379:6379 \
+-v &#x2F;app&#x2F;rd1:&#x2F;bitnami&#x2F;redis&#x2F;data \
+-e REDIS_REPLICATION_MODE&#x3D;master \
+-e REDIS_PASSWORD&#x3D;123456 \
+--network mynet --name redis01 \
+bitnami&#x2F;redis
 
-<span class="token comment">#从节点</span>
-docker run -d -p <span class="token number">6380</span>:6379 <span class="token punctuation">\</span>
--v /app/rd2:/bitnami/redis/data <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_REPLICATION_MODE</span><span class="token operator">=</span>slave <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_MASTER_HOST</span><span class="token operator">=</span>redis01 <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_MASTER_PORT_NUMBER</span><span class="token operator">=</span><span class="token number">6379</span> <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_MASTER_PASSWORD</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token punctuation">\</span>
--e <span class="token assign-left variable">REDIS_PASSWORD</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token punctuation">\</span>
---network mynet --name redis02 <span class="token punctuation">\</span>
-bitnami/redis<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#从节点
+docker run -d -p 6380:6379 \
+-v &#x2F;app&#x2F;rd2:&#x2F;bitnami&#x2F;redis&#x2F;data \
+-e REDIS_REPLICATION_MODE&#x3D;slave \
+-e REDIS_MASTER_HOST&#x3D;redis01 \
+-e REDIS_MASTER_PORT_NUMBER&#x3D;6379 \
+-e REDIS_MASTER_PASSWORD&#x3D;123456 \
+-e REDIS_PASSWORD&#x3D;123456 \
+--network mynet --name redis02 \
+bitnami&#x2F;redis<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="启动Mysql"><a href="#启动Mysql" class="headerlink" title="启动Mysql"></a>启动Mysql</h3><p>去官方文档寻找三大点：网络、 存储、 环境变量</p>
 <p><img src="image-20240605150922127.png" alt="image-20240605150922127"></p>
 <p>因为本地就有mysql，这里暴露的端口就不选3306了</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">docker run -d -p <span class="token number">3306</span>:3306 <span class="token punctuation">\</span>
--v /app/myconf:/etc/mysql/conf.d <span class="token punctuation">\</span>
--v /app/mydata:/var/lib/mysql <span class="token punctuation">\</span>
--e <span class="token assign-left variable">MYSQL_ROOT_PASSWORD</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token punctuation">\</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">docker run -d -p 3306:3306 \
+-v &#x2F;app&#x2F;myconf:&#x2F;etc&#x2F;mysql&#x2F;conf.d \
+-v &#x2F;app&#x2F;mydata:&#x2F;var&#x2F;lib&#x2F;mysql \
+-e MYSQL_ROOT_PASSWORD&#x3D;123456 \
 mysql<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p>批量管理容器的工具</p>
 <p>导图：<img src="image-20240605154503301.png" alt="image-20240605154503301"></p>
 <h3 id="博客实践"><a href="#博客实践" class="headerlink" title="博客实践"></a>博客实践</h3><p>导图：<img src="image-20240605155009412.png" alt="image-20240605155009412"></p>
-<h4 id="命令式安装"><a href="#命令式安装" class="headerlink" title="命令式安装"></a>命令式安装</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment">#创建网络</span>
+<h4 id="命令式安装"><a href="#命令式安装" class="headerlink" title="命令式安装"></a>命令式安装</h4><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">#创建网络
 docker network create blog
 
-<span class="token comment">#启动mysql</span>
-docker run -d -p <span class="token number">3306</span>:3306 <span class="token punctuation">\</span>
--e <span class="token assign-left variable">MYSQL_ROOT_PASSWORD</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token punctuation">\</span>
--e <span class="token assign-left variable">MYSQL_DATABASE</span><span class="token operator">=</span>wordpress <span class="token punctuation">\</span>
--v mysql-data:/var/lib/mysql <span class="token punctuation">\</span>
--v /app/myconf:/etc/mysql/conf.d <span class="token punctuation">\</span>
---restart always --name mysql <span class="token punctuation">\</span>
---network blog <span class="token punctuation">\</span>
+#启动mysql
+docker run -d -p 3306:3306 \
+-e MYSQL_ROOT_PASSWORD&#x3D;123456 \
+-e MYSQL_DATABASE&#x3D;wordpress \
+-v mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql \
+-v &#x2F;app&#x2F;myconf:&#x2F;etc&#x2F;mysql&#x2F;conf.d \
+--restart always --name mysql \
+--network blog \
 mysql:8.0
 
-<span class="token comment">#启动wordpress（开源博客系统）</span>
-docker run -d -p <span class="token number">8090</span>:80 <span class="token punctuation">\</span>
--e <span class="token assign-left variable">WORDPRESS_DB_HOST</span><span class="token operator">=</span>mysql <span class="token punctuation">\</span>
--e <span class="token assign-left variable">WORDPRESS_DB_USER</span><span class="token operator">=</span>root <span class="token punctuation">\</span>
--e <span class="token assign-left variable">WORDPRESS_DB_PASSWORD</span><span class="token operator">=</span><span class="token number">123456</span> <span class="token punctuation">\</span>
--e <span class="token assign-left variable">WORDPRESS_DB_NAME</span><span class="token operator">=</span>wordpress <span class="token punctuation">\</span>
--v wordpress:/var/www/html <span class="token punctuation">\</span>
---restart always --name wordpress-app <span class="token punctuation">\</span>
---network blog <span class="token punctuation">\</span>
+#启动wordpress（开源博客系统）
+docker run -d -p 8090:80 \
+-e WORDPRESS_DB_HOST&#x3D;mysql \
+-e WORDPRESS_DB_USER&#x3D;root \
+-e WORDPRESS_DB_PASSWORD&#x3D;123456 \
+-e WORDPRESS_DB_NAME&#x3D;wordpress \
+-v wordpress:&#x2F;var&#x2F;www&#x2F;html \
+--restart always --name wordpress-app \
+--network blog \
 wordpress:latest<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h4 id="compose-yaml安装"><a href="#compose-yaml安装" class="headerlink" title="compose.yaml安装"></a>compose.yaml安装</h4><p><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/compose-file/">官方参考文档</a></p>
 <p><img src="image-20240605160350842.png" alt="image-20240605160350842"></p>
 <p>其实就是参考docker run时候的参数，再在参考文档里面去找对应的语法，对应如图</p>
 <p><img src="image-20240605161334512.png" alt="image-20240605161334512"></p>
-<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml"><span class="token key atrule">services</span><span class="token punctuation">:</span> 
-  <span class="token key atrule">mysql</span><span class="token punctuation">:</span>
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mysql
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> mysql<span class="token punctuation">:</span><span class="token number">8.0</span>
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token string">"3306:3306"</span> <span class="token comment">#一个短横线代表一个数组里面的元素</span>
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span> <span class="token comment"># 数组写法</span>
-      <span class="token punctuation">-</span> MYSQL_ROOT_PASSWORD=123456
-      <span class="token punctuation">-</span> MYSQL_DATABASE=wordpress
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> mysql<span class="token punctuation">-</span>data<span class="token punctuation">:</span>/var/lib/mysql
-      <span class="token punctuation">-</span> /app/myconf<span class="token punctuation">:</span>/etc/mysql/conf.d
-    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
-    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> blog
+<pre class="line-numbers language-yaml" data-language="yaml"><code class="language-yaml">services: 
+  mysql:
+    container_name: mysql
+    image: mysql:8.0
+    ports:
+      - &quot;3306:3306&quot; #一个短横线代表一个数组里面的元素
+    environment: # 数组写法
+      - MYSQL_ROOT_PASSWORD&#x3D;123456
+      - MYSQL_DATABASE&#x3D;wordpress
+    volumes:
+      - mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql
+      - &#x2F;app&#x2F;myconf:&#x2F;etc&#x2F;mysql&#x2F;conf.d
+    restart: always
+    networks:
+      - blog
 
-  <span class="token key atrule">wordpress</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> wordpress
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token string">"8099:80"</span>
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span> <span class="token comment"># k-v写法</span>
-      <span class="token key atrule">WORDPRESS_DB_HOST</span><span class="token punctuation">:</span> mysql
-      <span class="token key atrule">WORDPRESS_DB_USER</span><span class="token punctuation">:</span> root
-      <span class="token key atrule">WORDPRESS_DB_PASSWORD</span><span class="token punctuation">:</span> <span class="token number">123456</span>
-      <span class="token key atrule">WORDPRESS_DB_NAME</span><span class="token punctuation">:</span> wordpress
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> wordpress<span class="token punctuation">:</span>/var/www/html
-    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
-    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> blog
-    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span> <span class="token comment">#肯定是要mysql启动好了以后才能启动wordpress，所以是依赖mysql</span>
-      <span class="token punctuation">-</span> mysql
+  wordpress:
+    image: wordpress
+    ports:
+      - &quot;8099:80&quot;
+    environment: # k-v写法
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: 123456
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress:&#x2F;var&#x2F;www&#x2F;html
+    restart: always
+    networks:
+      - blog
+    depends_on: #肯定是要mysql启动好了以后才能启动wordpress，所以是依赖mysql
+      - mysql
 
-<span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-  <span class="token key atrule">mysql-data</span><span class="token punctuation">:</span>
-  <span class="token key atrule">wordpress</span><span class="token punctuation">:</span>
+volumes:
+  mysql-data:
+  wordpress:
 
-<span class="token key atrule">networks</span><span class="token punctuation">:</span> <span class="token comment">#声明网络</span>
-  blog<span class="token punctuation">:</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+networks: #声明网络
+  blog:<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>启动：</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># up:启动、上线；-d 以后台方式；文件名默认是compose.yaml，如果不是，就要-f指定</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># up:启动、上线；-d 以后台方式；文件名默认是compose.yaml，如果不是，就要-f指定
 docker compose -f compose.yaml up -d<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><u>“1”代表这个容器启动了一个</u></p>
@@ -456,17 +456,17 @@ docker compose -f compose.yaml up -d<span aria-hidden="true" class="line-numbers
 </ul>
 </li>
 </ul>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 增量更新，只更新compose.yaml中改过的部分</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># 增量更新，只更新compose.yaml中改过的部分
 docker compose -f compose.yaml 
-<span class="token comment"># down为下线；up为上线【不删除卷】</span>
+# down为下线；up为上线【不删除卷】
 docker compose -f compose.yaml down
-<span class="token comment"># 可 docker compose down --help</span>
+# 可 docker compose down --help
 docker compose -f compose.yaml down --rmi all -v
 
-<span class="token comment">#【可选】还可指定项目名称</span>
+#【可选】还可指定项目名称
 docker compose -f compose.yaml -p myapp up -d
 
-<span class="token comment">#查看项目以下的容器docker compose -p myapp ps</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+#查看项目以下的容器docker compose -p myapp ps<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="image-20240605164041206.png" alt="image-20240605164041206"></p>
 <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p><img src="image-20240605164243442.png" alt="image-20240605164243442"></p>
@@ -543,21 +543,21 @@ EXPOSE 8080
 ENTRYPOINT [&quot;java&quot;,&quot;-jar&quot;,&quot;&#x2F;app.jar&quot;] #每个空格会分隔数组里面的每个元素，等于 java -jar &#x2F;app.jar<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>构建镜像</p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -t指定镜像名字  .指定工作目录</span>
-docker build -f Dockerfile -t myjavaapp:v1.0 <span class="token builtin class-name">.</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># -t指定镜像名字  .指定工作目录
+docker build -f Dockerfile -t myjavaapp:v1.0 .<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h2 id="Docker分层机制"><a href="#Docker分层机制" class="headerlink" title="Docker分层机制"></a>Docker分层机制</h2><p><img src="image-20240605170934973.png" alt="image-20240605170934973"></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 查看构建历史</span>
-docker image <span class="token function">history</span> <span class="token punctuation">[</span>image_name<span class="token punctuation">]</span>
-<span class="token comment"># 查看镜像详情</span>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># 查看构建历史
+docker image history [image_name]
+# 查看镜像详情
 docker image inspect nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><img src="image-20240605171055444.png" alt="image-20240605171055444"></p>
 <p>镜像和(多个)容器的关系如下，容器是在镜像基础之上的可读可写层，所以容器删除以后，这一层的东西也是不保存的。而镜像的基础数据还存在磁盘里。</p>
 <p><img src="image-20240605171301268.png" alt="镜像和容器的关系"></p>
 <p><img src="image-20240605171555870.png" alt="镜像和多个容器的关系"></p>
-<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># -s,--size 陈列全部文件的大小</span>
-docker <span class="token function">ps</span> -s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"># -s,--size 陈列全部文件的大小
+docker ps -s<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <p><img src="image-20240605171948658.png" alt="docker ps -s"></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><img src="image-20240605174103218.png" alt="总结"></p>

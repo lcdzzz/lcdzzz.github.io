@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>自定义限流注解 | lcdzzz的博客</title><meta name="keywords" content="tienchin,redis,ruoyi源码,原创笔记,序列化,lua脚本,全局异常处理"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="代码地址  依赖依赖：springweb、nosql的redis、aop &lt;dependency&gt;     &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;     &lt;artifactId&gt;spring-boot-starter-data-redis&lt;&#x2F;artifactId&gt; &lt;&#x2F;dependency&gt; &lt;depen">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>自定义限流注解 | lcdzzz的博客</title><meta name="keywords" content="redis,tienchin,ruoyi源码,原创笔记,序列化,lua脚本,全局异常处理"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="代码地址  依赖依赖：springweb、nosql的redis、aop &lt;dependency&gt;     &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;     &lt;artifactId&gt;spring-boot-starter-data-redis&lt;&#x2F;artifactId&gt; &lt;&#x2F;dependency&gt; &lt;depen">
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
 <meta property="og:title" content="自定义限流注解">
 <meta property="og:url" content="http://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/index.html">
@@ -9,8 +9,8 @@
 <meta property="article:published_time" content="2024-01-28T08:40:02.000Z">
 <meta property="article:modified_time" content="2024-02-03T12:49:21.035Z">
 <meta property="article:author" content="lcdzzz">
-<meta property="article:tag" content="tienchin">
 <meta property="article:tag" content="redis">
+<meta property="article:tag" content="tienchin">
 <meta property="article:tag" content="ruoyi源码">
 <meta property="article:tag" content="原创笔记">
 <meta property="article:tag" content="序列化">
@@ -167,57 +167,57 @@
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>application.properties：</p>
-<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token attr-name">spring.redis.host</span><span class="token punctuation">=</span><span class="token attr-value">localhost</span>
-<span class="token attr-name">spring.redis.port</span><span class="token punctuation">=</span><span class="token attr-value">6379</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">spring.redis.host&#x3D;localhost
+spring.redis.port&#x3D;6379<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="step1：限流类型"><a href="#step1：限流类型" class="headerlink" title="step1：限流类型"></a>step1：限流类型</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>enums</span><span class="token punctuation">;</span>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="step1：限流类型"><a href="#step1：限流类型" class="headerlink" title="step1：限流类型"></a>step1：限流类型</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.enums;
 
-<span class="token comment">/**
+&#x2F;**
  * 限流的类型
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">enum</span> <span class="token class-name">LimitType</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">/**
+ *&#x2F;
+public enum LimitType &#123;
+    &#x2F;**
      * 默认的限流策略，针对某一个接口进行限流
-     */</span>
-    DEFAULT<span class="token punctuation">,</span>
+     *&#x2F;
+    DEFAULT,
 
-    <span class="token comment">/**
+    &#x2F;**
      * 针对某一个IP进行限流
-     */</span>
+     *&#x2F;
     IP
-<span class="token punctuation">&#125;</span>
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="step2：定义注解"><a href="#step2：定义注解" class="headerlink" title="step2：定义注解"></a>step2：定义注解</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>annotation</span><span class="token punctuation">;</span>
+<h2 id="step2：定义注解"><a href="#step2：定义注解" class="headerlink" title="step2：定义注解"></a>step2：定义注解</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.annotation;
 
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>enums<span class="token punctuation">.</span></span><span class="token class-name">LimitType</span><span class="token punctuation">;</span>
+import com.lcdzzz.rate_limiter.enums.LimitType;
 
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">RateLimiter</span> <span class="token punctuation">&#123;</span>
+public @interface RateLimiter &#123;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 限流的key，主要是指前缀
      * @return
-     */</span>
-    <span class="token class-name">String</span> <span class="token function">key</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"rate_limit"</span><span class="token punctuation">;</span>
+     *&#x2F;
+    String key() default &quot;rate_limit&quot;;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 限流时间窗
      * @return
-     */</span>
-    <span class="token keyword">int</span> <span class="token function">time</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">60</span><span class="token punctuation">;</span>
+     *&#x2F;
+    int time() default 60;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 在时间窗内的限流次数
      * @return
-     */</span>
-    <span class="token keyword">int</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">100</span><span class="token punctuation">;</span>
+     *&#x2F;
+    int count() default 100;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 限流类型
      * @return
-     */</span>
-    <span class="token class-name">LimitType</span> <span class="token function">limitType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token class-name">LimitType</span><span class="token punctuation">.</span>DEFAULT<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+     *&#x2F;
+    LimitType limitType() default LimitType.DEFAULT;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="step3：配置redis"><a href="#step3：配置redis" class="headerlink" title="step3：配置redis"></a>step3：配置redis</h2><h3 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h3><p>因为待会去操作限流时需要lua表达式，所以先要对redis进行简单的配置</p>
 <blockquote>
@@ -233,43 +233,43 @@
 <p>那它存入redis里面的就是<img src="image-20240129012345206.png" alt="image-20240129012345206"></p>
 <p>虽然在get时，如果依然用的是<code>RedisTemplate</code>，那它自己会帮忙转回去，但是如果用redis命令行去<code>get xxx</code>，那是行不通的。</p>
 <h3 id="办法"><a href="#办法" class="headerlink" title="办法"></a>办法</h3><p>所以！！！<strong>要修改的它的序列化方案，用JSON的</strong>，java代码如下</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>config</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.config;
 
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Bean</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Configuration</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>connection<span class="token punctuation">.</span></span><span class="token class-name">RedisConnectionFactory</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span></span><span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token punctuation">;</span>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 
-<span class="token annotation punctuation">@Configuration</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisConfig</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">redisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+@Configuration
+public class RedisConfig &#123;
+    @Bean
+    RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
 
-        <span class="token comment">// 创建 RedisTemplate 对象</span>
-        <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        &#x2F;&#x2F; 创建 RedisTemplate 对象
+        RedisTemplate&lt;Object, Object&gt; template &#x3D; new RedisTemplate&lt;&gt;();
 
-        <span class="token comment">// 设置 RedisConnection 工厂。 它就是实现多种 Java Redis 客户端接入的秘密工厂</span>
-        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        &#x2F;&#x2F; 设置 RedisConnection 工厂。 它就是实现多种 Java Redis 客户端接入的秘密工厂
+        template.setConnectionFactory(redisConnectionFactory);
 
-        <span class="token comment">/**
+        &#x2F;**
          * org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
          * 使用 Jackson 实现 JSON 的序列化方式，并且从 Generic 单词可以看出，是支持所有类。
-         */</span>
+         *&#x2F;
 
-        <span class="token comment">//各种序列化的方案。实际线上场景，还是使用 JSON 序列化居多。</span>
-        <span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> serializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//设置key的序列化</span>
-        template<span class="token punctuation">.</span><span class="token function">setKeySerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        template<span class="token punctuation">.</span><span class="token function">setHashKeySerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//设置value的序列化</span>
-        template<span class="token punctuation">.</span><span class="token function">setValueSerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        template<span class="token punctuation">.</span><span class="token function">setHashValueSerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+        &#x2F;&#x2F;各种序列化的方案。实际线上场景，还是使用 JSON 序列化居多。
+        Jackson2JsonRedisSerializer&lt;Object&gt; serializer &#x3D; new Jackson2JsonRedisSerializer&lt;&gt;(Object.class);
+        &#x2F;&#x2F;设置key的序列化
+        template.setKeySerializer(serializer);
+        template.setHashKeySerializer(serializer);
+        &#x2F;&#x2F;设置value的序列化
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
+        return template;
+    &#125;
 
 
-<span class="token punctuation">&#125;</span>
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="step4：lua脚本"><a href="#step4：lua脚本" class="headerlink" title="step4：lua脚本"></a>step4：lua脚本</h2><p>插件<img src="image-20240129021844983.png" alt="image-20240129021844983"></p>
@@ -281,87 +281,87 @@
 <li>传多个参数进来，多个参数也是数组</li>
 </ul>
 </blockquote>
-<pre class="line-numbers language-lua" data-language="lua"><code class="language-lua"><span class="token comment">--注意，这里的下标是从1开始的，而不是0。</span>
-<span class="token comment">--以下的意思：一会把KEYS数组里面的第一项拿出来，交给key这个变量</span>
-<span class="token comment">--tonumber是把字符串转成数字</span>
-<span class="token keyword">local</span> key <span class="token operator">=</span> KEYS<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
-<span class="token keyword">local</span> time <span class="token operator">=</span><span class="token function">tonumber</span><span class="token punctuation">(</span>ARGV<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token keyword">local</span> count<span class="token operator">=</span><span class="token function">tonumber</span><span class="token punctuation">(</span>ARGV<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token comment">--[[当看到这行Lua脚本时，可以理解为它是用在Redis数据库上的脚本。让我们逐步解释这行代码：
+<pre class="line-numbers language-lua" data-language="lua"><code class="language-lua">--注意，这里的下标是从1开始的，而不是0。
+--以下的意思：一会把KEYS数组里面的第一项拿出来，交给key这个变量
+--tonumber是把字符串转成数字
+local key &#x3D; KEYS[1]
+local time &#x3D;tonumber(ARGV[1])
+local count&#x3D;tonumber(ARGV[2])
+--[[当看到这行Lua脚本时，可以理解为它是用在Redis数据库上的脚本。让我们逐步解释这行代码：
     1. local current: 这行声明了一个本地变量 current。
         在Lua中，local 关键字用于声明局部变量，其作用范围仅限于当前代码块。
-    2. redis.call('get', key): 这是一个Redis命令，用于执行Redis数据库的GET操作。
+    2. redis.call(&#39;get&#39;, key): 这是一个Redis命令，用于执行Redis数据库的GET操作。
         具体来说，它是通过Lua脚本中的 redis.call 函数来调用Redis命令的。
-        在这里，'get' 是Redis的GET命令，而 key 是作为参数传递给GET命令的键。
+        在这里，&#39;get&#39; 是Redis的GET命令，而 key 是作为参数传递给GET命令的键。
 
   所以，整体而言，这行代码的目的是从Redis数据库中获取键为 key 的值，
   并将其存储在本地变量 current 中。在这之后，你可以通过对 current 变量的操作来处理从Redis中获取的值。
   例如，你可能会检查是否成功获取了值，然后进行相应的逻辑处理。
-    ]]</span>
-<span class="token comment">--这里的key，就是当前要限流的那一个接口，其存在redis里面的那个key，把它先拎出来，放进current变量中</span>
-<span class="token keyword">local</span> current<span class="token operator">=</span>redis<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token string">'get'</span><span class="token punctuation">,</span>key<span class="token punctuation">)</span>
-<span class="token comment">--但是如果这个key没有调用过，那么这个current没有值。比如第一次调用这个接口，那么current是会不存在的。所以下面还要做一个判断</span>
-<span class="token keyword">if</span> current <span class="token keyword">and</span> <span class="token function">tonumber</span><span class="token punctuation">(</span>current<span class="token punctuation">)</span><span class="token operator">></span>count <span class="token keyword">then</span><span class="token comment">--[[意思是current存在，并且它的值大于count。说明已经超过限流的阈值了]]</span>
-    <span class="token keyword">return</span> <span class="token function">tonumber</span><span class="token punctuation">(</span>current<span class="token punctuation">)</span>
-<span class="token keyword">end</span><span class="token comment">--[[否则就是current没有值，意味着是第一次访问]]</span>
-current<span class="token operator">=</span>redis<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token string">'incr'</span><span class="token punctuation">,</span>key<span class="token punctuation">)</span><span class="token comment">--[[给current自增1。因为有可能存在并发操作，所以不能用set操作，用incr会更准确一些]]</span>
+    ]]
+--这里的key，就是当前要限流的那一个接口，其存在redis里面的那个key，把它先拎出来，放进current变量中
+local current&#x3D;redis.call(&#39;get&#39;,key)
+--但是如果这个key没有调用过，那么这个current没有值。比如第一次调用这个接口，那么current是会不存在的。所以下面还要做一个判断
+if current and tonumber(current)&gt;count then--[[意思是current存在，并且它的值大于count。说明已经超过限流的阈值了]]
+    return tonumber(current)
+end--[[否则就是current没有值，意味着是第一次访问]]
+current&#x3D;redis.call(&#39;incr&#39;,key)--[[给current自增1。因为有可能存在并发操作，所以不能用set操作，用incr会更准确一些]]
 
-<span class="token comment">--但是在并发环境下，有可能另外一个操作也执行了current自增1的操作，所以以下需要判断，即如果对方已经设置过过期时间了，那我们就不需要多次一举了</span>
-<span class="token keyword">if</span> <span class="token function">tonumber</span><span class="token punctuation">(</span>current<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span> <span class="token keyword">then</span><span class="token comment">--[[等于1代表还没有其他的进程操作过current]]</span>
-    redis<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token string">'expire'</span><span class="token punctuation">,</span>key<span class="token punctuation">,</span>time<span class="token punctuation">)</span><span class="token comment">--[[设置过期时间]]</span>
-<span class="token keyword">end</span>
-<span class="token keyword">return</span> <span class="token function">tonumber</span><span class="token punctuation">(</span>current<span class="token punctuation">)</span><span class="token comment">--[[最后我们需要在java代码中看current的值，判断是否需要限流/放行]]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+--但是在并发环境下，有可能另外一个操作也执行了current自增1的操作，所以以下需要判断，即如果对方已经设置过过期时间了，那我们就不需要多次一举了
+if tonumber(current)&#x3D;&#x3D;1 then--[[等于1代表还没有其他的进程操作过current]]
+    redis.call(&#39;expire&#39;,key,time)--[[设置过期时间]]
+end
+return tonumber(current)--[[最后我们需要在java代码中看current的值，判断是否需要限流&#x2F;放行]]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="step5：加载lua脚本"><a href="#step5：加载lua脚本" class="headerlink" title="step5：加载lua脚本"></a>step5：加载lua脚本</h2><p>上一步写的lua脚本是需要加载的，springDataRedis中也为加载lua脚本提供了方法，只要定义一个bean就行了，如下 </p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>config</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.config;
 
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Bean</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Configuration</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">ClassPathResource</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>connection<span class="token punctuation">.</span></span><span class="token class-name">RedisConnectionFactory</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span>script<span class="token punctuation">.</span></span><span class="token class-name">DefaultRedisScript</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>serializer<span class="token punctuation">.</span></span><span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>scripting<span class="token punctuation">.</span>support<span class="token punctuation">.</span></span><span class="token class-name">ResourceScriptSource</span><span class="token punctuation">;</span>
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.scripting.support.ResourceScriptSource;
 
-<span class="token annotation punctuation">@Configuration</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisConfig</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">redisTemplate</span><span class="token punctuation">(</span><span class="token class-name">RedisConnectionFactory</span> redisConnectionFactory<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+@Configuration
+public class RedisConfig &#123;
+    @Bean
+    RedisTemplate&lt;Object, Object&gt; redisTemplate(RedisConnectionFactory redisConnectionFactory) &#123;
 
-        <span class="token comment">// 创建 RedisTemplate 对象</span>
-        <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> template <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        &#x2F;&#x2F; 创建 RedisTemplate 对象
+        RedisTemplate&lt;Object, Object&gt; template &#x3D; new RedisTemplate&lt;&gt;();
 
-        <span class="token comment">// 设置 RedisConnection 工厂。 它就是实现多种 Java Redis 客户端接入的秘密工厂</span>
-        template<span class="token punctuation">.</span><span class="token function">setConnectionFactory</span><span class="token punctuation">(</span>redisConnectionFactory<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        &#x2F;&#x2F; 设置 RedisConnection 工厂。 它就是实现多种 Java Redis 客户端接入的秘密工厂
+        template.setConnectionFactory(redisConnectionFactory);
 
-        <span class="token comment">/**
+        &#x2F;**
          * org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer
          * 使用 Jackson 实现 JSON 的序列化方式，并且从 Generic 单词可以看出，是支持所有类。
-         */</span>
+         *&#x2F;
 
-        <span class="token comment">//各种序列化的方案。实际线上场景，还是使用 JSON 序列化居多。</span>
-        <span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> serializer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Jackson2JsonRedisSerializer</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token class-name">Object</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//设置key的序列化</span>
-        template<span class="token punctuation">.</span><span class="token function">setKeySerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        template<span class="token punctuation">.</span><span class="token function">setHashKeySerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//设置value的序列化</span>
-        template<span class="token punctuation">.</span><span class="token function">setValueSerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        template<span class="token punctuation">.</span><span class="token function">setHashValueSerializer</span><span class="token punctuation">(</span>serializer<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> template<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+        &#x2F;&#x2F;各种序列化的方案。实际线上场景，还是使用 JSON 序列化居多。
+        Jackson2JsonRedisSerializer&lt;Object&gt; serializer &#x3D; new Jackson2JsonRedisSerializer&lt;&gt;(Object.class);
+        &#x2F;&#x2F;设置key的序列化
+        template.setKeySerializer(serializer);
+        template.setHashKeySerializer(serializer);
+        &#x2F;&#x2F;设置value的序列化
+        template.setValueSerializer(serializer);
+        template.setHashValueSerializer(serializer);
+        return template;
+    &#125;
 
-    <span class="token comment">//这个bean是一个泛型，这里的泛型对应的是返回数据的类型</span>
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token class-name">DefaultRedisScript</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">></span></span> <span class="token function">limitScript</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">DefaultRedisScript</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">></span></span> script <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">DefaultRedisScript</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        script<span class="token punctuation">.</span><span class="token function">setResultType</span><span class="token punctuation">(</span><span class="token class-name">Long</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//返回的类型</span>
+    &#x2F;&#x2F;这个bean是一个泛型，这里的泛型对应的是返回数据的类型
+    @Bean
+    DefaultRedisScript&lt;Long&gt; limitScript()&#123;
+        DefaultRedisScript&lt;Long&gt; script &#x3D; new DefaultRedisScript&lt;&gt;();
+        script.setResultType(Long.class);&#x2F;&#x2F;返回的类型
 
-        <span class="token comment">/*以下这行代码看起来是用于设置Lua脚本的源代码。让我们逐步解释：
-            1. new ClassPathResource("lua/limit.lua"): 这部分创建了一个 ClassPathResource 对象，
-            该对象用于表示类路径下的资源。在这里，"lua/limit.lua" 是资源的路径，
+        &#x2F;*以下这行代码看起来是用于设置Lua脚本的源代码。让我们逐步解释：
+            1. new ClassPathResource(&quot;lua&#x2F;limit.lua&quot;): 这部分创建了一个 ClassPathResource 对象，
+            该对象用于表示类路径下的资源。在这里，&quot;lua&#x2F;limit.lua&quot; 是资源的路径，
             这意味着要在类路径下找到名为 limit.lua 的Lua脚本文件。
 
             2. new ResourceScriptSource(...): 这部分创建了一个 ResourceScriptSource 对象，
@@ -370,13 +370,13 @@ current<span class="token operator">=</span>redis<span class="token punctuation"
             3. script.setScriptSource(...): 这部分应该是将创建好的脚本源代码对象设置到某个脚本对象中。
             根据命名和上下文来看，可能是设置到一个名为 script 的Lua脚本对象中。
 
-        综合起来，这行代码的作用是将位于类路径下的 lua/limit.lua 文件的Lua脚本设置为某个脚本对象
-        （可能是 script）的源代码。这样做的目的是为了后续执行该脚本时能够使用该源代码。*/</span>
-        script<span class="token punctuation">.</span><span class="token function">setScriptSource</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ResourceScriptSource</span>
-                <span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ClassPathResource</span><span class="token punctuation">(</span><span class="token string">"lua/limit.lua"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">/*告诉spring我的脚本搁哪呢*/</span>
-        <span class="token keyword">return</span> script<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+        综合起来，这行代码的作用是将位于类路径下的 lua&#x2F;limit.lua 文件的Lua脚本设置为某个脚本对象
+        （可能是 script）的源代码。这样做的目的是为了后续执行该脚本时能够使用该源代码。*&#x2F;
+        script.setScriptSource(new ResourceScriptSource
+                (new ClassPathResource(&quot;lua&#x2F;limit.lua&quot;)));&#x2F;*告诉spring我的脚本搁哪呢*&#x2F;
+        return script;
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="step6：自定义异常"><a href="#step6：自定义异常" class="headerlink" title="step6：自定义异常"></a>step6：自定义异常</h2><p><code>@RestControllerAdvice</code> 是Spring Framework中的注解，用于定义一个全局性的异常处理器（Global Exception Handler）。</p>
@@ -387,114 +387,114 @@ current<span class="token operator">=</span>redis<span class="token punctuation"
 <li><strong>异常日志记录：</strong> 可以在全局异常处理器中集中处理异常的日志记录，方便监控和排查问题。</li>
 </ol>
 <p>一个简单的例子如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">javaCopy code<span class="token annotation punctuation">@RestControllerAdvice</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GlobalExceptionHandler</span> <span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">javaCopy code@RestControllerAdvice
+public class GlobalExceptionHandler &#123;
 
-    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span><span class="token class-name">Exception</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">ResponseEntity</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> <span class="token function">handleException</span><span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">// 处理异常逻辑</span>
-        <span class="token comment">// 可以返回自定义的错误信息</span>
-        <span class="token keyword">return</span> <span class="token class-name">ResponseEntity</span><span class="token punctuation">.</span><span class="token function">status</span><span class="token punctuation">(</span><span class="token class-name">HttpStatus</span><span class="token punctuation">.</span>INTERNAL_SERVER_ERROR<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">body</span><span class="token punctuation">(</span><span class="token string">"Internal Server Error"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity&lt;String&gt; handleException(Exception e) &#123;
+        &#x2F;&#x2F; 处理异常逻辑
+        &#x2F;&#x2F; 可以返回自定义的错误信息
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(&quot;Internal Server Error&quot;);
+    &#125;
 
-    <span class="token comment">// 其他异常处理方法可以继续添加</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    &#x2F;&#x2F; 其他异常处理方法可以继续添加
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>在上述例子中，<code>@ExceptionHandler</code> 注解用于指定处理的异常类型，这里是 <code>Exception.class</code>，表示处理所有类型的异常。然后，定义了一个处理异常的方法 <code>handleException</code>，在这个方法中可以实现自定义的异常处理逻辑。在实际应用中，可以根据需要添加更多的 <code>@ExceptionHandler</code> 方法来处理不同类型的异常。</p>
 <p>此项目中，全局异常处理如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>exception</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.exception;
 
 
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">ExceptionHandler</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestControllerAdvice</span><span class="token punctuation">;</span>
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">HashMap</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Map</span><span class="token punctuation">;</span>
+import java.util.HashMap;
+import java.util.Map;
 
-<span class="token annotation punctuation">@RestControllerAdvice</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GlobalException</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@ExceptionHandler</span><span class="token punctuation">(</span><span class="token class-name">RateLimitException</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Object</span><span class="token punctuation">></span></span> <span class="token function">rateLimitException</span><span class="token punctuation">(</span><span class="token class-name">RateLimitException</span> e<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"status"</span><span class="token punctuation">,</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span>e<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> map<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+@RestControllerAdvice
+public class GlobalException &#123;
+    @ExceptionHandler(RateLimitException.class)
+    public Map&lt;String,Object&gt; rateLimitException(RateLimitException e)&#123;
+        HashMap&lt;String, Object&gt; map &#x3D; new HashMap&lt;&gt;();
+        map.put(&quot;status&quot;,500);
+        map.put(&quot;message&quot;,e.getMessage());
+        return map;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>自定义的异常如下：</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>exception</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.exception;
 
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimitException</span> <span class="token keyword">extends</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token class-name">RateLimitException</span><span class="token punctuation">(</span><span class="token class-name">String</span> message<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class RateLimitException extends Exception &#123;
+    public RateLimitException(String message) &#123;
+        super(message);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 <blockquote>
 <p>至此准备工作算是完成了，接下来就可以去写切面，去解析注解</p>
 </blockquote>
 <h1 id="定义切面"><a href="#定义切面" class="headerlink" title="定义切面"></a>定义切面</h1><h2 id="IpUtils"><a href="#IpUtils" class="headerlink" title="IpUtils"></a>IpUtils</h2><p>请看：<a href="https://lcdzzz.github.io/2022/04/26/java-chang-yong-util-gong-ju-lei/">https://lcdzzz.github.io/2022/04/26/java-chang-yong-util-gong-ju-lei/</a></p>
-<h2 id="RateLimiterAspect"><a href="#RateLimiterAspect" class="headerlink" title="RateLimiterAspect"></a>RateLimiterAspect</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>aspectj</span><span class="token punctuation">;</span>
+<h2 id="RateLimiterAspect"><a href="#RateLimiterAspect" class="headerlink" title="RateLimiterAspect"></a>RateLimiterAspect</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.rate_limiter.aspectj;
 
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RateLimiter</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>enums<span class="token punctuation">.</span></span><span class="token class-name">LimitType</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>exception<span class="token punctuation">.</span></span><span class="token class-name">RateLimitException</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>utils<span class="token punctuation">.</span></span><span class="token class-name">IpUtils</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">JoinPoint</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Aspect</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Before</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">MethodSignature</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span></span><span class="token class-name">Logger</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span></span><span class="token class-name">LoggerFactory</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span></span><span class="token class-name">RedisTemplate</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>data<span class="token punctuation">.</span>redis<span class="token punctuation">.</span>core<span class="token punctuation">.</span>script<span class="token punctuation">.</span></span><span class="token class-name">RedisScript</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span></span><span class="token class-name">Component</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>context<span class="token punctuation">.</span>request<span class="token punctuation">.</span></span><span class="token class-name">RequestContextHolder</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>context<span class="token punctuation">.</span>request<span class="token punctuation">.</span></span><span class="token class-name">ServletRequestAttributes</span><span class="token punctuation">;</span>
+import com.lcdzzz.rate_limiter.annotation.RateLimiter;
+import com.lcdzzz.rate_limiter.enums.LimitType;
+import com.lcdzzz.rate_limiter.exception.RateLimitException;
+import com.lcdzzz.rate_limiter.utils.IpUtils;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.RedisScript;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">Method</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Collections</span><span class="token punctuation">;</span>
+import java.lang.reflect.Method;
+import java.util.Collections;
 
-<span class="token annotation punctuation">@Aspect</span>
-<span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RateLimiterAspect</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">RateLimiterAspect</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">RedisTemplate</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Object</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> redisTemplate<span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">RedisScript</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Long</span><span class="token punctuation">></span></span> redisScript<span class="token punctuation">;</span>
+@Aspect
+@Component
+public class RateLimiterAspect &#123;
+    private static final Logger logger &#x3D; LoggerFactory.getLogger(RateLimiterAspect.class);
+    @Autowired
+    RedisTemplate&lt;Object, Object&gt; redisTemplate;
+    @Autowired
+    RedisScript&lt;Long&gt; redisScript;
 
-    <span class="token comment">//@Before 用于定义前置通知，即在目标方法执行前执行的代码。</span>
-   <span class="token comment">/* "@annotation(rateLimiter)": 这是一个切点表达式，它指定了在被 rateLimiter 注解标注的方法上执行切面逻辑。
+    &#x2F;&#x2F;@Before 用于定义前置通知，即在目标方法执行前执行的代码。
+   &#x2F;* &quot;@annotation(rateLimiter)&quot;: 这是一个切点表达式，它指定了在被 rateLimiter 注解标注的方法上执行切面逻辑。
      @annotation 是一个用于匹配带有特定注解的方法的切点函数，
-     其中 rateLimiter 是一个注解的名字，用于匹配使用该注解的方法。*/</span>
-    <span class="token annotation punctuation">@Before</span><span class="token punctuation">(</span><span class="token string">"@annotation(rateLimiter)"</span><span class="token punctuation">)</span><span class="token comment">//到时候加了@rateLimiter注解的方法，通通都会被洒家拦截下来</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">before</span><span class="token punctuation">(</span><span class="token class-name">JoinPoint</span> jp<span class="token punctuation">,</span> <span class="token class-name">RateLimiter</span> rateLimiter<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">RateLimitException</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">int</span> time <span class="token operator">=</span> rateLimiter<span class="token punctuation">.</span><span class="token function">time</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> count <span class="token operator">=</span> rateLimiter<span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> combineKey <span class="token operator">=</span> <span class="token function">getCombineKey</span><span class="token punctuation">(</span>rateLimiter<span class="token punctuation">,</span> jp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+     其中 rateLimiter 是一个注解的名字，用于匹配使用该注解的方法。*&#x2F;
+    @Before(&quot;@annotation(rateLimiter)&quot;)&#x2F;&#x2F;到时候加了@rateLimiter注解的方法，通通都会被洒家拦截下来
+    public void before(JoinPoint jp, RateLimiter rateLimiter) throws RateLimitException&#123;
+        int time &#x3D; rateLimiter.time();
+        int count &#x3D; rateLimiter.count();
+        String combineKey &#x3D; getCombineKey(rateLimiter, jp);
 
-        <span class="token comment">//Collections.singletonList 是 Java 中 Collections 类提供的一个静态方法，用于创建包含单个元素的不可变列表（List）</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Long</span> number <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">execute</span><span class="token punctuation">(</span>redisScript<span class="token punctuation">,</span> <span class="token class-name">Collections</span><span class="token punctuation">.</span><span class="token function">singletonList</span><span class="token punctuation">(</span>combineKey<span class="token punctuation">)</span><span class="token punctuation">,</span> time<span class="token punctuation">,</span> count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment">//根据number的值去判断发生啥事了</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>number<span class="token operator">==</span><span class="token keyword">null</span><span class="token operator">||</span>number<span class="token punctuation">.</span><span class="token function">intValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">></span>count<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-                <span class="token comment">//超过阈值，需要限流</span>
-                logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"当前接口以达到最大限流次数"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RateLimitException</span><span class="token punctuation">(</span><span class="token string">"访问过于频繁，请稍后访问"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-            logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"一个时间窗内请求次数:&#123;&#125;,当前请求次数:&#123;&#125;,缓存的key为&#123;&#125;"</span><span class="token punctuation">,</span>count<span class="token punctuation">,</span>number<span class="token punctuation">,</span>combineKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">throw</span> e<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
+        &#x2F;&#x2F;Collections.singletonList 是 Java 中 Collections 类提供的一个静态方法，用于创建包含单个元素的不可变列表（List）
+        try &#123;
+            Long number &#x3D; redisTemplate.execute(redisScript, Collections.singletonList(combineKey), time, count);
+            &#x2F;&#x2F;根据number的值去判断发生啥事了
+            if (number&#x3D;&#x3D;null||number.intValue()&gt;count)&#123;
+                &#x2F;&#x2F;超过阈值，需要限流
+                logger.info(&quot;当前接口以达到最大限流次数&quot;);
+                throw new RateLimitException(&quot;访问过于频繁，请稍后访问&quot;);
+            &#125;
+            logger.info(&quot;一个时间窗内请求次数:&#123;&#125;,当前请求次数:&#123;&#125;,缓存的key为&#123;&#125;&quot;,count,number,combineKey);
+        &#125; catch (Exception e) &#123;
+            throw e;
+        &#125;
 
-    <span class="token punctuation">&#125;</span>
+    &#125;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 这个key其实就是接口调用次数缓存在redis里面的key
      * 如果基于ip限流，那combineKey就会形如：rate_limit:127.0.0.1-com.lcdzzz.rate_limiter.controller.HelloController-hello
      * 如果不基于ip限流，那combineKey就会形如：rate_limit:com.lcdzzz.rate_limiter.controller.HelloController-hello
@@ -502,53 +502,53 @@ current<span class="token operator">=</span>redis<span class="token punctuation"
      * @param rateLimiter
      * @param jp
      * @return
-     */</span>
-    <span class="token keyword">private</span> <span class="token class-name">String</span> <span class="token function">getCombineKey</span><span class="token punctuation">(</span><span class="token class-name">RateLimiter</span> rateLimiter<span class="token punctuation">,</span> <span class="token class-name">JoinPoint</span> jp<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">StringBuffer</span> key <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuffer</span><span class="token punctuation">(</span>rateLimiter<span class="token punctuation">.</span><span class="token function">key</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>rateLimiter<span class="token punctuation">.</span><span class="token function">limitType</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token class-name">LimitType</span><span class="token punctuation">.</span>IP<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//意思是限流的类型是基于ip限流</span>
-            key<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token class-name">IpUtils</span><span class="token punctuation">.</span><span class="token function">getClientIp</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">ServletRequestAttributes</span><span class="token punctuation">)</span> <span class="token class-name">RequestContextHolder</span><span class="token punctuation">.</span><span class="token function">getRequestAttributes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getRequest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-                    <span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token class-name">MethodSignature</span> signature <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MethodSignature</span><span class="token punctuation">)</span> jp<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Method</span> method <span class="token operator">=</span> signature<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        key<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getDeclaringClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">//返回声明方法的类的 Class 对象</span>
-                <span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"-"</span><span class="token punctuation">)</span>
-                <span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>method<span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> key<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+     *&#x2F;
+    private String getCombineKey(RateLimiter rateLimiter, JoinPoint jp) &#123;
+        StringBuffer key &#x3D; new StringBuffer(rateLimiter.key());
+        if (rateLimiter.limitType() &#x3D;&#x3D; LimitType.IP) &#123;&#x2F;&#x2F;意思是限流的类型是基于ip限流
+            key.append(IpUtils.getClientIp(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest()))
+                    .append(&quot;-&quot;);
+        &#125;
+        MethodSignature signature &#x3D; (MethodSignature) jp.getSignature();
+        Method method &#x3D; signature.getMethod();
+        key.append(method.getDeclaringClass().getName())&#x2F;&#x2F;返回声明方法的类的 Class 对象
+                .append(&quot;-&quot;)
+                .append(method.getName());
+        return key.toString();
+    &#125;
 
 
-<span class="token punctuation">&#125;</span>
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="不限制ip地址"><a href="#不限制ip地址" class="headerlink" title="不限制ip地址"></a>不限制ip地址</h2><h3 id="controller层"><a href="#controller层" class="headerlink" title="controller层"></a>controller层</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>rate_limiter<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RateLimiter</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span><span class="token punctuation">;</span>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="不限制ip地址"><a href="#不限制ip地址" class="headerlink" title="不限制ip地址"></a>不限制ip地址</h2><h3 id="controller层"><a href="#controller层" class="headerlink" title="controller层"></a>controller层</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java">import com.lcdzzz.rate_limiter.annotation.RateLimiter;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-<span class="token comment">/**
+&#x2F;**
  * @RestController 注解告诉 Spring 框架，这个类的每个方法的返回值都直接作为 HTTP 响应体返回给客户端，
  * 而不是通过视图解析器来解析成视图。因此，@RestController 通常用于构建 RESTful Web 服务，
  * 其中控制器的方法返回 JSON、XML 等数据格式而不是 HTML 视图。
- */</span>
-<span class="token annotation punctuation">@RestController</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloController</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
-    <span class="token comment">/**
+ *&#x2F;
+@RestController
+public class HelloController &#123;
+    @GetMapping(&quot;&#x2F;hello&quot;)
+    &#x2F;**
      * 限流，10秒之内，这个接口可以访问三次
-     */</span>
-    <span class="token annotation punctuation">@RateLimiter</span><span class="token punctuation">(</span>time <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>count<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+     *&#x2F;
+    @RateLimiter(time &#x3D; 10,count&#x3D;3)
+    public String hello()&#123;
+        return &quot;hello&quot;;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h3><p><img src="image-20240129151626516.png" alt="image-20240129151626516"></p>
-<h2 id="限制ip地址"><a href="#限制ip地址" class="headerlink" title="限制ip地址"></a>限制ip地址</h2><h3 id="controller层-1"><a href="#controller层-1" class="headerlink" title="controller层"></a>controller层</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RateLimiter</span><span class="token punctuation">(</span>time <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>count<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>limitType <span class="token operator">=</span> <span class="token class-name">LimitType</span><span class="token punctuation">.</span>IP<span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token string">"hello"</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="限制ip地址"><a href="#限制ip地址" class="headerlink" title="限制ip地址"></a>限制ip地址</h2><h3 id="controller层-1"><a href="#controller层-1" class="headerlink" title="controller层"></a>controller层</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java">@RateLimiter(time &#x3D; 10,count&#x3D;3,limitType &#x3D; LimitType.IP)
+public String hello()&#123;
+    return &quot;hello&quot;;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="结果-1"><a href="#结果-1" class="headerlink" title="结果"></a>结果</h3><p><img src="image-20240129153250050.png" alt="image-20240129153250050"></p>
 <h1 id="对标tienchin-ruoyi"><a href="#对标tienchin-ruoyi" class="headerlink" title="对标tienchin/ruoyi"></a>对标tienchin/ruoyi</h1><ul>
@@ -560,4 +560,4 @@ current<span class="token operator">=</span>redis<span class="token punctuation"
 <p>不同点：ruoyi是拼接字符串，而上面的方法是用lua脚本，但殊途同归</p>
 </li>
 </ul>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/">http://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/tienchin/">tienchin</a><a class="post-meta__tags" href="/tags/redis/">redis</a><a class="post-meta__tags" href="/tags/ruoyi%E6%BA%90%E7%A0%81/">ruoyi源码</a><a class="post-meta__tags" href="/tags/%E5%8E%9F%E5%88%9B%E7%AC%94%E8%AE%B0/">原创笔记</a><a class="post-meta__tags" href="/tags/%E5%BA%8F%E5%88%97%E5%8C%96/">序列化</a><a class="post-meta__tags" href="/tags/lua%E8%84%9A%E6%9C%AC/">lua脚本</a><a class="post-meta__tags" href="/tags/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">全局异常处理</a></div><div class="post_share"><div class="social-share" data-image="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/02/03/chu-li-mi-deng-xing/"><img class="prev-cover" src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">处理幂等性</div></div></a></div><div class="next-post pull-right"><a href="/2024/01/02/leetcoce-sui-ji/"><img class="next-cover" src="https://tse2-mm.cn.bing.net/th/id/OIP-C.DENauUixUf2DS-VfgKCXlAHaD2?w=311&amp;h=180&amp;c=7&amp;r=0&amp;o=5&amp;pid=1.7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">leetcoce随记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img class="cover" src="https://img0.baidu.com/it/u=3422995933,1192011804&fm=253&fmt=auto&app=138&f=JPEG?w=589&h=220" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-03</div><div class="title">处理幂等性</div></div></a></div><div><a href="/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/" title="自定义多数据源"><img class="cover" src="https://img0.baidu.com/it/u=3276317046,1367389085&fm=253&fmt=auto&app=138&f=PNG?w=889&h=500" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-18</div><div class="title">自定义多数据源</div></div></a></div><div><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/" title="tienchin项目笔记"><img class="cover" src="https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-02</div><div class="title">tienchin项目笔记</div></div></a></div><div><a href="/2022/10/01/gong-zuo-liu/" title="工作流workflow"><img class="cover" src="https://lcdzzz.github.io/2022/10/01/gong-zuo-liu/1662298798529-e1bcda3a-42fe-4d7b-8b42-a1a38cd3c654.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-01</div><div class="title">工作流workflow</div></div></a></div><div><a href="/2022/01/20/redis-ru-men/" title="Redis"><img class="cover" src="https://images.wallpaperscraft.com/image/single/wolf_starry_sky_tree_moon_118496_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-20</div><div class="title">Redis</div></div></a></div><div><a href="/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/" title="解决主机java项目无法连接linux上redis服务的问题"><img class="cover" src="https://images.wallpaperscraft.com/image/single/mountains_river_sun_143529_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-20</div><div class="title">解决主机java项目无法连接linux上redis服务的问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-number">1.</span> <span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#step1%EF%BC%9A%E9%99%90%E6%B5%81%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">step1：限流类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step2%EF%BC%9A%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">step2：定义注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step3%EF%BC%9A%E9%85%8D%E7%BD%AEredis"><span class="toc-number">2.3.</span> <span class="toc-text">step3：配置redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.3.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9E%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">办法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step4%EF%BC%9Alua%E8%84%9A%E6%9C%AC"><span class="toc-number">2.4.</span> <span class="toc-text">step4：lua脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step5%EF%BC%9A%E5%8A%A0%E8%BD%BDlua%E8%84%9A%E6%9C%AC"><span class="toc-number">2.5.</span> <span class="toc-text">step5：加载lua脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step6%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-number">2.6.</span> <span class="toc-text">step6：自定义异常</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%88%87%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">定义切面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IpUtils"><span class="toc-number">3.1.</span> <span class="toc-text">IpUtils</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RateLimiterAspect"><span class="toc-number">3.2.</span> <span class="toc-text">RateLimiterAspect</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">4.</span> <span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E9%99%90%E5%88%B6ip%E5%9C%B0%E5%9D%80"><span class="toc-number">4.1.</span> <span class="toc-text">不限制ip地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E5%B1%82"><span class="toc-number">4.1.1.</span> <span class="toc-text">controller层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">4.1.2.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%90%E5%88%B6ip%E5%9C%B0%E5%9D%80"><span class="toc-number">4.2.</span> <span class="toc-text">限制ip地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E5%B1%82-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">controller层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-1"><span class="toc-number">4.2.2.</span> <span class="toc-text">结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E6%A0%87tienchin-ruoyi"><span class="toc-number">5.</span> <span class="toc-text">对标tienchin&#x2F;ruoyi</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/">http://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/redis/">redis</a><a class="post-meta__tags" href="/tags/tienchin/">tienchin</a><a class="post-meta__tags" href="/tags/ruoyi%E6%BA%90%E7%A0%81/">ruoyi源码</a><a class="post-meta__tags" href="/tags/%E5%8E%9F%E5%88%9B%E7%AC%94%E8%AE%B0/">原创笔记</a><a class="post-meta__tags" href="/tags/%E5%BA%8F%E5%88%97%E5%8C%96/">序列化</a><a class="post-meta__tags" href="/tags/lua%E8%84%9A%E6%9C%AC/">lua脚本</a><a class="post-meta__tags" href="/tags/%E5%85%A8%E5%B1%80%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">全局异常处理</a></div><div class="post_share"><div class="social-share" data-image="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/02/03/chu-li-mi-deng-xing/"><img class="prev-cover" src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">处理幂等性</div></div></a></div><div class="next-post pull-right"><a href="/2024/01/02/leetcoce-sui-ji/"><img class="next-cover" src="https://tse2-mm.cn.bing.net/th/id/OIP-C.DENauUixUf2DS-VfgKCXlAHaD2?w=311&amp;h=180&amp;c=7&amp;r=0&amp;o=5&amp;pid=1.7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">leetcoce随记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img class="cover" src="https://img0.baidu.com/it/u=3422995933,1192011804&fm=253&fmt=auto&app=138&f=JPEG?w=589&h=220" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-03</div><div class="title">处理幂等性</div></div></a></div><div><a href="/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/" title="自定义多数据源"><img class="cover" src="https://img0.baidu.com/it/u=3276317046,1367389085&fm=253&fmt=auto&app=138&f=PNG?w=889&h=500" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-18</div><div class="title">自定义多数据源</div></div></a></div><div><a href="/2022/01/20/redis-ru-men/" title="Redis"><img class="cover" src="https://images.wallpaperscraft.com/image/single/wolf_starry_sky_tree_moon_118496_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-20</div><div class="title">Redis</div></div></a></div><div><a href="/2022/01/20/jie-jue-zhu-ji-java-xiang-mu-wu-fa-lian-jie-linux-shang-redis-fu-wu-de-wen-ti/" title="解决主机java项目无法连接linux上redis服务的问题"><img class="cover" src="https://images.wallpaperscraft.com/image/single/mountains_river_sun_143529_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-20</div><div class="title">解决主机java项目无法连接linux上redis服务的问题</div></div></a></div><div><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/" title="tienchin项目笔记"><img class="cover" src="https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-02</div><div class="title">tienchin项目笔记</div></div></a></div><div><a href="/2022/10/01/gong-zuo-liu/" title="工作流workflow"><img class="cover" src="https://lcdzzz.github.io/2022/10/01/gong-zuo-liu/1662298798529-e1bcda3a-42fe-4d7b-8b42-a1a38cd3c654.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-01</div><div class="title">工作流workflow</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-number">1.</span> <span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C"><span class="toc-number">2.</span> <span class="toc-text">准备工作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#step1%EF%BC%9A%E9%99%90%E6%B5%81%E7%B1%BB%E5%9E%8B"><span class="toc-number">2.1.</span> <span class="toc-text">step1：限流类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step2%EF%BC%9A%E5%AE%9A%E4%B9%89%E6%B3%A8%E8%A7%A3"><span class="toc-number">2.2.</span> <span class="toc-text">step2：定义注解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step3%EF%BC%9A%E9%85%8D%E7%BD%AEredis"><span class="toc-number">2.3.</span> <span class="toc-text">step3：配置redis</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%9F%E5%9B%A0"><span class="toc-number">2.3.1.</span> <span class="toc-text">原因</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%9E%E6%B3%95"><span class="toc-number">2.3.2.</span> <span class="toc-text">办法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step4%EF%BC%9Alua%E8%84%9A%E6%9C%AC"><span class="toc-number">2.4.</span> <span class="toc-text">step4：lua脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step5%EF%BC%9A%E5%8A%A0%E8%BD%BDlua%E8%84%9A%E6%9C%AC"><span class="toc-number">2.5.</span> <span class="toc-text">step5：加载lua脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#step6%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E5%BC%82%E5%B8%B8"><span class="toc-number">2.6.</span> <span class="toc-text">step6：自定义异常</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E5%88%87%E9%9D%A2"><span class="toc-number">3.</span> <span class="toc-text">定义切面</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IpUtils"><span class="toc-number">3.1.</span> <span class="toc-text">IpUtils</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#RateLimiterAspect"><span class="toc-number">3.2.</span> <span class="toc-text">RateLimiterAspect</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">4.</span> <span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E9%99%90%E5%88%B6ip%E5%9C%B0%E5%9D%80"><span class="toc-number">4.1.</span> <span class="toc-text">不限制ip地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E5%B1%82"><span class="toc-number">4.1.1.</span> <span class="toc-text">controller层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="toc-number">4.1.2.</span> <span class="toc-text">结果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%99%90%E5%88%B6ip%E5%9C%B0%E5%9D%80"><span class="toc-number">4.2.</span> <span class="toc-text">限制ip地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#controller%E5%B1%82-1"><span class="toc-number">4.2.1.</span> <span class="toc-text">controller层</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E6%9E%9C-1"><span class="toc-number">4.2.2.</span> <span class="toc-text">结果</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AF%B9%E6%A0%87tienchin-ruoyi"><span class="toc-number">5.</span> <span class="toc-text">对标tienchin&#x2F;ruoyi</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>

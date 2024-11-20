@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>自定义多数据源 | lcdzzz的博客</title><meta name="keywords" content="java,springboot,sql,项目实战,tienchin,ruoyi源码,原创笔记"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目地址  准备依赖：  Web Spring Web   SQL MyBatis Framework MySQL Driver     关于@Retention注解作用可以看这个 @Target:注解的作用目标  配置文件 # 数据源配置 spring:   datasource:     type: com.alibaba.druid.pool.DruidDataSource     dr">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>自定义多数据源 | lcdzzz的博客</title><meta name="keywords" content="springboot,java,sql,项目实战,tienchin,ruoyi源码,原创笔记"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目地址  准备依赖：  Web Spring Web   SQL MyBatis Framework MySQL Driver     关于@Retention注解作用可以看这个 @Target:注解的作用目标  配置文件 # 数据源配置 spring:   datasource:     type: com.alibaba.druid.pool.DruidDataSource     dr">
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
 <meta property="og:title" content="自定义多数据源">
 <meta property="og:url" content="http://lcdzzz.github.io/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/index.html">
@@ -9,8 +9,8 @@
 <meta property="article:published_time" content="2022-06-18T11:06:33.000Z">
 <meta property="article:modified_time" content="2024-02-14T11:02:40.133Z">
 <meta property="article:author" content="lcdzzz">
-<meta property="article:tag" content="java">
 <meta property="article:tag" content="springboot">
+<meta property="article:tag" content="java">
 <meta property="article:tag" content="sql">
 <meta property="article:tag" content="项目实战">
 <meta property="article:tag" content="tienchin">
@@ -169,62 +169,62 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/fengcai0123/article/details/90544338">@Target:注解的作用目标</a></li>
 </ul>
 <p>配置文件</p>
-<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"><span class="token comment"># 数据源配置</span>
-<span class="token key atrule">spring</span><span class="token punctuation">:</span>
-  <span class="token key atrule">datasource</span><span class="token punctuation">:</span>
-    <span class="token key atrule">type</span><span class="token punctuation">:</span> com.alibaba.druid.pool.DruidDataSource
-    <span class="token key atrule">driverClassName</span><span class="token punctuation">:</span> com.mysql.cj.jdbc.Driver
-    <span class="token key atrule">ds</span><span class="token punctuation">:</span>
-      <span class="token comment"># 主库数据源</span>
-      <span class="token key atrule">master</span><span class="token punctuation">:</span>
-        <span class="token key atrule">url</span><span class="token punctuation">:</span> jdbc<span class="token punctuation">:</span>mysql<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>3306/test01<span class="token punctuation">?</span>useUnicode=true<span class="token important">&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=true&amp;serverTimezone=GMT%2B8</span>
-        <span class="token key atrule">username</span><span class="token punctuation">:</span> root
-        <span class="token key atrule">password</span><span class="token punctuation">:</span> wqeq
-      <span class="token comment"># 从库数据源</span>
-      <span class="token key atrule">slave</span><span class="token punctuation">:</span>
-        <span class="token comment"># 从数据源开关/默认关闭</span>
-        <span class="token key atrule">url</span><span class="token punctuation">:</span> jdbc<span class="token punctuation">:</span>mysql<span class="token punctuation">:</span>//localhost<span class="token punctuation">:</span>3306/test02<span class="token punctuation">?</span>useUnicode=true<span class="token important">&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=true&amp;serverTimezone=GMT%2B8</span>
-        <span class="token key atrule">username</span><span class="token punctuation">:</span> root
-        <span class="token key atrule">password</span><span class="token punctuation">:</span> wqeq
-    <span class="token comment"># 初始连接数</span>
-    <span class="token key atrule">initialSize</span><span class="token punctuation">:</span> <span class="token number">5</span>
-    <span class="token comment"># 最小连接池数量</span>
-    <span class="token key atrule">minIdle</span><span class="token punctuation">:</span> <span class="token number">10</span>
-    <span class="token comment"># 最大连接池数量</span>
-    <span class="token key atrule">maxActive</span><span class="token punctuation">:</span> <span class="token number">20</span>
-    <span class="token comment"># 配置获取连接等待超时的时间</span>
-    <span class="token key atrule">maxWait</span><span class="token punctuation">:</span> <span class="token number">60000</span>
-    <span class="token comment"># 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒</span>
-    <span class="token key atrule">timeBetweenEvictionRunsMillis</span><span class="token punctuation">:</span> <span class="token number">60000</span>
-    <span class="token comment"># 配置一个连接在池中最小生存的时间，单位是毫秒</span>
-    <span class="token key atrule">minEvictableIdleTimeMillis</span><span class="token punctuation">:</span> <span class="token number">300000</span>
-    <span class="token comment"># 配置一个连接在池中最大生存的时间，单位是毫秒</span>
-    <span class="token key atrule">maxEvictableIdleTimeMillis</span><span class="token punctuation">:</span> <span class="token number">900000</span>
-    <span class="token comment"># 配置检测连接是否有效</span>
-    <span class="token key atrule">validationQuery</span><span class="token punctuation">:</span> SELECT 1 FROM DUAL
-    <span class="token key atrule">testWhileIdle</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-    <span class="token key atrule">testOnBorrow</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
-    <span class="token key atrule">testOnReturn</span><span class="token punctuation">:</span> <span class="token boolean important">false</span>
-    <span class="token key atrule">webStatFilter</span><span class="token punctuation">:</span>
-      <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-    <span class="token key atrule">statViewServlet</span><span class="token punctuation">:</span>
-      <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-      <span class="token comment"># 设置白名单，不填则允许所有访问</span>
-      <span class="token key atrule">allow</span><span class="token punctuation">:</span>
-      <span class="token key atrule">url-pattern</span><span class="token punctuation">:</span> /druid/*
-      <span class="token comment"># 控制台管理用户名和密码</span>
-      <span class="token key atrule">login-username</span><span class="token punctuation">:</span> tienchin
-      <span class="token key atrule">login-password</span><span class="token punctuation">:</span> <span class="token number">123456</span>
-    <span class="token key atrule">filter</span><span class="token punctuation">:</span>
-      <span class="token key atrule">stat</span><span class="token punctuation">:</span>
-        <span class="token key atrule">enabled</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-        <span class="token comment"># 慢SQL记录</span>
-        <span class="token key atrule">log-slow-sql</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-        <span class="token key atrule">slow-sql-millis</span><span class="token punctuation">:</span> <span class="token number">1000</span>
-        <span class="token key atrule">merge-sql</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-      <span class="token key atrule">wall</span><span class="token punctuation">:</span>
-        <span class="token key atrule">config</span><span class="token punctuation">:</span>
-          <span class="token key atrule">multi-statement-allow</span><span class="token punctuation">:</span> <span class="token boolean important">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-yml" data-language="yml"><code class="language-yml"># 数据源配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    ds:
+      # 主库数据源
+      master:
+        url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;test01?useUnicode&#x3D;true&amp;characterEncoding&#x3D;utf8&amp;zeroDateTimeBehavior&#x3D;convertToNull&amp;useSSL&#x3D;true&amp;serverTimezone&#x3D;GMT%2B8
+        username: root
+        password: wqeq
+      # 从库数据源
+      slave:
+        # 从数据源开关&#x2F;默认关闭
+        url: jdbc:mysql:&#x2F;&#x2F;localhost:3306&#x2F;test02?useUnicode&#x3D;true&amp;characterEncoding&#x3D;utf8&amp;zeroDateTimeBehavior&#x3D;convertToNull&amp;useSSL&#x3D;true&amp;serverTimezone&#x3D;GMT%2B8
+        username: root
+        password: wqeq
+    # 初始连接数
+    initialSize: 5
+    # 最小连接池数量
+    minIdle: 10
+    # 最大连接池数量
+    maxActive: 20
+    # 配置获取连接等待超时的时间
+    maxWait: 60000
+    # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+    timeBetweenEvictionRunsMillis: 60000
+    # 配置一个连接在池中最小生存的时间，单位是毫秒
+    minEvictableIdleTimeMillis: 300000
+    # 配置一个连接在池中最大生存的时间，单位是毫秒
+    maxEvictableIdleTimeMillis: 900000
+    # 配置检测连接是否有效
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    webStatFilter:
+      enabled: true
+    statViewServlet:
+      enabled: true
+      # 设置白名单，不填则允许所有访问
+      allow:
+      url-pattern: &#x2F;druid&#x2F;*
+      # 控制台管理用户名和密码
+      login-username: tienchin
+      login-password: 123456
+    filter:
+      stat:
+        enabled: true
+        # 慢SQL记录
+        log-slow-sql: true
+        slow-sql-millis: 1000
+        merge-sql: true
+      wall:
+        config:
+          multi-statement-allow: true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -237,41 +237,41 @@
 <p>综上：用@DataSource注解，在一个方法或者一个类上面，去标注你想使用哪个数据源。然后将来在这个AOP(切面)里面解析这个注解，把想使用的数据源的名字找出来，存在ThreadLocal里面去。当以后真正需要用的时候，人家会自动的从AbstractRoutingDataSource里面去查找需要的数据源。</p>
 <p>所以，我们要做的就是：重写（自己写一个类继承）AbstractRoutingDataSource，然后在它的方法里面去返回ThreadLocal里边所存储的数据源的名字。最后它会根据名字找到对应的数据源</p>
 <h2 id="步骤1：-DataSource"><a href="#步骤1：-DataSource" class="headerlink" title="步骤1：@DataSource"></a>步骤1：@DataSource</h2><p>自定义一个注解@DataSource,将来可以将该注解加service层在方法或者类上面，表示方法或者类中的所有方法都使用某一个数据源</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">ElementType</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Retention</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Target</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>TYPE<span class="token punctuation">,</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>METHOD<span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">DataSource</span> <span class="token punctuation">&#123;</span>
-    <span class="token class-name">String</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+@Retention(RetentionPolicy.RUNTIME)
+@Target(&#123;ElementType.TYPE,ElementType.METHOD&#125;)
+public @interface DataSource &#123;
+    String value();
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="步骤2：DynamicDataSourceContextHolder"><a href="#步骤2：DynamicDataSourceContextHolder" class="headerlink" title="步骤2：DynamicDataSourceContextHolder"></a>步骤2：DynamicDataSourceContextHolder</h2><p>对于第一步，如果某个方法上面有@DataSource注解，那么就将该方法需要使用的数据源名称存入ThreadLocal。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token comment">/**
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">&#x2F;**
  * 这个类用来存储当前线程所使用的的数据源名称
- */</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DynamicDataSourceContextHolder</span> <span class="token punctuation">&#123;</span>
+ *&#x2F;
+public class DynamicDataSourceContextHolder &#123;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> CONTEXT_HOLDER <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ThreadLocal</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    private static ThreadLocal&lt;String&gt; CONTEXT_HOLDER &#x3D; new ThreadLocal&lt;&gt;();
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">setDataSourceType</span><span class="token punctuation">(</span><span class="token class-name">String</span> dsType<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        CONTEXT_HOLDER<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>dsType<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token class-name">String</span> <span class="token function">getDataSourceType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> CONTEXT_HOLDER<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public static void setDataSourceType(String dsType)&#123;
+        CONTEXT_HOLDER.set(dsType);
+    &#125;
+    public static String getDataSourceType()&#123;
+        return CONTEXT_HOLDER.get();
+    &#125;
 
-    <span class="token comment">/**
+    &#x2F;**
      * ThreadLocal里面的数据用完之后记得把它清空掉，不然这个线程去搞其他事情，就容易发生内存溢出【泄漏】
-     */</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">clearDataSourceType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        CONTEXT_HOLDER<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+     *&#x2F;
+    public static void clearDataSourceType()&#123;
+        CONTEXT_HOLDER.remove();
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -283,153 +283,153 @@
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>dependency</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>【注】学习一下，如何拿到注解里的值</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">DataSource</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span></span><span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">ProceedingJoinPoint</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Around</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Aspect</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Pointcut</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>reflect<span class="token punctuation">.</span></span><span class="token class-name">MethodSignature</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">AnnotationUtils</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span></span><span class="token class-name">Component</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import com.lcdzzz.dd.annotation.DataSource;
+import com.lcdzzz.dd.datasource.DynamicDataSourceContextHolder;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.stereotype.Component;
 
-<span class="token annotation punctuation">@Component</span>
-<span class="token annotation punctuation">@Aspect</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataSourceAspect</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">/**
+@Component
+@Aspect
+public class DataSourceAspect &#123;
+    &#x2F;**
      * @annotation(com.lcdzzz.dd.annotation.DataSource) 表示如果方法上有@DataSource 注解，就把方法拦截下来
      * @within(com.lcdzzz.dd.annotation.DataSource) 表示如果类上面有这个注解，那么就将类中的方法拦截下来
-     */</span>
-    <span class="token comment">//定义切点</span>
-    <span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"@annotation(com.lcdzzz.dd.annotation.DataSource) || @within(com.lcdzzz.dd.annotation.DataSource)"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+     *&#x2F;
+    &#x2F;&#x2F;定义切点
+    @Pointcut(&quot;@annotation(com.lcdzzz.dd.annotation.DataSource) || @within(com.lcdzzz.dd.annotation.DataSource)&quot;)
+    public void pc()&#123;
 
-    <span class="token punctuation">&#125;</span>
+    &#125;
 
-    <span class="token comment">//环绕通知</span>
-    <span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pc()"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">around</span><span class="token punctuation">(</span><span class="token class-name">ProceedingJoinPoint</span> pjp<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token comment">//获取方法上面的有效注解</span>
-        <span class="token class-name">DataSource</span> dataSource<span class="token operator">=</span><span class="token function">getDataSource</span><span class="token punctuation">(</span>pjp<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//获取自己的DataSource注解</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>dataSource<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token class-name">String</span> value<span class="token operator">=</span>dataSource<span class="token punctuation">.</span><span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//获取注解里面数据源的名称</span>
-            <span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">.</span><span class="token function">setDataSourceType</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> pjp<span class="token punctuation">.</span><span class="token function">proceed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> throwable<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            throwable<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">finally</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">.</span><span class="token function">clearDataSourceType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//数据源清除</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    &#x2F;&#x2F;环绕通知
+    @Around(&quot;pc()&quot;)
+    public Object around(ProceedingJoinPoint pjp)&#123;
+        &#x2F;&#x2F;获取方法上面的有效注解
+        DataSource dataSource&#x3D;getDataSource(pjp);&#x2F;&#x2F;获取自己的DataSource注解
+        if (dataSource!&#x3D;null)&#123;
+            String value&#x3D;dataSource.value();&#x2F;&#x2F;获取注解里面数据源的名称
+            DynamicDataSourceContextHolder.setDataSourceType(value);
+        &#125;
+        try &#123;
+            return pjp.proceed();
+        &#125; catch (Throwable throwable) &#123;
+            throwable.printStackTrace();
+        &#125; finally &#123;
+            DynamicDataSourceContextHolder.clearDataSourceType();&#x2F;&#x2F;数据源清除
+        &#125;
+        return null;
+    &#125;
 
-    <span class="token comment">//pjp里面有当前的方法的信息。核心思路：现在方法上面找，没有找到再到类上面找</span>
+    &#x2F;&#x2F;pjp里面有当前的方法的信息。核心思路：现在方法上面找，没有找到再到类上面找
 
-    <span class="token keyword">private</span> <span class="token class-name">DataSource</span> <span class="token function">getDataSource</span><span class="token punctuation">(</span><span class="token class-name">ProceedingJoinPoint</span> pjp<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">MethodSignature</span> signature <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">MethodSignature</span><span class="token punctuation">)</span> pjp<span class="token punctuation">.</span><span class="token function">getSignature</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    private DataSource getDataSource(ProceedingJoinPoint pjp) &#123;
+        MethodSignature signature &#x3D; (MethodSignature) pjp.getSignature();
 
-        <span class="token comment">//查找方法上的注解,AnnotationUtils是spring提供的注解操作工具类</span>
-        <span class="token class-name">DataSource</span> annotation <span class="token operator">=</span> <span class="token class-name">AnnotationUtils</span><span class="token punctuation">.</span><span class="token function">findAnnotation</span><span class="token punctuation">(</span>signature<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">DataSource</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>annotation<span class="token operator">!=</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//说明方法上有@DataSource注解</span>
-            <span class="token keyword">return</span> annotation<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token comment">//signature.getDeclaringType(),DataSource.class意思是获取这个方法所在的类的类型，然后看他上面有没有@DataSource注解</span>
-        <span class="token keyword">return</span> <span class="token class-name">AnnotationUtils</span><span class="token punctuation">.</span><span class="token function">findAnnotation</span><span class="token punctuation">(</span>signature<span class="token punctuation">.</span><span class="token function">getDeclaringType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token class-name">DataSource</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+        &#x2F;&#x2F;查找方法上的注解,AnnotationUtils是spring提供的注解操作工具类
+        DataSource annotation &#x3D; AnnotationUtils.findAnnotation(signature.getMethod(), DataSource.class);
+        if (annotation!&#x3D;null)&#123;&#x2F;&#x2F;说明方法上有@DataSource注解
+            return annotation;
+        &#125;
+        &#x2F;&#x2F;signature.getDeclaringType(),DataSource.class意思是获取这个方法所在的类的类型，然后看他上面有没有@DataSource注解
+        return AnnotationUtils.findAnnotation(signature.getDeclaringType(),DataSource.class);
+    &#125;
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h2 id="步骤4"><a href="#步骤4" class="headerlink" title="步骤4"></a>步骤4</h2><p>最后，当Mapper执行的时候，需要DataSource，他会自动去AbstractRoutingDataSource类中查找需要的数据源，我们只需要在AbstractRoutingDataSource中返回ThreadLocal中的值</p>
-<h3 id="DruidProperties"><a href="#DruidProperties" class="headerlink" title="DruidProperties"></a>DruidProperties</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@ConfigurationProperties</span><span class="token punctuation">(</span>prefix <span class="token operator">=</span><span class="token string">"spring.datasource"</span> <span class="token punctuation">)</span><span class="token comment">//类型安全的属性注入</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DruidProperties</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">String</span> type<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">String</span> driverClassName<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">Map</span><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">String</span><span class="token punctuation">></span><span class="token punctuation">></span></span> ds<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> initialSize<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> minIdle<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> maxActive<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> maxWait<span class="token punctuation">;</span>
+<h3 id="DruidProperties"><a href="#DruidProperties" class="headerlink" title="DruidProperties"></a>DruidProperties</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java">@ConfigurationProperties(prefix &#x3D;&quot;spring.datasource&quot; )&#x2F;&#x2F;类型安全的属性注入
+public class DruidProperties &#123;
+    private String type;
+    private String driverClassName;
+    private Map&lt;String,Map&lt;String,String&gt;&gt; ds;
+    private Integer initialSize;
+    private Integer minIdle;
+    private Integer maxActive;
+    private Integer maxWait;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 一会在外部构造好一个 DruidDataSource 对象，但是这个对象只包含三个核心属性：url username password
      * 在这个方法中，给这个对象设置公共属性
      * @param druidDataSource
      * @return
-     */</span>
-    <span class="token keyword">public</span> <span class="token class-name">DataSource</span> <span class="token function">dataSource</span><span class="token punctuation">(</span><span class="token class-name">DruidDataSource</span> druidDataSource<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        druidDataSource<span class="token punctuation">.</span><span class="token function">setInitialSize</span><span class="token punctuation">(</span>initialSize<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        druidDataSource<span class="token punctuation">.</span><span class="token function">setMinIdle</span><span class="token punctuation">(</span>minIdle<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        druidDataSource<span class="token punctuation">.</span><span class="token function">setMaxActive</span><span class="token punctuation">(</span>maxActive<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        druidDataSource<span class="token punctuation">.</span><span class="token function">setMaxWait</span><span class="token punctuation">(</span>maxWait<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> druidDataSource<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+     *&#x2F;
+    public DataSource dataSource(DruidDataSource druidDataSource)&#123;
+        druidDataSource.setInitialSize(initialSize);
+        druidDataSource.setMinIdle(minIdle);
+        druidDataSource.setMaxActive(maxActive);
+        druidDataSource.setMaxWait(maxWait);
+        return druidDataSource;
+    &#125;
     
-    <span class="token comment">/**
+    &#x2F;**
     省略getset方法
-    */</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    *&#x2F;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h3 id="LoadDataSource"><a href="#LoadDataSource" class="headerlink" title="LoadDataSource"></a>LoadDataSource</h3><p>定义一个类去加载所有的数据源</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
-<span class="token annotation punctuation">@EnableConfigurationProperties</span><span class="token punctuation">(</span><span class="token class-name">DruidProperties</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LoadDataSource</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">DruidProperties</span> druidProperties<span class="token punctuation">;</span><span class="token comment">//需要用DruidProperties里面的ds属性</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@Component
+@EnableConfigurationProperties(DruidProperties.class)
+public class LoadDataSource &#123;
+    @Autowired
+    DruidProperties druidProperties;&#x2F;&#x2F;需要用DruidProperties里面的ds属性
 
-    <span class="token keyword">public</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">DataSource</span><span class="token punctuation">></span></span> <span class="token function">loadAllDataSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">DataSource</span><span class="token punctuation">></span></span> map<span class="token operator">=</span><span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Map</span><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">String</span><span class="token punctuation">></span><span class="token punctuation">></span></span> ds <span class="token operator">=</span> druidProperties<span class="token punctuation">.</span><span class="token function">getDs</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Set</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> strings <span class="token operator">=</span> ds<span class="token punctuation">.</span><span class="token function">keySet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token class-name">String</span> key <span class="token operator">:</span> strings<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//key是数据源的名字，value是数据源的各种信息</span>
-                map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> druidProperties<span class="token punctuation">.</span><span class="token function">dataSource</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">DruidDataSource</span><span class="token punctuation">)</span> <span class="token class-name">DruidDataSourceFactory</span><span class="token punctuation">.</span><span class="token function">createDataSource</span><span class="token punctuation">(</span>ds<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//根据value创建一个数据源</span>
+    public Map&lt;String, DataSource&gt; loadAllDataSource()&#123;
+        Map&lt;String,DataSource&gt; map&#x3D;new HashMap&lt;&gt;();
+        Map&lt;String, Map&lt;String, String&gt;&gt; ds &#x3D; druidProperties.getDs();
+        try &#123;
+            Set&lt;String&gt; strings &#x3D; ds.keySet();
+            for (String key : strings) &#123;&#x2F;&#x2F;key是数据源的名字，value是数据源的各种信息
+                map.put(key, druidProperties.dataSource((DruidDataSource) DruidDataSourceFactory.createDataSource(ds.get(key))));&#x2F;&#x2F;根据value创建一个数据源
 
 
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> map<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+            &#125;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+        return map;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h3 id="DynamicDataSource【核心！】"><a href="#DynamicDataSource【核心！】" class="headerlink" title="DynamicDataSource【核心！】"></a>DynamicDataSource【核心！】</h3><p>当Mapper执行的时候，需要DataSource，他会自动去AbstractRoutingDataSource类中查找。这里继承的就是AbstractRoutingDataSource类</p>
 <p><u>框架会调用determineCurrentLookupKey来获取数据源的名称，并且这个方法获取到的数据，会存到DynamicDataSourceContextHolder里面去</u>。</p>
 <p><strong>因此，如果设计一个按钮，可以把DynamicDataSourceContextHolder里的数据修改了，就可以达到手动在网页上切换数据源的功能</strong>，请看一级标题：【手动实现网页上切换数据源】</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DynamicDataSource</span> <span class="token keyword">extends</span> <span class="token class-name">AbstractRoutingDataSource</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token class-name">DynamicDataSource</span><span class="token punctuation">(</span><span class="token class-name">LoadDataSource</span> loadDataSource<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//1.设置所有的数据源</span>
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">DataSource</span><span class="token punctuation">></span></span> allDs <span class="token operator">=</span> loadDataSource<span class="token punctuation">.</span><span class="token function">loadAllDataSource</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setTargetDataSources</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span>allDs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//2.设置默认的数据源</span>
-        <span class="token comment">//将来，并不是所有的方法上都有@DataSource注解，对于那些没有@DataSource注解的方法，该使用哪个数据源</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">setDefaultTargetDataSource</span><span class="token punctuation">(</span>allDs<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token class-name">DataSourceType</span><span class="token punctuation">.</span>DEFAULT_DS_NAME<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment">//3.</span>
-        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">afterPropertiesSet</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@Component
+public class DynamicDataSource extends AbstractRoutingDataSource &#123;
+    public DynamicDataSource(LoadDataSource loadDataSource) &#123;
+        &#x2F;&#x2F;1.设置所有的数据源
+        Map&lt;String, DataSource&gt; allDs &#x3D; loadDataSource.loadAllDataSource();
+        super.setTargetDataSources(new HashMap&lt;&gt;(allDs));
+        &#x2F;&#x2F;2.设置默认的数据源
+        &#x2F;&#x2F;将来，并不是所有的方法上都有@DataSource注解，对于那些没有@DataSource注解的方法，该使用哪个数据源
+        super.setDefaultTargetDataSource(allDs.get(DataSourceType.DEFAULT_DS_NAME));
+        &#x2F;&#x2F;3.
+        super.afterPropertiesSet();
+    &#125;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 这个方法用来返回数据源名称，当系统需要获取数据源时，会自动调用该方法获取数据源的名称
      * @return
-     */</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">protected</span> <span class="token class-name">Object</span> <span class="token function">determineCurrentLookupKey</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">.</span><span class="token function">getDataSourceType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+     *&#x2F;
+    @Override
+    protected Object determineCurrentLookupKey() &#123;
+        return DynamicDataSourceContextHolder.getDataSourceType();
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="DataSourceType"><a href="#DataSourceType" class="headerlink" title="DataSourceType"></a>DataSourceType</h3><p>把默认的数据源名称设置为常量</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">DataSourceType</span> <span class="token punctuation">&#123;</span>
-    <span class="token class-name">String</span> DEFAULT_DS_NAME<span class="token operator">=</span><span class="token string">"master"</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">public interface DataSourceType &#123;
+    String DEFAULT_DS_NAME&#x3D;&quot;master&quot;;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -439,26 +439,26 @@
 <p>测试结果：不同名称的数据源，会查找对应不同的数据库，内容也有所不同</p>
 <p>sql文件如下，意思意思</p>
 <pre class="line-numbers language-sql" data-language="sql"><code class="language-sql">
-<span class="token keyword">SET</span> NAMES utf8mb4<span class="token punctuation">;</span>
-<span class="token keyword">SET</span> FOREIGN_KEY_CHECKS <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS &#x3D; 0;
 
-<span class="token comment">-- ----------------------------</span>
-<span class="token comment">-- Table structure for user</span>
-<span class="token comment">-- ----------------------------</span>
-<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token keyword">IF</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span><span class="token punctuation">;</span>
-<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span>  <span class="token punctuation">(</span>
-  <span class="token punctuation">`</span>id<span class="token punctuation">`</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
-  <span class="token punctuation">`</span>username<span class="token punctuation">`</span> <span class="token keyword">varchar</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span> <span class="token keyword">CHARACTER</span> <span class="token keyword">SET</span> utf8mb4 <span class="token keyword">COLLATE</span> utf8mb4_general_ci <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
-  <span class="token punctuation">`</span>age<span class="token punctuation">`</span> <span class="token keyword">int</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token boolean">NULL</span> <span class="token keyword">DEFAULT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
-  <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span><span class="token punctuation">`</span>id<span class="token punctuation">`</span><span class="token punctuation">)</span> <span class="token keyword">USING</span> <span class="token keyword">BTREE</span>
-<span class="token punctuation">)</span> <span class="token keyword">ENGINE</span> <span class="token operator">=</span> <span class="token keyword">InnoDB</span> <span class="token keyword">CHARACTER</span> <span class="token keyword">SET</span> <span class="token operator">=</span> utf8mb4 <span class="token keyword">COLLATE</span> <span class="token operator">=</span> utf8mb4_general_ci ROW_FORMAT <span class="token operator">=</span> Dynamic<span class="token punctuation">;</span>
+-- ----------------------------
+-- Table structure for user
+-- ----------------------------
+DROP TABLE IF EXISTS &#96;user&#96;;
+CREATE TABLE &#96;user&#96;  (
+  &#96;id&#96; int(0) NOT NULL,
+  &#96;username&#96; varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+  &#96;age&#96; int(0) NULL DEFAULT NULL,
+  PRIMARY KEY (&#96;id&#96;) USING BTREE
+) ENGINE &#x3D; InnoDB CHARACTER SET &#x3D; utf8mb4 COLLATE &#x3D; utf8mb4_general_ci ROW_FORMAT &#x3D; Dynamic;
 
-<span class="token comment">-- ----------------------------</span>
-<span class="token comment">-- Records of user</span>
-<span class="token comment">-- ----------------------------</span>
-<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> <span class="token punctuation">`</span><span class="token keyword">user</span><span class="token punctuation">`</span> <span class="token keyword">VALUES</span> <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">'lcdzzz'</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+-- ----------------------------
+-- Records of user
+-- ----------------------------
+INSERT INTO &#96;user&#96; VALUES (1, &#39;lcdzzz&#39;, 22);
 
-<span class="token keyword">SET</span> FOREIGN_KEY_CHECKS <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+SET FOREIGN_KEY_CHECKS &#x3D; 1;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
@@ -503,99 +503,99 @@
 <p>然后之前的写法是不用这样的，在<u>步骤4中的DynamicDataSource</u>中已经把所有的数据源读进来了【相比之下ruoyi写法没有这么灵活】</p>
 <h1 id="拓展：手动实现网页上切换数据源"><a href="#拓展：手动实现网页上切换数据源" class="headerlink" title="拓展：手动实现网页上切换数据源"></a>拓展：手动实现网页上切换数据源</h1><h2 id="步骤1：controller-DataSourceController"><a href="#步骤1：controller-DataSourceController" class="headerlink" title="步骤1：controller.DataSourceController"></a>步骤1：controller.DataSourceController</h2><p>setDsType目的是打日志，真正有作用的是存在session里面的数据源名字</p>
 <p>getAllUser为测试接口，测试数据源是否真的改变。方便起见，讲从数据库select出来的数据直接打印到控制台</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>controller</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.dd.controller;
 
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span></span><span class="token class-name">DataSourceType</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>model<span class="token punctuation">.</span></span><span class="token class-name">User</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>service<span class="token punctuation">.</span></span><span class="token class-name">UserService</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span></span><span class="token class-name">Logger</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>slf4j<span class="token punctuation">.</span></span><span class="token class-name">LoggerFactory</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">PostMapping</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span><span class="token punctuation">;</span>
+import com.lcdzzz.dd.datasource.DataSourceType;
+import com.lcdzzz.dd.model.User;
+import com.lcdzzz.dd.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpSession</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+import javax.servlet.http.HttpSession;
+import java.util.List;
 
-<span class="token annotation punctuation">@RestController</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataSourceController</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">Logger</span> logger <span class="token operator">=</span> <span class="token class-name">LoggerFactory</span><span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span><span class="token class-name">DataSourceController</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+@RestController
+public class DataSourceController &#123;
+    private static final Logger logger &#x3D; LoggerFactory.getLogger(DataSourceController.class);
 
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">UserService</span> userService<span class="token punctuation">;</span>
+    @Autowired
+    UserService userService;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 修改数据源
      * @param dsType
-     */</span>
-    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/dstype"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setDsType</span><span class="token punctuation">(</span><span class="token class-name">String</span> dsType<span class="token punctuation">,</span> <span class="token class-name">HttpSession</span> session<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//修改后存入session中去，与当前会话绑定，这样一来当前整个会话都可以统一使用这个数据源了</span>
-        session<span class="token punctuation">.</span><span class="token function">setAttribute</span><span class="token punctuation">(</span><span class="token class-name">DataSourceType</span><span class="token punctuation">.</span>DS_SESSION_KEY<span class="token punctuation">,</span>dsType<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"数据源切换为 &#123;&#125;"</span><span class="token punctuation">,</span>dsType<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+     *&#x2F;
+    @PostMapping(&quot;&#x2F;dstype&quot;)
+    public void setDsType(String dsType, HttpSession session)&#123;&#x2F;&#x2F;修改后存入session中去，与当前会话绑定，这样一来当前整个会话都可以统一使用这个数据源了
+        session.setAttribute(DataSourceType.DS_SESSION_KEY,dsType);
+        logger.info(&quot;数据源切换为 &#123;&#125;&quot;,dsType);
+    &#125;
 
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/users"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">></span></span> <span class="token function">getAllUser</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">User</span><span class="token punctuation">></span></span> allUsers <span class="token operator">=</span> userService<span class="token punctuation">.</span><span class="token function">getAllUsers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        allUsers<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token operator">::</span><span class="token function">println</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> allUsers<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @GetMapping(&quot;&#x2F;users&quot;)
+    public List&lt;User&gt; getAllUser()&#123;
+        List&lt;User&gt; allUsers &#x3D; userService.getAllUsers();
+        allUsers.forEach(System.out::println);
+        return allUsers;
+    &#125;
 
-<span class="token punctuation">&#125;</span>
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="步骤2：aspect-GlobalDataSourceAspect-java"><a href="#步骤2：aspect-GlobalDataSourceAspect-java" class="headerlink" title="步骤2：aspect.GlobalDataSourceAspect.java"></a>步骤2：aspect.GlobalDataSourceAspect.java</h2><p>和之前的<code>DataSourceAspect</code>一样，定义切面</p>
 <p>【注】@Order值越小，优先级越高。但这里值得注意的是，优先级越低的，越后面执行；后面执行的，就能覆盖前面的。所以优先级越低的，才是最后真正起作用的那个。</p>
 <p>这里定义的切点不是像之前的一样的在注解@DataSource上了。归根结底，手动实现网页上切换数据源关联的是一个service层的一个方法，所以切点应该设置如下。</p>
 <p>环绕通知，拦截下来，设置最新（从session中）得到的数据源</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>aspect</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.dd.aspect;
 
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span></span><span class="token class-name">DataSourceType</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>dd<span class="token punctuation">.</span>datasource<span class="token punctuation">.</span></span><span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span><span class="token class-name">ProceedingJoinPoint</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Around</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Aspect</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>aspectj<span class="token punctuation">.</span>lang<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Pointcut</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>core<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Order</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span></span><span class="token class-name">Component</span><span class="token punctuation">;</span>
+import com.lcdzzz.dd.datasource.DataSourceType;
+import com.lcdzzz.dd.datasource.DynamicDataSourceContextHolder;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpSession</span><span class="token punctuation">;</span>
+import javax.servlet.http.HttpSession;
 
-<span class="token annotation punctuation">@Aspect</span>
-<span class="token annotation punctuation">@Component</span>
-<span class="token annotation punctuation">@Order</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+@Aspect
+@Component
+@Order(10)
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">GlobalDataSourceAspect</span> <span class="token punctuation">&#123;</span>
+public class GlobalDataSourceAspect &#123;
 
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">HttpSession</span> session<span class="token punctuation">;</span>
+    @Autowired
+    HttpSession session;
 
-    <span class="token annotation punctuation">@Pointcut</span><span class="token punctuation">(</span><span class="token string">"execution(* com.lcdzzz.dd.service.*.*(..))"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">pc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    @Pointcut(&quot;execution(* com.lcdzzz.dd.service.*.*(..))&quot;)
+    public void pc()&#123;
 
-    <span class="token punctuation">&#125;</span>
+    &#125;
 
-    <span class="token annotation punctuation">@Around</span><span class="token punctuation">(</span><span class="token string">"pc()"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">Object</span> <span class="token function">around</span><span class="token punctuation">(</span><span class="token class-name">ProceedingJoinPoint</span> pjp<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token comment">//变化：原来从@DataSource注解里面找的，现在从session里面找了</span>
-        <span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">.</span><span class="token function">setDataSourceType</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> session<span class="token punctuation">.</span><span class="token function">getAttribute</span><span class="token punctuation">(</span><span class="token class-name">DataSourceType</span><span class="token punctuation">.</span>DS_SESSION_KEY<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> pjp<span class="token punctuation">.</span><span class="token function">proceed</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//让被拦截的方法继续往下走</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Throwable</span> throwable<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            throwable<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">finally</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">DynamicDataSourceContextHolder</span><span class="token punctuation">.</span><span class="token function">clearDataSourceType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    @Around(&quot;pc()&quot;)
+    public Object around(ProceedingJoinPoint pjp)&#123;
+        &#x2F;&#x2F;变化：原来从@DataSource注解里面找的，现在从session里面找了
+        DynamicDataSourceContextHolder.setDataSourceType((String) session.getAttribute(DataSourceType.DS_SESSION_KEY));
+        try &#123;
+            return pjp.proceed();&#x2F;&#x2F;让被拦截的方法继续往下走
+        &#125; catch (Throwable throwable) &#123;
+            throwable.printStackTrace();
+        &#125; finally &#123;
+            DynamicDataSourceContextHolder.clearDataSourceType();
+        &#125;
+        return null;
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>与此同时，为了让两种设置数据源的方法有合理的先后顺序,要在<code>@DataSource</code>直接上给11，在<code>GlobalDataSourceAspect</code>给10。达到的效果就是，全局，即先以<u>全局手动设置的数据源</u>为准，若某个service层的方法用了<code>@DataSource</code>注解，就以<u>注解定义</u>的为准</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Order</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">DataSourceAspect</span> <span class="token punctuation">&#123;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@Order(11)
+public class DataSourceAspect &#123;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h2 id="步骤3：简单写一个网页"><a href="#步骤3：简单写一个网页" class="headerlink" title="步骤3：简单写一个网页"></a>步骤3：简单写一个网页</h2><p><code>loadData()</code>是讲select出来的数据显示在网页上，但是不知道为什么我这里不行，应该是JSON转换的原因，不过这个不是本篇的重点，所以把它打印在控制台也行。</p>
 <p><code>dsChange(value)</code>是为了把选择的数据源名，打印出来。</p>
@@ -639,4 +639,4 @@
 <p><img src="image-20240128162656893.png" alt="image-20240128162656893"></p>
 <p><img src="image-20240128162724408.png" alt="image-20240128162724408"></p>
 <p><img src="image-20240128162858928.png" alt="image-20240128162858928"></p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/">http://lcdzzz.github.io/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/springboot/">springboot</a><a class="post-meta__tags" href="/tags/sql/">sql</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a><a class="post-meta__tags" href="/tags/tienchin/">tienchin</a><a class="post-meta__tags" href="/tags/ruoyi%E6%BA%90%E7%A0%81/">ruoyi源码</a><a class="post-meta__tags" href="/tags/%E5%8E%9F%E5%88%9B%E7%AC%94%E8%AE%B0/">原创笔记</a></div><div class="post_share"><div class="social-share" data-image="https://img0.baidu.com/it/u=3276317046,1367389085&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=889&amp;h=500" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/22/mybatisplus/"><img class="prev-cover" src="https://img0.baidu.com/it/u=3497851059,26175775&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG?w=288&amp;h=285" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MybatisPlus</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/"><img class="next-cover" src="https://img2.baidu.com/it/u=2535873879,22375097&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=900&amp;h=448" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">tienchin项目笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/" title="tienchin项目笔记"><img class="cover" src="https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-02</div><div class="title">tienchin项目笔记</div></div></a></div><div><a href="/2022/06/22/mybatisplus/" title="MybatisPlus"><img class="cover" src="https://img0.baidu.com/it/u=3497851059,26175775&fm=253&fmt=auto&app=138&f=JPG?w=288&h=285" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-22</div><div class="title">MybatisPlus</div></div></a></div><div><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img class="cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">图书管理系统介绍</div></div></a></div><div><a href="/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/" title="微人事项目笔记"><img class="cover" src="https://images.wallpaperscraft.com/image/single/laptop_cup_glasses_plant_114948_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-24</div><div class="title">微人事项目笔记</div></div></a></div><div><a href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img class="cover" src="https://img0.baidu.com/it/u=3422995933,1192011804&fm=253&fmt=auto&app=138&f=JPEG?w=589&h=220" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-03</div><div class="title">处理幂等性</div></div></a></div><div><a href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img class="cover" src="https://img1.baidu.com/it/u=1262509061,4086244529&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=339" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-28</div><div class="title">自定义限流注解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A41%EF%BC%9A-DataSource"><span class="toc-number">2.1.</span> <span class="toc-text">步骤1：@DataSource</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A42%EF%BC%9ADynamicDataSourceContextHolder"><span class="toc-number">2.2.</span> <span class="toc-text">步骤2：DynamicDataSourceContextHolder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A43%EF%BC%9ADataSourceAspect"><span class="toc-number">2.3.</span> <span class="toc-text">步骤3：DataSourceAspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A44"><span class="toc-number">2.4.</span> <span class="toc-text">步骤4</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DruidProperties"><span class="toc-number">2.4.1.</span> <span class="toc-text">DruidProperties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LoadDataSource"><span class="toc-number">2.4.2.</span> <span class="toc-text">LoadDataSource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DynamicDataSource%E3%80%90%E6%A0%B8%E5%BF%83%EF%BC%81%E3%80%91"><span class="toc-number">2.4.3.</span> <span class="toc-text">DynamicDataSource【核心！】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DataSourceType"><span class="toc-number">2.4.4.</span> <span class="toc-text">DataSourceType</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">2.5.</span> <span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%BA%90%E7%9A%84%E4%BD%BF%E7%94%A8%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5"><span class="toc-number">3.1.</span> <span class="toc-text">自定义数据源的使用分为两种情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E7%94%A8-DataSource%EF%BC%8C%E5%92%8C%E7%94%A8%E4%BA%86%E4%BD%86%E6%98%AF%E6%B2%A1%E6%9C%89%E5%8A%A0%E5%8F%82%E6%95%B0%EF%BC%8C%E4%B8%A4%E8%80%85%E9%83%BD%E6%98%AF%E2%80%9C%E9%BB%98%E8%AE%A4%E2%80%9D%EF%BC%8C%E4%BD%86%E6%98%AF%E5%9C%A8%E9%80%BB%E8%BE%91%E6%98%AF%E6%9C%89%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.</span> <span class="toc-text">不用@DataSource，和用了但是没有加参数，两者都是“默认”，但是在逻辑是有区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ruoyi%E8%84%9A%E6%89%8B%E6%9E%B6%E7%9A%84%E5%86%99%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">ruoyi脚手架的写法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9A%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E7%BD%91%E9%A1%B5%E4%B8%8A%E5%88%87%E6%8D%A2%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">拓展：手动实现网页上切换数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A41%EF%BC%9Acontroller-DataSourceController"><span class="toc-number">4.1.</span> <span class="toc-text">步骤1：controller.DataSourceController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A42%EF%BC%9Aaspect-GlobalDataSourceAspect-java"><span class="toc-number">4.2.</span> <span class="toc-text">步骤2：aspect.GlobalDataSourceAspect.java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A43%EF%BC%9A%E7%AE%80%E5%8D%95%E5%86%99%E4%B8%80%E4%B8%AA%E7%BD%91%E9%A1%B5"><span class="toc-number">4.3.</span> <span class="toc-text">步骤3：简单写一个网页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="toc-number">4.4.</span> <span class="toc-text">测试</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/">http://lcdzzz.github.io/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/springboot/">springboot</a><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/sql/">sql</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a><a class="post-meta__tags" href="/tags/tienchin/">tienchin</a><a class="post-meta__tags" href="/tags/ruoyi%E6%BA%90%E7%A0%81/">ruoyi源码</a><a class="post-meta__tags" href="/tags/%E5%8E%9F%E5%88%9B%E7%AC%94%E8%AE%B0/">原创笔记</a></div><div class="post_share"><div class="social-share" data-image="https://img0.baidu.com/it/u=3276317046,1367389085&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=889&amp;h=500" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/06/22/mybatisplus/"><img class="prev-cover" src="https://img0.baidu.com/it/u=3497851059,26175775&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG?w=288&amp;h=285" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MybatisPlus</div></div></a></div><div class="next-post pull-right"><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/"><img class="next-cover" src="https://img2.baidu.com/it/u=2535873879,22375097&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=900&amp;h=448" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">tienchin项目笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/" title="tienchin项目笔记"><img class="cover" src="https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-02</div><div class="title">tienchin项目笔记</div></div></a></div><div><a href="/2022/06/22/mybatisplus/" title="MybatisPlus"><img class="cover" src="https://img0.baidu.com/it/u=3497851059,26175775&fm=253&fmt=auto&app=138&f=JPG?w=288&h=285" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-22</div><div class="title">MybatisPlus</div></div></a></div><div><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img class="cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">图书管理系统介绍</div></div></a></div><div><a href="/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/" title="微人事项目笔记"><img class="cover" src="https://images.wallpaperscraft.com/image/single/laptop_cup_glasses_plant_114948_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-24</div><div class="title">微人事项目笔记</div></div></a></div><div><a href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img class="cover" src="https://img0.baidu.com/it/u=3422995933,1192011804&fm=253&fmt=auto&app=138&f=JPEG?w=589&h=220" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-02-03</div><div class="title">处理幂等性</div></div></a></div><div><a href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img class="cover" src="https://img1.baidu.com/it/u=1262509061,4086244529&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=339" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-28</div><div class="title">自定义限流注解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%87%86%E5%A4%87"><span class="toc-number">1.</span> <span class="toc-text">准备</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.</span> <span class="toc-text">步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A41%EF%BC%9A-DataSource"><span class="toc-number">2.1.</span> <span class="toc-text">步骤1：@DataSource</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A42%EF%BC%9ADynamicDataSourceContextHolder"><span class="toc-number">2.2.</span> <span class="toc-text">步骤2：DynamicDataSourceContextHolder</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A43%EF%BC%9ADataSourceAspect"><span class="toc-number">2.3.</span> <span class="toc-text">步骤3：DataSourceAspect</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A44"><span class="toc-number">2.4.</span> <span class="toc-text">步骤4</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DruidProperties"><span class="toc-number">2.4.1.</span> <span class="toc-text">DruidProperties</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#LoadDataSource"><span class="toc-number">2.4.2.</span> <span class="toc-text">LoadDataSource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DynamicDataSource%E3%80%90%E6%A0%B8%E5%BF%83%EF%BC%81%E3%80%91"><span class="toc-number">2.4.3.</span> <span class="toc-text">DynamicDataSource【核心！】</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DataSourceType"><span class="toc-number">2.4.4.</span> <span class="toc-text">DataSourceType</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">2.5.</span> <span class="toc-text">测试</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E6%95%B0%E6%8D%AE%E6%BA%90%E7%9A%84%E4%BD%BF%E7%94%A8%E5%88%86%E4%B8%BA%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5"><span class="toc-number">3.1.</span> <span class="toc-text">自定义数据源的使用分为两种情况</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8D%E7%94%A8-DataSource%EF%BC%8C%E5%92%8C%E7%94%A8%E4%BA%86%E4%BD%86%E6%98%AF%E6%B2%A1%E6%9C%89%E5%8A%A0%E5%8F%82%E6%95%B0%EF%BC%8C%E4%B8%A4%E8%80%85%E9%83%BD%E6%98%AF%E2%80%9C%E9%BB%98%E8%AE%A4%E2%80%9D%EF%BC%8C%E4%BD%86%E6%98%AF%E5%9C%A8%E9%80%BB%E8%BE%91%E6%98%AF%E6%9C%89%E5%8C%BA%E5%88%AB"><span class="toc-number">3.2.</span> <span class="toc-text">不用@DataSource，和用了但是没有加参数，两者都是“默认”，但是在逻辑是有区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ruoyi%E8%84%9A%E6%89%8B%E6%9E%B6%E7%9A%84%E5%86%99%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">ruoyi脚手架的写法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8B%93%E5%B1%95%EF%BC%9A%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0%E7%BD%91%E9%A1%B5%E4%B8%8A%E5%88%87%E6%8D%A2%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">4.</span> <span class="toc-text">拓展：手动实现网页上切换数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A41%EF%BC%9Acontroller-DataSourceController"><span class="toc-number">4.1.</span> <span class="toc-text">步骤1：controller.DataSourceController</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A42%EF%BC%9Aaspect-GlobalDataSourceAspect-java"><span class="toc-number">4.2.</span> <span class="toc-text">步骤2：aspect.GlobalDataSourceAspect.java</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A43%EF%BC%9A%E7%AE%80%E5%8D%95%E5%86%99%E4%B8%80%E4%B8%AA%E7%BD%91%E9%A1%B5"><span class="toc-number">4.3.</span> <span class="toc-text">步骤3：简单写一个网页</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95-1"><span class="toc-number">4.4.</span> <span class="toc-text">测试</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>

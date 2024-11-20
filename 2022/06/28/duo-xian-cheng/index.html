@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>多线程 | lcdzzz的博客</title><meta name="keywords" content="多线程"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="线程*是程序中执行的线程。 Java虚拟机允许应用程序同时执行多个执行线程。 每个线程都有优先权。 创建一个新的执行线程有两种方法。 一个是将一个类声明为Thread的子类。 这个子类应该重写run类的方法Thread 。 然后可以分配并启动子类的实例。  继承Thread类简单示例 &#x2F;&#x2F;创建线程方式一：继承Thread类，重写run()方法，调用start开启线程 &#x2F;&#x2F;总结：注意，线程开启不一">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>多线程 | lcdzzz的博客</title><meta name="keywords" content="多线程"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="线程*是程序中执行的线程。 Java虚拟机允许应用程序同时执行多个执行线程。 每个线程都有优先权。 创建一个新的执行线程有两种方法。 一个是将一个类声明为Thread的子类。 这个子类应该重写run类的方法Thread 。 然后可以分配并启动子类的实例。  继承Thread类简单示例 &#x2F;&#x2F;创建线程方式一：继承Thread类，重写run()方法，调用start开启线程 &amp;#x2">
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
 <meta property="og:title" content="多线程">
 <meta property="og:url" content="http://lcdzzz.github.io/2022/06/28/duo-xian-cheng/index.html">
 <meta property="og:site_name" content="lcdzzz的博客">
-<meta property="og:description" content="线程*是程序中执行的线程。 Java虚拟机允许应用程序同时执行多个执行线程。 每个线程都有优先权。 创建一个新的执行线程有两种方法。 一个是将一个类声明为Thread的子类。 这个子类应该重写run类的方法Thread 。 然后可以分配并启动子类的实例。  继承Thread类简单示例 &#x2F;&#x2F;创建线程方式一：继承Thread类，重写run()方法，调用start开启线程 &#x2F;&#x2F;总结：注意，线程开启不一">
+<meta property="og:description" content="线程*是程序中执行的线程。 Java虚拟机允许应用程序同时执行多个执行线程。 每个线程都有优先权。 创建一个新的执行线程有两种方法。 一个是将一个类声明为Thread的子类。 这个子类应该重写run类的方法Thread 。 然后可以分配并启动子类的实例。  继承Thread类简单示例 &#x2F;&#x2F;创建线程方式一：继承Thread类，重写run()方法，调用start开启线程 &amp;#x2">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img2.baidu.com/it/u=3527330824,3020310441&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500">
 <meta property="article:published_time" content="2022-06-28T14:24:40.000Z">
@@ -149,32 +149,32 @@
 <li>创建一个新的执行线程有两种方法。 一个是将一个类声明为<code>Thread</code>的子类。 这个子类应该重写<code>run</code>类的方法<code>Thread</code> 。 然后可以分配并启动子类的实例。</li>
 </ul>
 <h2 id="继承Thread类"><a href="#继承Thread类" class="headerlink" title="继承Thread类"></a>继承Thread类</h2><h3 id="简单示例"><a href="#简单示例" class="headerlink" title="简单示例"></a>简单示例</h3><pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token comment">//创建线程方式一：继承Thread类，重写run()方法，调用start开启线程</span>
-<span class="token comment">//总结：注意，线程开启不一定立即执行，由cpu调度执行</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestThread1</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//run方法线程体</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">20</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我在看代码---"</span><span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+&#x2F;&#x2F;创建线程方式一：继承Thread类，重写run()方法，调用start开启线程
+&#x2F;&#x2F;总结：注意，线程开启不一定立即执行，由cpu调度执行
+public class TestThread1 extends Thread &#123;
+    @Override
+    public void run() &#123;
+        &#x2F;&#x2F;run方法线程体
+        for (int i &#x3D; 0; i &lt; 20; i++) &#123;
+            System.out.println(&quot;我在看代码---&quot;+i);
+        &#125;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//main线程，主线程</span>
+    public static void main(String[] args) &#123;
+        &#x2F;&#x2F;main线程，主线程
 
-        <span class="token comment">//创建一个线程对象</span>
-        <span class="token class-name">TestThread1</span> testThread1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestThread1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        &#x2F;&#x2F;创建一个线程对象
+        TestThread1 testThread1 &#x3D; new TestThread1();
 
-        <span class="token comment">//调用start()方法开启线程</span>
-        testThread1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        &#x2F;&#x2F;调用start()方法开启线程
+        testThread1.start();
 
-        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">20</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"我在学习多线程---"</span><span class="token operator">+</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
+        for (int i &#x3D; 0; i &lt; 20; i++) &#123;
+            System.out.println(&quot;我在学习多线程---&quot;+i);
+        &#125;
+    &#125;
 
-<span class="token punctuation">&#125;</span>
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="现在网图"><a href="#现在网图" class="headerlink" title="现在网图"></a>现在网图</h3><p>maven导入工具类</p>
@@ -255,61 +255,61 @@
 
 <p>实现代码</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>demo01</span><span class="token punctuation">;</span>
-<span class="token comment">//练习Thread，实现多线程同步下载图片</span>
+package com.lcdzzz.demo01;
+&#x2F;&#x2F;练习Thread，实现多线程同步下载图片
 
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>commons<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">FileUtils</span><span class="token punctuation">;</span>
+import org.apache.commons.io.FileUtils;
 
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">File</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>net<span class="token punctuation">.</span></span>URL<span class="token punctuation">;</span>
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">TestThread2</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span><span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">String</span> url<span class="token punctuation">;</span><span class="token comment">//网络图片地址</span>
-    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span><span class="token comment">//保存的文件名</span>
-    <span class="token keyword">public</span> <span class="token class-name">TestThread2</span><span class="token punctuation">(</span><span class="token class-name">String</span> url<span class="token punctuation">,</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>url<span class="token operator">=</span>url<span class="token punctuation">;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token operator">=</span>name<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+public class TestThread2 extends Thread&#123;
+    private String url;&#x2F;&#x2F;网络图片地址
+    private String name;&#x2F;&#x2F;保存的文件名
+    public TestThread2(String url,String name)&#123;
+        this.url&#x3D;url;
+        this.name&#x3D;name;
+    &#125;
 
-    <span class="token comment">//下载图片线程的执行体</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">WebDownloader</span> webDownloader <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebDownloader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        webDownloader<span class="token punctuation">.</span><span class="token function">downloader</span><span class="token punctuation">(</span>url<span class="token punctuation">,</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"下载了文件名为"</span><span class="token operator">+</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    &#x2F;&#x2F;下载图片线程的执行体
+    @Override
+    public void run() &#123;
+        WebDownloader webDownloader &#x3D; new WebDownloader();
+        webDownloader.downloader(url,name);
+        System.out.println(&quot;下载了文件名为&quot;+name);
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">TestThread2</span> t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestThread2</span><span class="token punctuation">(</span><span class="token string">"https://img0.baidu.com/it/u=3497851059,26175775&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG?w=288&amp;h=285"</span><span class="token punctuation">,</span><span class="token string">"1.jpg"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">TestThread2</span> t2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestThread2</span><span class="token punctuation">(</span><span class="token string">"https://img0.baidu.com/it/u=3497851059,26175775&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG?w=288&amp;h=285"</span><span class="token punctuation">,</span><span class="token string">"2.jpg"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">TestThread2</span> t3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">TestThread2</span><span class="token punctuation">(</span><span class="token string">"https://img0.baidu.com/it/u=3497851059,26175775&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPG?w=288&amp;h=285"</span><span class="token punctuation">,</span><span class="token string">"3.jpg"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    public static void main(String[] args) &#123;
+        TestThread2 t1 &#x3D; new TestThread2(&quot;https:&#x2F;&#x2F;img0.baidu.com&#x2F;it&#x2F;u&#x3D;3497851059,26175775&amp;fm&#x3D;253&amp;fmt&#x3D;auto&amp;app&#x3D;138&amp;f&#x3D;JPG?w&#x3D;288&amp;h&#x3D;285&quot;,&quot;1.jpg&quot;);
+        TestThread2 t2 &#x3D; new TestThread2(&quot;https:&#x2F;&#x2F;img0.baidu.com&#x2F;it&#x2F;u&#x3D;3497851059,26175775&amp;fm&#x3D;253&amp;fmt&#x3D;auto&amp;app&#x3D;138&amp;f&#x3D;JPG?w&#x3D;288&amp;h&#x3D;285&quot;,&quot;2.jpg&quot;);
+        TestThread2 t3 &#x3D; new TestThread2(&quot;https:&#x2F;&#x2F;img0.baidu.com&#x2F;it&#x2F;u&#x3D;3497851059,26175775&amp;fm&#x3D;253&amp;fmt&#x3D;auto&amp;app&#x3D;138&amp;f&#x3D;JPG?w&#x3D;288&amp;h&#x3D;285&quot;,&quot;3.jpg&quot;);
 
-        t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        t2<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        t3<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+        t1.start();
+        t2.start();
+        t3.start();
+    &#125;
+&#125;
 
-<span class="token comment">//下载器</span>
-<span class="token keyword">class</span> <span class="token class-name">WebDownloader</span><span class="token punctuation">&#123;</span>
-    <span class="token comment">//下载方法</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">downloader</span><span class="token punctuation">(</span><span class="token class-name">String</span> url<span class="token punctuation">,</span><span class="token class-name">String</span> name<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">FileUtils</span><span class="token punctuation">.</span><span class="token function">copyURLToFile</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token function">URL</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">new</span> <span class="token class-name">File</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"IO异常，downloader方法出现问题"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+&#x2F;&#x2F;下载器
+class WebDownloader&#123;
+    &#x2F;&#x2F;下载方法
+    public void downloader(String url,String name)&#123;
+        try &#123;
+            FileUtils.copyURLToFile(new URL(url),new File(name));
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+            System.out.println(&quot;IO异常，downloader方法出现问题&quot;);
+        &#125;
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p>控制台输出结果</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java">下载了文件名为<span class="token number">3.</span>jpg
-下载了文件名为<span class="token number">2.</span>jpg
-下载了文件名为<span class="token number">1.</span>jpg
-<span class="token comment">//线程不一定立即执行，cpu安排调度</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">下载了文件名为3.jpg
+下载了文件名为2.jpg
+下载了文件名为1.jpg
+&#x2F;&#x2F;线程不一定立即执行，cpu安排调度<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>微人事项目笔记 | lcdzzz的博客</title><meta name="keywords" content="java,springboot,项目实战"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="服务端菜单接口设计 实体类设计  菜单menu package com.lcdzzz.demo.model;  import java.io.Serializable; import java.util.List;  public class Menu implements Serializable &amp;#123;     private Integer id;      private Strin">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>微人事项目笔记 | lcdzzz的博客</title><meta name="keywords" content="springboot,java,项目实战"><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="服务端菜单接口设计 实体类设计  菜单menu package com.lcdzzz.demo.model;  import java.io.Serializable; import java.util.List;  public class Menu implements Serializable &amp;#123;     private Integer id;      private Strin">
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta property="og:type" content="article">
 <meta property="og:title" content="微人事项目笔记">
 <meta property="og:url" content="http://lcdzzz.github.io/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/index.html">
@@ -9,8 +9,8 @@
 <meta property="article:published_time" content="2022-01-24T12:09:58.000Z">
 <meta property="article:modified_time" content="2024-01-28T14:45:28.826Z">
 <meta property="article:author" content="lcdzzz">
-<meta property="article:tag" content="java">
 <meta property="article:tag" content="springboot">
+<meta property="article:tag" content="java">
 <meta property="article:tag" content="项目实战">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.wallpaperscraft.com/image/single/laptop_cup_glasses_plant_114948_300x168.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
@@ -149,120 +149,120 @@
 <!-- hexo-inject:begin --><!-- hexo-inject:end --><li><p>实体类设计</p>
 <ol>
 <li><p>菜单menu</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>model</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.demo.model;
 
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">Serializable</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">List</span><span class="token punctuation">;</span>
+import java.io.Serializable;
+import java.util.List;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Menu</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+public class Menu implements Serializable &#123;
+    private Integer id;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> url<span class="token punctuation">;</span>
+    private String url;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> path<span class="token punctuation">;</span>
+    private String path;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> component<span class="token punctuation">;</span>
+    private String component;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    private String name;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> iconCls<span class="token punctuation">;</span>
+    private String iconCls;
 
-    <span class="token keyword">private</span> <span class="token class-name">Meta</span> meta<span class="token punctuation">;</span>
+    private Meta meta;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> parentId<span class="token punctuation">;</span>
+    private Integer parentId;
 
-    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> enabled<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> children<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> roles<span class="token punctuation">;</span>
+    private Boolean enabled;
+    private List&lt;Menu&gt; children;
+    private List&lt;Role&gt; roles;
 
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> <span class="token function">getRoles</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> roles<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public List&lt;Role&gt; getRoles() &#123;
+        return roles;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setRoles</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Role</span><span class="token punctuation">></span></span> roles<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>roles <span class="token operator">=</span> roles<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setRoles(List&lt;Role&gt; roles) &#123;
+        this.roles &#x3D; roles;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Meta</span> <span class="token function">getMeta</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> meta<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Meta getMeta() &#123;
+        return meta;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setMeta</span><span class="token punctuation">(</span><span class="token class-name">Meta</span> meta<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>meta <span class="token operator">=</span> meta<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setMeta(Meta meta) &#123;
+        this.meta &#x3D; meta;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> <span class="token function">getChildren</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> children<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public List&lt;Menu&gt; getChildren() &#123;
+        return children;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setChildren</span><span class="token punctuation">(</span><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> children<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>children <span class="token operator">=</span> children<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setChildren(List&lt;Menu&gt; children) &#123;
+        this.children &#x3D; children;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> id<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Integer getId() &#123;
+        return id;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setId</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setId(Integer id) &#123;
+        this.id &#x3D; id;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getUrl</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> url<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public String getUrl() &#123;
+        return url;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setUrl</span><span class="token punctuation">(</span><span class="token class-name">String</span> url<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>url <span class="token operator">=</span> url<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setUrl(String url) &#123;
+        this.url &#x3D; url;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getPath</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> path<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public String getPath() &#123;
+        return path;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setPath</span><span class="token punctuation">(</span><span class="token class-name">String</span> path<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>path <span class="token operator">=</span> path<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setPath(String path) &#123;
+        this.path &#x3D; path;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getComponent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> component<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public String getComponent() &#123;
+        return component;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setComponent</span><span class="token punctuation">(</span><span class="token class-name">String</span> component<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>component <span class="token operator">=</span> component<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setComponent(String component) &#123;
+        this.component &#x3D; component;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> name<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public String getName() &#123;
+        return name;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setName</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setName(String name) &#123;
+        this.name &#x3D; name;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getIconCls</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> iconCls<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public String getIconCls() &#123;
+        return iconCls;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setIconCls</span><span class="token punctuation">(</span><span class="token class-name">String</span> iconCls<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>iconCls <span class="token operator">=</span> iconCls<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setIconCls(String iconCls) &#123;
+        this.iconCls &#x3D; iconCls;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">getParentId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> parentId<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Integer getParentId() &#123;
+        return parentId;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setParentId</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> parentId<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>parentId <span class="token operator">=</span> parentId<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setParentId(Integer parentId) &#123;
+        this.parentId &#x3D; parentId;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">getEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> enabled<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Boolean getEnabled() &#123;
+        return enabled;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setEnabled</span><span class="token punctuation">(</span><span class="token class-name">Boolean</span> enabled<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>enabled <span class="token operator">=</span> enabled<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public void setEnabled(Boolean enabled) &#123;
+        this.enabled &#x3D; enabled;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -272,29 +272,29 @@
 </ol>
 <ol start="2">
 <li><p>虽然menu表中有keepAlive和requiredAuth字段，但是一般这种“额外的数据”，会额外地放在一个meta实体类中</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">com<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>demo<span class="token punctuation">.</span>model</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">package com.lcdzzz.demo.model;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Meta</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> keepAlive<span class="token punctuation">;</span>
+public class Meta &#123;
+    private Boolean keepAlive;
 
-    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> requireAuth<span class="token punctuation">;</span>
+    private Boolean requireAuth;
 
-    <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">getKeepAlive</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> keepAlive<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Boolean getKeepAlive() &#123;
+        return keepAlive;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setKeepAlive</span><span class="token punctuation">(</span><span class="token class-name">Boolean</span> keepAlive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>keepAlive <span class="token operator">=</span> keepAlive<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setKeepAlive(Boolean keepAlive) &#123;
+        this.keepAlive &#x3D; keepAlive;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">getRequireAuth</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> requireAuth<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Boolean getRequireAuth() &#123;
+        return requireAuth;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setRequireAuth</span><span class="token punctuation">(</span><span class="token class-name">Boolean</span> requireAuth<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>requireAuth <span class="token operator">=</span> requireAuth<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    public void setRequireAuth(Boolean requireAuth) &#123;
+        this.requireAuth &#x3D; requireAuth;
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
@@ -303,17 +303,17 @@
 </ol>
 <ol start="2">
 <li><p>创建一个controller去查询所需要的数据,<strong>SystemConfigController</strong></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
-<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/system/config"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SystemConfigController</span> <span class="token punctuation">&#123;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@RestController
+@RequestMapping(&quot;&#x2F;system&#x2F;config&quot;)
+public class SystemConfigController &#123;
 
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">MenuService</span> menuService<span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/menu"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> <span class="token function">getMenusByHrId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> menuService<span class="token punctuation">.</span><span class="token function">getMenusByHrId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Autowired
+    MenuService menuService;
+    @GetMapping(&quot;&#x2F;menu&quot;)
+    public List&lt;Menu&gt; getMenusByHrId()&#123;
+        return menuService.getMenusByHrId();
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -321,17 +321,17 @@
 </ol>
 <ol start="3">
 <li><p>Service类，<strong>MenuService</strong>,先得到当前登录的用户对象，然后通过getId()来得到id值</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MenuService</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">MenuMapper</span> menuMapper<span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@Service
+public class MenuService &#123;
+    @Autowired
+    MenuMapper menuMapper;
 
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> <span class="token function">getMenusByHrId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span>  menuMapper<span class="token punctuation">.</span><span class="token function">getMenusByHrId</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">Hr</span><span class="token punctuation">)</span> <span class="token class-name">SecurityContextHolder</span><span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getAuthentication</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getPrincipal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    public List&lt;Menu&gt; getMenusByHrId() &#123;
+        return  menuMapper.getMenusByHrId(((Hr) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId());
 
-        <span class="token comment">/*这个Principal就是这个当前登录的用户对象*/</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+        &#x2F;*这个Principal就是这个当前登录的用户对象*&#x2F;
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
@@ -340,7 +340,7 @@
 </ol>
 <ol start="4">
 <li><p>所以MenuMapper接口中会有这么一个方法定义</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Menu</span><span class="token punctuation">></span></span> <span class="token function">getMenusByHrId</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> hrid<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">List&lt;Menu&gt; getMenusByHrId(Integer hrid);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>对应的xml文件里的sql语句</p>
 <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>getMenusByHrId<span class="token punctuation">"</span></span> <span class="token attr-name">resultMap</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>Menus2<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -423,145 +423,145 @@
 <p><br><br><br><br></p>
 <h1 id="职位管理后端接口设计"><a href="#职位管理后端接口设计" class="headerlink" title="职位管理后端接口设计"></a>职位管理后端接口设计</h1><ol>
 <li><p>实体类</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Position</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">public class Position implements Serializable &#123;
+    private Integer id;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    private String name;
 
-    <span class="token annotation punctuation">@JsonFormat</span><span class="token punctuation">(</span>pattern <span class="token operator">=</span> <span class="token string">"yyyy-MM-dd"</span><span class="token punctuation">,</span>timezone <span class="token operator">=</span> <span class="token string">"Asia/Shanghai"</span><span class="token punctuation">)</span>
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> createDate<span class="token punctuation">;</span>
+    @JsonFormat(pattern &#x3D; &quot;yyyy-MM-dd&quot;,timezone &#x3D; &quot;Asia&#x2F;Shanghai&quot;)
+    private Date createDate;
 
-    <span class="token keyword">private</span> <span class="token class-name">Boolean</span> enabled<span class="token punctuation">;</span>
+    private Boolean enabled;
 
-    <span class="token keyword">private</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">long</span> serialVersionUID <span class="token operator">=</span> <span class="token number">1L</span><span class="token punctuation">;</span>
+    private static final long serialVersionUID &#x3D; 1L;
 
-    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> id<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Integer getId() &#123;
+        return id;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setId</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>id <span class="token operator">=</span> id<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setId(Integer id) &#123;
+        this.id &#x3D; id;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> name<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public String getName() &#123;
+        return name;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setName</span><span class="token punctuation">(</span><span class="token class-name">String</span> name<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>name <span class="token operator">=</span> name<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setName(String name) &#123;
+        this.name &#x3D; name;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Date</span> <span class="token function">getCreateDate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> createDate<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Date getCreateDate() &#123;
+        return createDate;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setCreateDate</span><span class="token punctuation">(</span><span class="token class-name">Date</span> createDate<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>createDate <span class="token operator">=</span> createDate<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setCreateDate(Date createDate) &#123;
+        this.createDate &#x3D; createDate;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Boolean</span> <span class="token function">getEnabled</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> enabled<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public Boolean getEnabled() &#123;
+        return enabled;
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setEnabled</span><span class="token punctuation">(</span><span class="token class-name">Boolean</span> enabled<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">this</span><span class="token punctuation">.</span>enabled <span class="token operator">=</span> enabled<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    public void setEnabled(Boolean enabled) &#123;
+        this.enabled &#x3D; enabled;
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">StringBuilder</span> sb <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StringBuilder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getSimpleName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">" ["</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"Hash = "</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token function">hashCode</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">", id="</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">", name="</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">", createDate="</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>createDate<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">", enabled="</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>enabled<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">", serialVersionUID="</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span>serialVersionUID<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        sb<span class="token punctuation">.</span><span class="token function">append</span><span class="token punctuation">(</span><span class="token string">"]"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> sb<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @Override
+    public String toString() &#123;
+        StringBuilder sb &#x3D; new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(&quot; [&quot;);
+        sb.append(&quot;Hash &#x3D; &quot;).append(hashCode());
+        sb.append(&quot;, id&#x3D;&quot;).append(id);
+        sb.append(&quot;, name&#x3D;&quot;).append(name);
+        sb.append(&quot;, createDate&#x3D;&quot;).append(createDate);
+        sb.append(&quot;, enabled&#x3D;&quot;).append(enabled);
+        sb.append(&quot;, serialVersionUID&#x3D;&quot;).append(serialVersionUID);
+        sb.append(&quot;]&quot;);
+        return sb.toString();
+    &#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>controller.system.basic.PositionController（查询，添加，更新，删除）</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token annotation punctuation">@RestController</span>
-<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/system/basic/pos"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PositionController</span> <span class="token punctuation">&#123;</span><span class="token comment">//职位管理</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">PositionService</span> positionService<span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span><span class="token comment">//查询接口</span>
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Position</span><span class="token punctuation">></span></span> <span class="token function">getAllPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> positionService<span class="token punctuation">.</span><span class="token function">getAllPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+@RestController
+@RequestMapping(&quot;&#x2F;system&#x2F;basic&#x2F;pos&quot;)
+public class PositionController &#123;&#x2F;&#x2F;职位管理
+    @Autowired
+    PositionService positionService;
+    @GetMapping(&quot;&#x2F;&quot;)&#x2F;&#x2F;查询接口
+    public List&lt;Position&gt; getAllPosition()&#123;
+        return positionService.getAllPosition();
+    &#125;
 
-    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">RespBean</span> <span class="token function">addPosition</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">Position</span> position<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//@RequestBody主要用来接收前端传递给后端的json字符串中的数据的(请求体中的数据的);</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>positionService<span class="token punctuation">.</span><span class="token function">addPosition</span><span class="token punctuation">(</span>position<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token string">"添加成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"添加失败！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @PostMapping(&quot;&#x2F;&quot;)
+    public RespBean addPosition(@RequestBody Position position)&#123;&#x2F;&#x2F;@RequestBody主要用来接收前端传递给后端的json字符串中的数据的(请求体中的数据的);
+        if (positionService.addPosition(position)&#x3D;&#x3D;1)&#123;
+            return RespBean.ok(&quot;添加成功！&quot;);
+        &#125;
+        return RespBean.error(&quot;添加失败！&quot;);
+    &#125;
 
-    <span class="token annotation punctuation">@PutMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">RespBean</span> <span class="token function">updatePosition</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">Position</span> position<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>positionService<span class="token punctuation">.</span><span class="token function">updatePosition</span><span class="token punctuation">(</span>position<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token string">"更新成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"更新失败！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @PutMapping(&quot;&#x2F;&quot;)
+    public RespBean updatePosition(@RequestBody Position position)&#123;
+        if (positionService.updatePosition(position)&#x3D;&#x3D;1)&#123;
+            return RespBean.ok(&quot;更新成功！&quot;);
+        &#125;
+        return RespBean.error(&quot;更新失败！&quot;);
+    &#125;
 
-    <span class="token annotation punctuation">@DeleteMapping</span><span class="token punctuation">(</span><span class="token string">"/&#123;id&#125;"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">RespBean</span> <span class="token function">deletePositionById</span><span class="token punctuation">(</span><span class="token annotation punctuation">@PathVariable</span> <span class="token class-name">Integer</span> id<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>positionService<span class="token punctuation">.</span><span class="token function">deletePositionById</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token operator">==</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token string">"删除成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"删除失败！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    @DeleteMapping(&quot;&#x2F;&#123;id&#125;&quot;)
+    public RespBean deletePositionById(@PathVariable Integer id)&#123;
+        if (positionService.deletePositionById(id)&#x3D;&#x3D;1)&#123;
+            return RespBean.ok(&quot;删除成功！&quot;);
+        &#125;
+        return RespBean.error(&quot;删除失败！&quot;);
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>与之对应的service层下的</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">PositionService</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">PositionMapper</span> positionMapper<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Position</span><span class="token punctuation">></span></span> <span class="token function">getAllPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> positionMapper<span class="token punctuation">.</span><span class="token function">getAllPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//查询</span>
-    <span class="token punctuation">&#125;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@Service
+public class PositionService &#123;
+    @Autowired
+    PositionMapper positionMapper;
+    public List&lt;Position&gt; getAllPosition() &#123;
+        return positionMapper.getAllPosition();&#x2F;&#x2F;查询
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">addPosition</span><span class="token punctuation">(</span><span class="token class-name">Position</span> position<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        position<span class="token punctuation">.</span><span class="token function">setEnabled</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        position<span class="token punctuation">.</span><span class="token function">setCreateDate</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> positionMapper<span class="token punctuation">.</span><span class="token function">insert</span><span class="token punctuation">(</span>position<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//添加</span>
-    <span class="token punctuation">&#125;</span>
+    public Integer addPosition(Position position) &#123;
+        position.setEnabled(true);
+        position.setCreateDate(new Date());
+        return positionMapper.insert(position);&#x2F;&#x2F;添加
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">updatePosition</span><span class="token punctuation">(</span><span class="token class-name">Position</span> position<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> positionMapper<span class="token punctuation">.</span><span class="token function">updateByPrimaryKeySelective</span><span class="token punctuation">(</span>position<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//更新</span>
-    <span class="token punctuation">&#125;</span>
+    public Integer updatePosition(Position position) &#123;
+        return positionMapper.updateByPrimaryKeySelective(position);&#x2F;&#x2F;更新
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">deletePositionById</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> positionMapper<span class="token punctuation">.</span><span class="token function">deleteByPrimaryKey</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//删除</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    public Integer deletePositionById(Integer id) &#123;
+        return positionMapper.deleteByPrimaryKey(id);&#x2F;&#x2F;删除
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>对应的mapper层下的PositionMapper接口</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">interface</span> <span class="token class-name">PositionMapper</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">int</span> <span class="token function">deleteByPrimaryKey</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+public interface PositionMapper &#123;
+    int deleteByPrimaryKey(Integer id);
 
-    <span class="token keyword">int</span> <span class="token function">insert</span><span class="token punctuation">(</span><span class="token class-name">Position</span> <span class="token keyword">record</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    int insert(Position record);
 
-    <span class="token class-name">Position</span> <span class="token function">selectByPrimaryKey</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    Position selectByPrimaryKey(Integer id);
 
-    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Position</span><span class="token punctuation">></span></span> <span class="token function">selectAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    List&lt;Position&gt; selectAll();
 
-    <span class="token keyword">int</span> <span class="token function">updateByPrimaryKey</span><span class="token punctuation">(</span><span class="token class-name">Position</span> <span class="token keyword">record</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> <span class="token function">updateByPrimaryKeySelective</span><span class="token punctuation">(</span><span class="token class-name">Position</span> <span class="token keyword">record</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    int updateByPrimaryKey(Position record);
+    int updateByPrimaryKeySelective(Position record);
 
-    <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Position</span><span class="token punctuation">></span></span> <span class="token function">getAllPosition</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    List&lt;Position&gt; getAllPosition();
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>PositionMapper.xml下的代码大多数是可以mybatis逆向工程自动生成的，这里写自动生成以外的和需要注意的sql语句，关于mybatis逆向工程可以参考<a target="_blank" rel="noopener" href="https://www.cnblogs.com/youcoding/p/14693096.html">https://www.cnblogs.com/youcoding/p/14693096.html</a> 这篇博客。</p>
 <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>getAllPosition<span class="token punctuation">"</span></span> <span class="token attr-name">resultMap</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>BaseResultMap<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -607,22 +607,22 @@
 <li><p>批量删除</p>
 <ul>
 <li><p>Controller层</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@DeleteMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">RespBean</span> <span class="token function">deletePositionByIds</span><span class="token punctuation">(</span> <span class="token class-name">Integer</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ids<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>positionService<span class="token punctuation">.</span><span class="token function">deletePositionByIds</span><span class="token punctuation">(</span>ids<span class="token punctuation">)</span><span class="token operator">==</span>ids<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token string">"删除成功！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token class-name">RespBean</span><span class="token punctuation">.</span><span class="token function">ok</span><span class="token punctuation">(</span><span class="token string">"删除失败！"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@DeleteMapping(&quot;&#x2F;&quot;)
+    public RespBean deletePositionByIds( Integer[] ids)&#123;
+        if (positionService.deletePositionByIds(ids)&#x3D;&#x3D;ids.length)&#123;
+            return RespBean.ok(&quot;删除成功！&quot;);
+        &#125;
+        return RespBean.ok(&quot;删除失败！&quot;);
 
-    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>service层</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token class-name">Integer</span> <span class="token function">deletePositionByIds</span><span class="token punctuation">(</span><span class="token class-name">Integer</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ids<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-       <span class="token keyword">return</span> positionMapper<span class="token punctuation">.</span><span class="token function">deletePositionByIds</span><span class="token punctuation">(</span>ids<span class="token punctuation">)</span><span class="token punctuation">;</span>
-   <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">public Integer deletePositionByIds(Integer[] ids) &#123;
+       return positionMapper.deletePositionByIds(ids);
+   &#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>mapper接口</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token class-name">Integer</span> <span class="token function">deletePositionByIds</span><span class="token punctuation">(</span><span class="token annotation punctuation">@Param</span><span class="token punctuation">(</span><span class="token string">"ids"</span><span class="token punctuation">)</span> <span class="token class-name">Integer</span><span class="token punctuation">[</span><span class="token punctuation">]</span> ids<span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">Integer deletePositionByIds(@Param(&quot;ids&quot;) Integer[] ids);<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
 <li><p>xml文件</p>
 <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>delete</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>deletePositionByIds<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -642,100 +642,100 @@
 <h1 id="员工管理"><a href="#员工管理" class="headerlink" title="员工管理"></a>员工管理</h1><h2 id="数据分页及搜索"><a href="#数据分页及搜索" class="headerlink" title="数据分页及搜索"></a>数据分页及搜索</h2><ol>
 <li><p>实体类，为了节省篇幅，getset方法就不放上去了（实际上有）</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Employee</span> <span class="token keyword">implements</span> <span class="token class-name">Serializable</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> id<span class="token punctuation">;</span>
+public class Employee implements Serializable &#123;
+    private Integer id;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> name<span class="token punctuation">;</span>
+    private String name;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> gender<span class="token punctuation">;</span>
+    private String gender;
 
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> birthday<span class="token punctuation">;</span>
+    private Date birthday;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> idCard<span class="token punctuation">;</span>
+    private String idCard;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> wedlock<span class="token punctuation">;</span>
+    private String wedlock;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> nationId<span class="token punctuation">;</span>
+    private Integer nationId;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> nativePlace<span class="token punctuation">;</span>
+    private String nativePlace;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> politicId<span class="token punctuation">;</span>
+    private Integer politicId;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> email<span class="token punctuation">;</span>
+    private String email;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> phone<span class="token punctuation">;</span>
+    private String phone;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> address<span class="token punctuation">;</span>
+    private String address;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> departmentId<span class="token punctuation">;</span>
+    private Integer departmentId;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> jobLevelId<span class="token punctuation">;</span>
+    private Integer jobLevelId;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> posId<span class="token punctuation">;</span>
+    private Integer posId;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> engageForm<span class="token punctuation">;</span>
+    private String engageForm;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> tiptopDegree<span class="token punctuation">;</span>
+    private String tiptopDegree;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> specialty<span class="token punctuation">;</span>
+    private String specialty;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> school<span class="token punctuation">;</span>
+    private String school;
 
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> beginDate<span class="token punctuation">;</span>
+    private Date beginDate;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> workState<span class="token punctuation">;</span>
+    private String workState;
 
-    <span class="token keyword">private</span> <span class="token class-name">String</span> workID<span class="token punctuation">;</span>
+    private String workID;
 
-    <span class="token keyword">private</span> <span class="token class-name">Double</span> contractTerm<span class="token punctuation">;</span>
+    private Double contractTerm;
 
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> conversionTime<span class="token punctuation">;</span>
+    private Date conversionTime;
 
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> notWorkDate<span class="token punctuation">;</span>
+    private Date notWorkDate;
 
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> beginContract<span class="token punctuation">;</span>
+    private Date beginContract;
 
-    <span class="token keyword">private</span> <span class="token class-name">Date</span> endContract<span class="token punctuation">;</span>
+    private Date endContract;
 
-    <span class="token keyword">private</span> <span class="token class-name">Integer</span> workAge<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Nation</span> nation<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Politicsstatus</span> politicsstatus<span class="token punctuation">;</span>
+    private Integer workAge;
+    private Nation nation;
+    private Politicsstatus politicsstatus;
 
-    <span class="token keyword">private</span> <span class="token class-name">Department</span> department<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">JobLevel</span> jobLevel<span class="token punctuation">;</span>
-    <span class="token keyword">private</span> <span class="token class-name">Position</span> position<span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    private Department department;
+    private JobLevel jobLevel;
+    private Position position;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>controller层</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@RestController</span>
-<span class="token annotation punctuation">@RequestMapping</span><span class="token punctuation">(</span><span class="token string">"/emp/basic"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmpBasicController</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">EmployeeService</span> employeeService<span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@GetMapping</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">RespPageBean</span> <span class="token function">getEmployeeByPage</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>defaultValue <span class="token operator">=</span> <span class="token string">"1"</span><span class="token punctuation">)</span> <span class="token class-name">Integer</span> page<span class="token punctuation">,</span>
-<span class="token comment">/*默认查询第一页，每页查询10个*/</span>             <span class="token annotation punctuation">@RequestParam</span><span class="token punctuation">(</span>defaultValue <span class="token operator">=</span> <span class="token string">"10"</span><span class="token punctuation">)</span> <span class="token class-name">Integer</span> size
-                                            <span class="token punctuation">,</span><span class="token class-name">String</span> keyword<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> employeeService<span class="token punctuation">.</span><span class="token function">getEmployeeByPage</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span>size<span class="token punctuation">,</span>keyword<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@RestController
+@RequestMapping(&quot;&#x2F;emp&#x2F;basic&quot;)
+public class EmpBasicController &#123;
+    @Autowired
+    EmployeeService employeeService;
+    @GetMapping(&quot;&#x2F;&quot;)
+    public RespPageBean getEmployeeByPage(@RequestParam(defaultValue &#x3D; &quot;1&quot;) Integer page,
+&#x2F;*默认查询第一页，每页查询10个*&#x2F;             @RequestParam(defaultValue &#x3D; &quot;10&quot;) Integer size
+                                            ,String keyword)&#123;
+        return employeeService.getEmployeeByPage(page,size,keyword);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>service层</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Service</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EmployeeService</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">EmployeeMapper</span> employeeMapper<span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token class-name">RespPageBean</span> <span class="token function">getEmployeeByPage</span><span class="token punctuation">(</span><span class="token class-name">Integer</span> page<span class="token punctuation">,</span> <span class="token class-name">Integer</span> size<span class="token punctuation">,</span> <span class="token class-name">String</span> keyword<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>page <span class="token operator">!=</span> <span class="token keyword">null</span> <span class="token operator">&amp;&amp;</span> size <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            page <span class="token operator">=</span> <span class="token punctuation">(</span>page <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">*</span> size<span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token class-name">List</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Employee</span><span class="token punctuation">></span></span> data <span class="token operator">=</span>employeeMapper<span class="token punctuation">.</span><span class="token function">getEmployeeByPage</span><span class="token punctuation">(</span>page<span class="token punctuation">,</span>size<span class="token punctuation">,</span>keyword<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Long</span> total <span class="token operator">=</span> employeeMapper<span class="token punctuation">.</span><span class="token function">getTotal</span><span class="token punctuation">(</span>keyword<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">RespPageBean</span> bean <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RespPageBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        bean<span class="token punctuation">.</span><span class="token function">setData</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        bean<span class="token punctuation">.</span><span class="token function">setTotal</span><span class="token punctuation">(</span>total<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> bean<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@Service
+public class EmployeeService &#123;
+    @Autowired
+    EmployeeMapper employeeMapper;
+    public RespPageBean getEmployeeByPage(Integer page, Integer size, String keyword) &#123;
+        if (page !&#x3D; null &amp;&amp; size !&#x3D; null) &#123;
+            page &#x3D; (page - 1) * size;
+        &#125;
+        List&lt;Employee&gt; data &#x3D;employeeMapper.getEmployeeByPage(page,size,keyword);
+        Long total &#x3D; employeeMapper.getTotal(keyword);
+        RespPageBean bean &#x3D; new RespPageBean();
+        bean.setData(data);
+        bean.setTotal(total);
+        return bean;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 </li>
 <li><p>mapper接口</p>
 <pre class="line-numbers language-xml" data-language="xml"><code class="language-xml">public interface EmployeeMapper &#123;
@@ -803,4 +803,4 @@
 <p><img src="%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86%E7%9A%84%E6%90%9C%E7%B4%A2%E6%B5%8B%E8%AF%95.png"></p>
 </li>
 </ol>
-<h1 id="搭建邮件服务以及消息中间件"><a href="#搭建邮件服务以及消息中间件" class="headerlink" title="搭建邮件服务以及消息中间件"></a>搭建邮件服务以及消息中间件</h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/">http://lcdzzz.github.io/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/springboot/">springboot</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a></div><div class="post_share"><div class="social-share" data-image="https://images.wallpaperscraft.com/image/single/laptop_cup_glasses_plant_114948_300x168.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/26/2022springboot-zi-xue-bi-ji/"><img class="prev-cover" src="https://images.wallpaperscraft.com/image/single/soldier_helmet_art_123765_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2022springboot自学笔记</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/20/redis-ru-men/"><img class="next-cover" src="https://images.wallpaperscraft.com/image/single/wolf_starry_sky_tree_moon_118496_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Redis</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/" title="tienchin项目笔记"><img class="cover" src="https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-02</div><div class="title">tienchin项目笔记</div></div></a></div><div><a href="/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/" title="自定义多数据源"><img class="cover" src="https://img0.baidu.com/it/u=3276317046,1367389085&fm=253&fmt=auto&app=138&f=PNG?w=889&h=500" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-18</div><div class="title">自定义多数据源</div></div></a></div><div><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img class="cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">图书管理系统介绍</div></div></a></div><div><a href="/2022/06/22/mybatisplus/" title="MybatisPlus"><img class="cover" src="https://img0.baidu.com/it/u=3497851059,26175775&fm=253&fmt=auto&app=138&f=JPG?w=288&h=285" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-22</div><div class="title">MybatisPlus</div></div></a></div><div><a href="/2022/11/03/sprngsecurity-shi-zhan-shi-li-jwt-token-deng-lu-ren-zheng-quan-xian-kong-zhi/" title="SprngSecurity实战实例，JWT Token登录认证&权限控制"><img class="cover" src="https://img2.baidu.com/it/u=924906505,2741718824&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=250" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-03</div><div class="title">SprngSecurity实战实例，JWT Token登录认证&权限控制</div></div></a></div><div><a href="/2022/12/18/gu-li-shang-cheng-xue-xi-ji-lu/" title="谷粒商城学习记录"><img class="cover" src="https://img-blog.csdnimg.cn/img_convert/b3a972ccdb5aa17ffaa4a443542032f0.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-18</div><div class="title">谷粒商城学习记录</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%8F%9C%E5%8D%95%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">服务端菜单接口设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%8E%A5%E5%8F%A3%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">后端接口权限设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E7%9A%84%E5%88%A4%E6%96%AD%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">整体的判断过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%81%8C%E4%BD%8D%E7%AE%A1%E7%90%86%E5%90%8E%E7%AB%AF%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">职位管理后端接口设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">员工管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E9%A1%B5%E5%8F%8A%E6%90%9C%E7%B4%A2"><span class="toc-number">4.1.</span> <span class="toc-text">数据分页及搜索</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E4%BB%A5%E5%8F%8A%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">搭建邮件服务以及消息中间件</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>
+<h1 id="搭建邮件服务以及消息中间件"><a href="#搭建邮件服务以及消息中间件" class="headerlink" title="搭建邮件服务以及消息中间件"></a>搭建邮件服务以及消息中间件</h1></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/">http://lcdzzz.github.io/2022/01/24/wei-ren-shi-xiang-mu-bi-ji/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/springboot/">springboot</a><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a></div><div class="post_share"><div class="social-share" data-image="https://images.wallpaperscraft.com/image/single/laptop_cup_glasses_plant_114948_300x168.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/01/26/2022springboot-zi-xue-bi-ji/"><img class="prev-cover" src="https://images.wallpaperscraft.com/image/single/soldier_helmet_art_123765_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">2022springboot自学笔记</div></div></a></div><div class="next-post pull-right"><a href="/2022/01/20/redis-ru-men/"><img class="next-cover" src="https://images.wallpaperscraft.com/image/single/wolf_starry_sky_tree_moon_118496_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Redis</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/06/02/tienchin-xiang-mu-bi-ji/" title="tienchin项目笔记"><img class="cover" src="https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-02</div><div class="title">tienchin项目笔记</div></div></a></div><div><a href="/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/" title="自定义多数据源"><img class="cover" src="https://img0.baidu.com/it/u=3276317046,1367389085&fm=253&fmt=auto&app=138&f=PNG?w=889&h=500" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-18</div><div class="title">自定义多数据源</div></div></a></div><div><a href="/2022/02/07/tu-shu-guan-li-xi-tong-jie-shao/" title="图书管理系统介绍"><img class="cover" src="https://images.wallpaperscraft.com/image/single/astronaut_spacesuit_reflection_144426_300x168.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-02-07</div><div class="title">图书管理系统介绍</div></div></a></div><div><a href="/2022/11/03/sprngsecurity-shi-zhan-shi-li-jwt-token-deng-lu-ren-zheng-quan-xian-kong-zhi/" title="SprngSecurity实战实例，JWT Token登录认证&权限控制"><img class="cover" src="https://img2.baidu.com/it/u=924906505,2741718824&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=250" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-03</div><div class="title">SprngSecurity实战实例，JWT Token登录认证&权限控制</div></div></a></div><div><a href="/2022/12/18/gu-li-shang-cheng-xue-xi-ji-lu/" title="谷粒商城学习记录"><img class="cover" src="https://img-blog.csdnimg.cn/img_convert/b3a972ccdb5aa17ffaa4a443542032f0.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-18</div><div class="title">谷粒商城学习记录</div></div></a></div><div><a href="/2022/06/22/mybatisplus/" title="MybatisPlus"><img class="cover" src="https://img0.baidu.com/it/u=3497851059,26175775&fm=253&fmt=auto&app=138&f=JPG?w=288&h=285" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-06-22</div><div class="title">MybatisPlus</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">lcdzzz</div><div class="author-info__description"></div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E7%AB%AF%E8%8F%9C%E5%8D%95%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.</span> <span class="toc-text">服务端菜单接口设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%90%8E%E7%AB%AF%E6%8E%A5%E5%8F%A3%E6%9D%83%E9%99%90%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">后端接口权限设计</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E7%9A%84%E5%88%A4%E6%96%AD%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">整体的判断过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%81%8C%E4%BD%8D%E7%AE%A1%E7%90%86%E5%90%8E%E7%AB%AF%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1"><span class="toc-number">3.</span> <span class="toc-text">职位管理后端接口设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%91%98%E5%B7%A5%E7%AE%A1%E7%90%86"><span class="toc-number">4.</span> <span class="toc-text">员工管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%88%86%E9%A1%B5%E5%8F%8A%E6%90%9C%E7%B4%A2"><span class="toc-number">4.1.</span> <span class="toc-text">数据分页及搜索</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%90%AD%E5%BB%BA%E9%82%AE%E4%BB%B6%E6%9C%8D%E5%8A%A1%E4%BB%A5%E5%8F%8A%E6%B6%88%E6%81%AF%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="toc-number">5.</span> <span class="toc-text">搭建邮件服务以及消息中间件</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxtest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/docker-bi-ji/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/docker-bi-ji/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/chu-li-mi-deng-xing/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解"><img src="https://img1.baidu.com/it/u=1262509061,4086244529&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=339" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="自定义限流注解"/></a><div class="content"><a class="title" href="/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/" title="自定义限流注解">自定义限流注解</a><time datetime="2024-01-28T08:40:02.000Z" title="发表于 2024-01-28 16:40:02">2024-01-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By lcdzzz</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><!-- hexo-inject:begin --><!-- hexo-inject:end --></body></html>

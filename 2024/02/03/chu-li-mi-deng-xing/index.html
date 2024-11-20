@@ -181,63 +181,63 @@
 
 <h1 id="请求参数格式问题"><a href="#请求参数格式问题" class="headerlink" title="请求参数格式问题"></a>请求参数格式问题</h1><h2 id="io流（json）可能产生的问题复现"><a href="#io流（json）可能产生的问题复现" class="headerlink" title="io流（json）可能产生的问题复现"></a>io流（json）可能产生的问题复现</h2><p><code>io/github/lcdzzz/repeat_submit/interceptor/RepeatSubmitInterceptor.java</code></p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>stereotype<span class="token punctuation">.</span></span><span class="token class-name">Component</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">HandlerInterceptor</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ModelAndView</span><span class="token punctuation">;</span>
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-<span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RepeatSubmitInterceptor</span> <span class="token keyword">implements</span> <span class="token class-name">HandlerInterceptor</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">preHandle</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">Object</span> handler<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"request.getReader().readLine() = "</span> <span class="token operator">+</span> request<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+@Component
+public class RepeatSubmitInterceptor implements HandlerInterceptor &#123;
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;
+        System.out.println(&quot;request.getReader().readLine() &#x3D; &quot; + request.getReader().readLine());
+        return true;
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">postHandle</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">Object</span> handler<span class="token punctuation">,</span> <span class="token class-name">ModelAndView</span> modelAndView<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">HandlerInterceptor</span><span class="token punctuation">.</span><span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">postHandle</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">,</span> handler<span class="token punctuation">,</span> modelAndView<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception &#123;
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterCompletion</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">Object</span> handler<span class="token punctuation">,</span> <span class="token class-name">Exception</span> ex<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">HandlerInterceptor</span><span class="token punctuation">.</span><span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">afterCompletion</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">,</span> handler<span class="token punctuation">,</span> ex<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><code>io/github/lcdzzz/repeat_submit/config/webConfig.java</code></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">io<span class="token punctuation">.</span>github<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>repeat_submit<span class="token punctuation">.</span>interceptor<span class="token punctuation">.</span></span><span class="token class-name">RepeatSubmitInterceptor</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Configuration</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">InterceptorRegistry</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebMvcConfigurer</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import io.github.lcdzzz.repeat_submit.interceptor.RepeatSubmitInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-<span class="token annotation punctuation">@Configuration</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> webConfig <span class="token keyword">implements</span> <span class="token class-name">WebMvcConfigurer</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">RepeatSubmitInterceptor</span> repeatSubmitInterceptor<span class="token punctuation">;</span>
+@Configuration
+public class webConfig implements WebMvcConfigurer &#123;
+    @Autowired
+    RepeatSubmitInterceptor repeatSubmitInterceptor;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addInterceptors</span><span class="token punctuation">(</span><span class="token class-name">InterceptorRegistry</span> registry<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        registry<span class="token punctuation">.</span><span class="token function">addInterceptor</span><span class="token punctuation">(</span>repeatSubmitInterceptor<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addPathPatterns</span><span class="token punctuation">(</span><span class="token string">"/**"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) &#123;
+        registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns(&quot;&#x2F;**&quot;);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><code>io/github/lcdzzz/repeat_submit/controller/HelloController.java</code></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">GetMapping</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RequestBody</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>bind<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">RestController</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-<span class="token annotation punctuation">@RestController</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">HelloController</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
-    <span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">String</span> json<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//@RequestBody底层也是通过io流实现的</span>
-        <span class="token keyword">return</span> json<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+@RestController
+public class HelloController &#123;
+    @PostMapping(&quot;&#x2F;hello&quot;)
+    public String hello(@RequestBody String json)&#123;&#x2F;&#x2F;@RequestBody底层也是通过io流实现的
+        return json;
+    &#125;
 
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -253,59 +253,59 @@
 <p>实际上，这个类的目的是允许请求的输入流（请求体）能够被多次读取，因为默认情况下，Servlet的输入流只能读取一次。</p>
 <p><code>io/github/lcdzzz/repeat_submit/request/RepeatableReadRequestWrapper.java</code></p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ReadListener</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">ServletInputStream</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequestWrapper</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RepeatableReadRequestWrapper</span> <span class="token keyword">extends</span> <span class="token class-name">HttpServletRequestWrapper</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">private</span> <span class="token keyword">final</span> <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> bytes<span class="token punctuation">;</span><span class="token comment">//把从io流拿出来的</span>
-    <span class="token keyword">public</span> <span class="token class-name">RepeatableReadRequestWrapper</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">super</span><span class="token punctuation">(</span>request<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        request<span class="token punctuation">.</span><span class="token function">setCharacterEncoding</span><span class="token punctuation">(</span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        response<span class="token punctuation">.</span><span class="token function">setCharacterEncoding</span><span class="token punctuation">(</span><span class="token string">"UTF-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        bytes<span class="token operator">=</span>request<span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+public class RepeatableReadRequestWrapper extends HttpServletRequestWrapper &#123;
+    private final byte[] bytes;&#x2F;&#x2F;把从io流拿出来的
+    public RepeatableReadRequestWrapper(HttpServletRequest request, HttpServletResponse response) throws IOException &#123;
+        super(request);
+        request.setCharacterEncoding(&quot;UTF-8&quot;);
+        response.setCharacterEncoding(&quot;UTF-8&quot;);
+        bytes&#x3D;request.getReader().readLine().getBytes();
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token class-name">BufferedReader</span> <span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">BufferedReader</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">InputStreamReader</span><span class="token punctuation">(</span><span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @Override
+    public BufferedReader getReader() throws IOException &#123;
+        return new BufferedReader((new InputStreamReader(getInputStream())));
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token class-name">ServletInputStream</span> <span class="token function">getInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">ByteArrayInputStream</span> bais <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ByteArrayInputStream</span><span class="token punctuation">(</span>bytes<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">ServletInputStream</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isFinished</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
+    @Override
+    public ServletInputStream getInputStream() throws IOException &#123;
+        ByteArrayInputStream bais &#x3D; new ByteArrayInputStream(bytes);
+        return new ServletInputStream() &#123;
+            @Override
+            public boolean isFinished() &#123;
+                return false;
+            &#125;
 
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">isReady</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
+            @Override
+            public boolean isReady() &#123;
+                return false;
+            &#125;
 
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setReadListener</span><span class="token punctuation">(</span><span class="token class-name">ReadListener</span> readListener<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            @Override
+            public void setReadListener(ReadListener readListener) &#123;
 
-            <span class="token punctuation">&#125;</span>
+            &#125;
 
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">return</span> bais<span class="token punctuation">.</span><span class="token function">read</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-            <span class="token annotation punctuation">@Override</span>
-            <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">available</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span> <span class="token punctuation">&#123;</span><span class="token comment">//整个数据的长度</span>
-                <span class="token keyword">return</span> bytes<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+            @Override
+            public int read() throws IOException &#123;
+                return bais.read();
+            &#125;
+            @Override
+            public int available() throws IOException &#123;&#x2F;&#x2F;整个数据的长度
+                return bytes.length;
+            &#125;
+        &#125;;
 
 
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
+    &#125;
+&#125;
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
@@ -317,26 +317,26 @@
 </ol>
 <p>这个过滤器的作用是在请求为 JSON 格式时，将原始的请求对象替换为具有多次读取能力的包装类，从而防止在处理请求时由于读取请求体而导致的问题。</p>
 <p><code>io/github/lcdzzz/repeat_submit/filter/RepeatableRequestFilter.java</code></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">io<span class="token punctuation">.</span>github<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>repeat_submit<span class="token punctuation">.</span>request<span class="token punctuation">.</span></span><span class="token class-name">RepeatableReadRequestWrapper</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">StringUtils</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token operator">*</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>http<span class="token punctuation">.</span></span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>io<span class="token punctuation">.</span></span><span class="token class-name">IOException</span><span class="token punctuation">;</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import io.github.lcdzzz.repeat_submit.request.RepeatableReadRequestWrapper;
+import org.springframework.util.StringUtils;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RepeatableRequestFilter</span> <span class="token keyword">implements</span> <span class="token class-name">Filter</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">doFilter</span><span class="token punctuation">(</span><span class="token class-name">ServletRequest</span> servletRequest<span class="token punctuation">,</span> <span class="token class-name">ServletResponse</span> servletResponse<span class="token punctuation">,</span> <span class="token class-name">FilterChain</span> filterChain<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">IOException</span><span class="token punctuation">,</span> <span class="token class-name">ServletException</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">HttpServletRequest</span> request <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span><span class="token punctuation">)</span> servletRequest<span class="token punctuation">;</span>
-        <span class="token comment">//这通常用于在处理 HTTP 请求时，判断请求的数据格式是否为 JSON 格式</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">startsWithIgnoreCase</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getContentType</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token string">"application/json"</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//StringUtils.startsWithIgnoreCase()以某个前缀开始的</span>
-            <span class="token class-name">RepeatableReadRequestWrapper</span> requestWrapper <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RepeatableReadRequestWrapper</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token class-name">HttpServletResponse</span><span class="token punctuation">)</span> servletResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>requestWrapper<span class="token punctuation">,</span>servletResponse<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//也就是说如果请求时json格式的，那就来个偷梁换柱，换成装饰者模式处理之后的请求。使她可以重复读</span>
-            <span class="token keyword">return</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        filterChain<span class="token punctuation">.</span><span class="token function">doFilter</span><span class="token punctuation">(</span>servletRequest<span class="token punctuation">,</span>servletResponse<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+public class RepeatableRequestFilter implements Filter &#123;
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException &#123;
+        HttpServletRequest request &#x3D; (HttpServletRequest) servletRequest;
+        &#x2F;&#x2F;这通常用于在处理 HTTP 请求时，判断请求的数据格式是否为 JSON 格式
+        if (StringUtils.startsWithIgnoreCase(request.getContentType(),&quot;application&#x2F;json&quot;))&#123;&#x2F;&#x2F;StringUtils.startsWithIgnoreCase()以某个前缀开始的
+            RepeatableReadRequestWrapper requestWrapper &#x3D; new RepeatableReadRequestWrapper(request, (HttpServletResponse) servletResponse);
+            filterChain.doFilter(requestWrapper,servletResponse);&#x2F;&#x2F;也就是说如果请求时json格式的，那就来个偷梁换柱，换成装饰者模式处理之后的请求。使她可以重复读
+            return;
+        &#125;
+        filterChain.doFilter(servletRequest,servletResponse);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
@@ -346,35 +346,35 @@
 <li>注册一个自定义的过滤器 <code>RepeatableRequestFilter</code>，该过滤器用于处理重复请求。这里通过 <code>FilterRegistrationBean</code> 配置了过滤器的注册。</li>
 </ol>
 <p><code>io/github/lcdzzz/repeat_submit/config/webConfig.java</code></p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token keyword">import</span> <span class="token namespace">io<span class="token punctuation">.</span>github<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>repeat_submit<span class="token punctuation">.</span>filter<span class="token punctuation">.</span></span><span class="token class-name">RepeatableRequestFilter</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">io<span class="token punctuation">.</span>github<span class="token punctuation">.</span>lcdzzz<span class="token punctuation">.</span>repeat_submit<span class="token punctuation">.</span>interceptor<span class="token punctuation">.</span></span><span class="token class-name">RepeatSubmitInterceptor</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>beans<span class="token punctuation">.</span>factory<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Autowired</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>boot<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span></span><span class="token class-name">FilterRegistrationBean</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Bean</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>context<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">Configuration</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">InterceptorRegistry</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token namespace">org<span class="token punctuation">.</span>springframework<span class="token punctuation">.</span>web<span class="token punctuation">.</span>servlet<span class="token punctuation">.</span>config<span class="token punctuation">.</span>annotation<span class="token punctuation">.</span></span><span class="token class-name">WebMvcConfigurer</span><span class="token punctuation">;</span>
-<span class="token annotation punctuation">@Configuration</span><span class="token comment">//声明这是一个配置类，Spring会在启动时加载并处理它。</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> webConfig <span class="token keyword">implements</span> <span class="token class-name">WebMvcConfigurer</span> <span class="token punctuation">&#123;</span><span class="token comment">//实现了 WebMvcConfigurer 接口，用于配置Spring MVC。</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">RepeatSubmitInterceptor</span> repeatSubmitInterceptor<span class="token punctuation">;</span><span class="token comment">//使用Spring的依赖注入，注入一个 RepeatSubmitInterceptor 的实例。这个拦截器是用于防止表单重复提交的自定义拦截器。</span>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">import io.github.lcdzzz.repeat_submit.filter.RepeatableRequestFilter;
+import io.github.lcdzzz.repeat_submit.interceptor.RepeatSubmitInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+@Configuration&#x2F;&#x2F;声明这是一个配置类，Spring会在启动时加载并处理它。
+public class webConfig implements WebMvcConfigurer &#123;&#x2F;&#x2F;实现了 WebMvcConfigurer 接口，用于配置Spring MVC。
+    @Autowired
+    RepeatSubmitInterceptor repeatSubmitInterceptor;&#x2F;&#x2F;使用Spring的依赖注入，注入一个 RepeatSubmitInterceptor 的实例。这个拦截器是用于防止表单重复提交的自定义拦截器。
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">addInterceptors</span><span class="token punctuation">(</span><span class="token class-name">InterceptorRegistry</span> registry<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token comment">//重写 addInterceptors 方法，向拦截器注册表中添加自定义的拦截器。这里注册了 RepeatSubmitInterceptor，并指定了拦截路径为 "/**"，即拦截所有请求。</span>
-        registry<span class="token punctuation">.</span><span class="token function">addInterceptor</span><span class="token punctuation">(</span>repeatSubmitInterceptor<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addPathPatterns</span><span class="token punctuation">(</span><span class="token string">"/**"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) &#123;
+        &#x2F;&#x2F;重写 addInterceptors 方法，向拦截器注册表中添加自定义的拦截器。这里注册了 RepeatSubmitInterceptor，并指定了拦截路径为 &quot;&#x2F;**&quot;，即拦截所有请求。
+        registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns(&quot;&#x2F;**&quot;);
+    &#125;
 
     
-    <span class="token comment">//声明一个Bean，该Bean是 FilterRegistrationBean 类型的，用于注册过滤器。在这里，注册了一个 RepeatableRequestFilter 过滤器，并设置其拦截路径为 "/*"，即拦截所有请求。这个过滤器可能是用于处理重复请求的自定义过滤器。</span>
-    <span class="token annotation punctuation">@Bean</span>
-    <span class="token class-name">FilterRegistrationBean</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">RepeatableRequestFilter</span><span class="token punctuation">></span></span> <span class="token function">repeatableRequestFilterFilterRegistrationBean</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">FilterRegistrationBean</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">RepeatableRequestFilter</span><span class="token punctuation">></span></span> bean <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">FilterRegistrationBean</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        bean<span class="token punctuation">.</span><span class="token function">setFilter</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">RepeatableRequestFilter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        bean<span class="token punctuation">.</span><span class="token function">addUrlPatterns</span><span class="token punctuation">(</span><span class="token string">"/*"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//拦截所有请求</span>
-        <span class="token keyword">return</span> bean<span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    &#x2F;&#x2F;声明一个Bean，该Bean是 FilterRegistrationBean 类型的，用于注册过滤器。在这里，注册了一个 RepeatableRequestFilter 过滤器，并设置其拦截路径为 &quot;&#x2F;*&quot;，即拦截所有请求。这个过滤器可能是用于处理重复请求的自定义过滤器。
+    @Bean
+    FilterRegistrationBean&lt;RepeatableRequestFilter&gt; repeatableRequestFilterFilterRegistrationBean()&#123;
+        FilterRegistrationBean&lt;RepeatableRequestFilter&gt; bean &#x3D; new FilterRegistrationBean&lt;&gt;();
+        bean.setFilter(new RepeatableRequestFilter());
+        bean.addUrlPatterns(&quot;&#x2F;*&quot;);&#x2F;&#x2F;拦截所有请求
+        return bean;
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>综合来看，这三段代码一起实现了一个防止重复提交的机制，在请求为 JSON 格式时，通过替换请求对象的方式，允许请求体的多次读取。同时，通过拦截器和过滤器的配置，使这个机制能够在整个应用中生效。</strong></p>
 <p><strong>结果：</strong><img src="image-20240205160840618.png" alt="image-20240205160840618"></p>
@@ -384,148 +384,148 @@
 <p><code>tienchin-framework/src/main/java/com/lcdzzz/framework/config/FilterConfig.java</code>===<code>io/github/lcdzzz/repeat_submit/config/webConfig.java</code></p>
 <hr>
 <h1 id="防止重复提交"><a href="#防止重复提交" class="headerlink" title="防止重复提交"></a>防止重复提交</h1><p>思路：把【你是谁、请求地址、请求参数…】存到redis里面去。</p>
-<h2 id="定义注解"><a href="#定义注解" class="headerlink" title="定义注解"></a>定义注解</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token class-name">ElementType</span><span class="token punctuation">.</span>METHOD<span class="token punctuation">)</span>
-<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span><span class="token class-name">RetentionPolicy</span><span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token annotation punctuation">@interface</span> <span class="token class-name">RepeatSubmit</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">/**
+<h2 id="定义注解"><a href="#定义注解" class="headerlink" title="定义注解"></a>定义注解</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RepeatSubmit &#123;
+    &#x2F;**
      * 两个请求之间的间隔时间
      * @return
-     */</span>
-    <span class="token keyword">int</span> <span class="token function">interval</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token number">5000</span><span class="token punctuation">;</span>
-    <span class="token comment">/**
+     *&#x2F;
+    int interval() default 5000;
+    &#x2F;**
      * 重复提交时的提示文本
      * @return
-     */</span>
-    <span class="token class-name">String</span> <span class="token function">message</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">"不允许重复提交，请稍后再试"</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+     *&#x2F;
+    String message() default &quot;不允许重复提交，请稍后再试&quot;;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="redis工具类"><a href="#redis工具类" class="headerlink" title="redis工具类"></a>redis工具类</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RedisCahe</span> <span class="token punctuation">&#123;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">RedisTemplate</span> redisTemplate<span class="token punctuation">;</span>
+<h2 id="redis工具类"><a href="#redis工具类" class="headerlink" title="redis工具类"></a>redis工具类</h2><pre class="line-numbers language-java" data-language="java"><code class="language-java">@Component
+public class RedisCahe &#123;
+    @Autowired
+    RedisTemplate redisTemplate;
 
-    <span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token keyword">void</span> <span class="token function">setRedisTemplate</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">String</span> key<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token class-name">T</span> value<span class="token punctuation">,</span> <span class="token class-name">Integer</span> timeout<span class="token punctuation">,</span> <span class="token keyword">final</span> <span class="token class-name">TimeUnit</span> timeUnit<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token comment">/**
+    public &lt;T&gt; void setRedisTemplate(final String key, final T value, Integer timeout, final TimeUnit timeUnit)&#123;
+        &#x2F;**
          * opsForValue() 方法，你可以获取一个用于操作字符串值的操作对象。然后，调用 set() 方法，将指定的键与值关联起来。
-         */</span>
-        redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span>value<span class="token punctuation">,</span>timeout<span class="token punctuation">,</span>timeUnit<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+         *&#x2F;
+        redisTemplate.opsForValue().set(key,value,timeout,timeUnit);
+    &#125;
 
-    <span class="token keyword">public</span> <span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">T</span><span class="token punctuation">></span></span> <span class="token class-name">T</span> <span class="token function">getCacheObject</span><span class="token punctuation">(</span><span class="token keyword">final</span> <span class="token class-name">String</span> key<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-        <span class="token class-name">ValueOperations</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span><span class="token class-name">T</span><span class="token punctuation">></span></span> valueOperations <span class="token operator">=</span> redisTemplate<span class="token punctuation">.</span><span class="token function">opsForValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> valueOperations<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    public &lt;T&gt; T getCacheObject(final String key)&#123;
+        ValueOperations&lt;String,T&gt; valueOperations &#x3D; redisTemplate.opsForValue();
+        return valueOperations.get(key);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="配置注解"><a href="#配置注解" class="headerlink" title="配置注解"></a>配置注解</h2><p>之前配置注解都是用aop的，这次试一试在拦截器地方配置</p>
 <p><strong>HandlerMethod</strong>： <u>会把我每定义的一个接口方法封装成一个对象</u>。就是接口方法的各种信息【说属于哪个类的，方法泛型是什么，方法地址，方法参数，返回值…】又被分装成一个新的类，就叫HandlerMethod。</p>
 <p>如果所有的像这样的接口方法，最终都会被封装成HandlerMethod。</p>
-<pre class="line-numbers language-java" data-language="java"><code class="language-java"><span class="token annotation punctuation">@PostMapping</span><span class="token punctuation">(</span><span class="token string">"/hello"</span><span class="token punctuation">)</span>
-<span class="token keyword">public</span> <span class="token class-name">String</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token annotation punctuation">@RequestBody</span> <span class="token class-name">String</span> json<span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//@RequestBody底层也是通过io流实现的</span>
-    <span class="token keyword">return</span> json<span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-java" data-language="java"><code class="language-java">@PostMapping(&quot;&#x2F;hello&quot;)
+public String hello(@RequestBody String json)&#123;&#x2F;&#x2F;@RequestBody底层也是通过io流实现的
+    return json;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 
 <h3 id="RepeatSubmitInterceptor"><a href="#RepeatSubmitInterceptor" class="headerlink" title="RepeatSubmitInterceptor"></a>RepeatSubmitInterceptor</h3><p>代码：</p>
 <pre class="line-numbers language-java" data-language="java"><code class="language-java">
-<span class="token annotation punctuation">@Component</span>
-<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">RepeatSubmitInterceptor</span> <span class="token keyword">implements</span> <span class="token class-name">HandlerInterceptor</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> REPEAT_PARAMS <span class="token operator">=</span> <span class="token string">"repeat_params"</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> REPEAT_TIME <span class="token operator">=</span> <span class="token string">"repeat_time"</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> REPEAT_SUBMIT_KEY <span class="token operator">=</span> <span class="token string">"repeat_submit_key"</span><span class="token punctuation">;</span>
-    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token class-name">String</span> HEADER <span class="token operator">=</span> <span class="token string">"Authorization"</span><span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@Autowired</span>
-    <span class="token class-name">RedisCahe</span> redisCahe<span class="token punctuation">;</span>
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">preHandle</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">Object</span> handler<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>handler <span class="token keyword">instanceof</span> <span class="token class-name">HandlerMethod</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">HandlerMethod</span> handlerMethod <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">HandlerMethod</span><span class="token punctuation">)</span> handler<span class="token punctuation">;</span>
-            <span class="token class-name">Method</span> method <span class="token operator">=</span> handlerMethod<span class="token punctuation">.</span><span class="token function">getMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token class-name">RepeatSubmit</span> repeatSubmit <span class="token operator">=</span> method<span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span><span class="token class-name">RepeatSubmit</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>repeatSubmit <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//说明method上有这个注解，所以要请求校验判断是否重复</span>
-                <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isRepeatSubmit</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> repeatSubmit<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//判断是否是重复提交</span>
-                    <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> map <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"status"</span><span class="token punctuation">,</span> <span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    map<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span><span class="token string">"message"</span><span class="token punctuation">,</span> repeatSubmit<span class="token punctuation">.</span><span class="token function">message</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    response<span class="token punctuation">.</span><span class="token function">setContentType</span><span class="token punctuation">(</span><span class="token string">"application/json;charset=utf-8"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    response<span class="token punctuation">.</span><span class="token function">getWriter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span><span class="token comment">//拦截下来了</span>
-                <span class="token punctuation">&#125;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+@Component
+public class RepeatSubmitInterceptor implements HandlerInterceptor &#123;
+    public static final String REPEAT_PARAMS &#x3D; &quot;repeat_params&quot;;
+    public static final String REPEAT_TIME &#x3D; &quot;repeat_time&quot;;
+    public static final String REPEAT_SUBMIT_KEY &#x3D; &quot;repeat_submit_key&quot;;
+    public static final String HEADER &#x3D; &quot;Authorization&quot;;
+    @Autowired
+    RedisCahe redisCahe;
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception &#123;
+        if (handler instanceof HandlerMethod) &#123;
+            HandlerMethod handlerMethod &#x3D; (HandlerMethod) handler;
+            Method method &#x3D; handlerMethod.getMethod();
+            RepeatSubmit repeatSubmit &#x3D; method.getAnnotation(RepeatSubmit.class);
+            if (repeatSubmit !&#x3D; null) &#123;&#x2F;&#x2F;说明method上有这个注解，所以要请求校验判断是否重复
+                if (isRepeatSubmit(request, repeatSubmit)) &#123;&#x2F;&#x2F;判断是否是重复提交
+                    Map&lt;String, Object&gt; map &#x3D; new HashMap&lt;&gt;();
+                    map.put(&quot;status&quot;, 500);
+                    map.put(&quot;message&quot;, repeatSubmit.message());
+                    response.setContentType(&quot;application&#x2F;json;charset&#x3D;utf-8&quot;);
+                    response.getWriter().write(new ObjectMapper().writeValueAsString(map));
+                    return false;&#x2F;&#x2F;拦截下来了
+                &#125;
+            &#125;
+        &#125;
+        return true;
+    &#125;
 
-    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">isRepeatSubmit</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">RepeatSubmit</span> repeatSubmit<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span> nowParams <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span><span class="token comment">//请求参数字符串</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>request <span class="token keyword">instanceof</span> <span class="token class-name">RepeatableReadRequestWrapper</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-                nowParams <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">RepeatableReadRequestWrapper</span><span class="token punctuation">)</span> request<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getReader</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">readLine</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">IOException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token comment">//否则说明请求参数是key-value 格式的</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">StringUtils</span><span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span>nowParams<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
-                nowParams <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ObjectMapper</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">writeValueAsString</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getParameterMap</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">JsonProcessingException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> nowDataMap <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token punctuation">></span></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        nowDataMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>REPEAT_PARAMS<span class="token punctuation">,</span> nowParams<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        nowDataMap<span class="token punctuation">.</span><span class="token function">put</span><span class="token punctuation">(</span>REPEAT_TIME<span class="token punctuation">,</span> <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">currentTimeMillis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> requestURI <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getRequestURI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> header <span class="token operator">=</span> request<span class="token punctuation">.</span><span class="token function">getHeader</span><span class="token punctuation">(</span>HEADER<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//用来提取出用户是谁</span>
-        <span class="token class-name">String</span> cacheKey <span class="token operator">=</span> REPEAT_SUBMIT_KEY <span class="token operator">+</span> requestURI <span class="token operator">+</span> header<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">"Bearer "</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">Object</span> cacheObject <span class="token operator">=</span> redisCahe<span class="token punctuation">.</span><span class="token function">getCacheObject</span><span class="token punctuation">(</span>cacheKey<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>cacheObject <span class="token operator">!=</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> map <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span><span class="token punctuation">)</span> cacheObject<span class="token punctuation">;</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">compareParams</span><span class="token punctuation">(</span>map<span class="token punctuation">,</span> nowDataMap<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">compareTime</span><span class="token punctuation">(</span>map<span class="token punctuation">,</span> nowDataMap<span class="token punctuation">,</span> repeatSubmit<span class="token punctuation">.</span><span class="token function">interval</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-                <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-            <span class="token punctuation">&#125;</span>
-        <span class="token punctuation">&#125;</span>
-        redisCahe<span class="token punctuation">.</span><span class="token function">setRedisTemplate</span><span class="token punctuation">(</span>cacheKey<span class="token punctuation">,</span> nowDataMap<span class="token punctuation">,</span> repeatSubmit<span class="token punctuation">.</span><span class="token function">interval</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">TimeUnit</span><span class="token punctuation">.</span>MILLISECONDS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    private boolean isRepeatSubmit(HttpServletRequest request, RepeatSubmit repeatSubmit) &#123;
+        String nowParams &#x3D; &quot;&quot;;&#x2F;&#x2F;请求参数字符串
+        if (request instanceof RepeatableReadRequestWrapper) &#123;
+            try &#123;
+                nowParams &#x3D; ((RepeatableReadRequestWrapper) request).getReader().readLine();
+            &#125; catch (IOException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        &#x2F;&#x2F;否则说明请求参数是key-value 格式的
+        if (StringUtils.isEmpty(nowParams)) &#123;
+            try &#123;
+                nowParams &#x3D; new ObjectMapper().writeValueAsString(request.getParameterMap());
+            &#125; catch (JsonProcessingException e) &#123;
+                throw new RuntimeException(e);
+            &#125;
+        &#125;
+        Map&lt;String, Object&gt; nowDataMap &#x3D; new HashMap&lt;&gt;();
+        nowDataMap.put(REPEAT_PARAMS, nowParams);
+        nowDataMap.put(REPEAT_TIME, System.currentTimeMillis());
+        String requestURI &#x3D; request.getRequestURI();
+        String header &#x3D; request.getHeader(HEADER);&#x2F;&#x2F;用来提取出用户是谁
+        String cacheKey &#x3D; REPEAT_SUBMIT_KEY + requestURI + header.replace(&quot;Bearer &quot;, &quot;&quot;);
+        Object cacheObject &#x3D; redisCahe.getCacheObject(cacheKey);
+        if (cacheObject !&#x3D; null) &#123;
+            Map&lt;String, Object&gt; map &#x3D; (Map&lt;String, Object&gt;) cacheObject;
+            if (compareParams(map, nowDataMap) &amp;&amp; compareTime(map, nowDataMap, repeatSubmit.interval())) &#123;
+                return true;
+            &#125;
+        &#125;
+        redisCahe.setRedisTemplate(cacheKey, nowDataMap, repeatSubmit.interval(), TimeUnit.MILLISECONDS);
+        return false;
+    &#125;
 
-    <span class="token comment">/**
+    &#x2F;**
      * 判断是否重复提交，返回true就代表是重复提交
      *
      * @param map
      * @param nowDataMap
      * @param interval
      * @return
-     */</span>
-    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">compareTime</span><span class="token punctuation">(</span><span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> map<span class="token punctuation">,</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> nowDataMap<span class="token punctuation">,</span> <span class="token keyword">int</span> interval<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">Long</span> time1 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Long</span><span class="token punctuation">)</span> map<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>REPEAT_TIME<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//redis里的时间</span>
-        <span class="token class-name">Long</span> time2 <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Long</span><span class="token punctuation">)</span> nowDataMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>REPEAT_TIME<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//现在的时间</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>time2 <span class="token operator">-</span> time1<span class="token punctuation">)</span> <span class="token operator">&lt;</span> interval<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-            <span class="token keyword">return</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+     *&#x2F;
+    private boolean compareTime(Map&lt;String, Object&gt; map, Map&lt;String, Object&gt; nowDataMap, int interval) &#123;
+        Long time1 &#x3D; (Long) map.get(REPEAT_TIME);&#x2F;&#x2F;redis里的时间
+        Long time2 &#x3D; (Long) nowDataMap.get(REPEAT_TIME);&#x2F;&#x2F;现在的时间
+        if ((time2 - time1) &lt; interval) &#123;
+            return true;
+        &#125;
+        return false;
+    &#125;
 
-    <span class="token comment">//比较参数是否一样</span>
-    <span class="token keyword">private</span> <span class="token keyword">boolean</span> <span class="token function">compareParams</span><span class="token punctuation">(</span><span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> map<span class="token punctuation">,</span> <span class="token class-name">Map</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token class-name">Object</span><span class="token punctuation">></span></span> nowDataMap<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">String</span> nowParams <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> nowDataMap<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>REPEAT_PARAMS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token class-name">String</span> dataParams <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> map<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>REPEAT_PARAMS<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">return</span> nowParams<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>dataParams<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    &#x2F;&#x2F;比较参数是否一样
+    private boolean compareParams(Map&lt;String, Object&gt; map, Map&lt;String, Object&gt; nowDataMap) &#123;
+        String nowParams &#x3D; (String) nowDataMap.get(REPEAT_PARAMS);
+        String dataParams &#x3D; (String) map.get(REPEAT_PARAMS);
+        return nowParams.equals(dataParams);
 
-    <span class="token punctuation">&#125;</span>
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">postHandle</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">Object</span> handler<span class="token punctuation">,</span> <span class="token class-name">ModelAndView</span> modelAndView<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">HandlerInterceptor</span><span class="token punctuation">.</span><span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">postHandle</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">,</span> handler<span class="token punctuation">,</span> modelAndView<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception &#123;
+        HandlerInterceptor.super.postHandle(request, response, handler, modelAndView);
+    &#125;
 
-    <span class="token annotation punctuation">@Override</span>
-    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">afterCompletion</span><span class="token punctuation">(</span><span class="token class-name">HttpServletRequest</span> request<span class="token punctuation">,</span> <span class="token class-name">HttpServletResponse</span> response<span class="token punctuation">,</span> <span class="token class-name">Object</span> handler<span class="token punctuation">,</span> <span class="token class-name">Exception</span> ex<span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">Exception</span> <span class="token punctuation">&#123;</span>
-        <span class="token class-name">HandlerInterceptor</span><span class="token punctuation">.</span><span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">afterCompletion</span><span class="token punctuation">(</span>request<span class="token punctuation">,</span> response<span class="token punctuation">,</span> handler<span class="token punctuation">,</span> ex<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception &#123;
+        HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+    &#125;
+&#125;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <p><strong>解释：</strong></p>
 <p>这段代码是一个<u>拦截器（Interceptor）</u>中的一个方法</p>
