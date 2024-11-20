@@ -1,3 +1,4 @@
+http://lcdzzz.github.io/2022/11/05/hexo-bo-ke-an-zhuang-jiao-cheng-tai-jiao-ji/
 http://lcdzzz.github.io/2024/09/30/prometheus-consul-blackboxtest/
 http://lcdzzz.github.io/2022/05/11/pictures/
 http://lcdzzz.github.io/2024/06/20/hadoop-yu-hive-de-an-zhuang-he-pei-zhi/
@@ -9,7 +10,6 @@ http://lcdzzz.github.io/2022/06/02/tienchin-xiang-mu-bi-ji/
 http://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/
 http://lcdzzz.github.io/2022/11/03/sprngsecurity-shi-zhan-shi-li-jwt-token-deng-lu-ren-zheng-quan-xian-kong-zhi/
 http://lcdzzz.github.io/2022/04/26/java-chang-yong-util-gong-ju-lei/
-http://lcdzzz.github.io/2022/11/05/hexo-bo-ke-an-zhuang-jiao-cheng-tai-jiao-ji/
 http://lcdzzz.github.io/2022/08/01/springsecurity-sui-ji/
 http://lcdzzz.github.io/2021/07/04/java-yu-fa-sui-ji/
 http://lcdzzz.github.io/2021/07/04/java-zi-xue-bi-ji/
