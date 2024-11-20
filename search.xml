@@ -1364,8 +1364,8 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint &#
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>原创</tag>
         <tag>springboot</tag>
+        <tag>原创</tag>
         <tag>springsecurity</tag>
         <tag>项目实战</tag>
       </tags>
@@ -1649,13 +1649,104 @@ authentication &#x3D; authenticationManager
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>springboot</tag>
         <tag>java</tag>
+        <tag>springboot</tag>
         <tag>项目实战</tag>
         <tag>前后端分离</tag>
         <tag>ruoyi</tag>
         <tag>tienchin</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>windowsのwsl安装centos</title>
+    <url>/2024/11/21/windowsnowsl-an-zhuang-centos/</url>
+    <content><![CDATA[<h1 id="打开虚拟化"><a href="#打开虚拟化" class="headerlink" title="打开虚拟化"></a>打开虚拟化</h1><p>在安装 WSL 2 之前，必须启用虚拟机平台可选功能。计算机将需要虚拟化功能才能使用此功能。</p>
+<p><strong>执行命令(管理员)</strong></p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">dism.exe &#x2F;online &#x2F;enable-feature &#x2F;featurename:VirtualMachinePlatform &#x2F;all &#x2F;norestart<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="Chocolatey安装"><a href="#Chocolatey安装" class="headerlink" title="Chocolatey安装"></a>Chocolatey安装</h1><p>NuGet（读作New Get）是用于微软.NET开发平台的软件包管理器，是一个Visual Studio的扩展。Chocolatey 是基于 NuGet 的一个软件包管理器，就像 Linux 中的 yum 或 apt 一样，在 Windows10 中也可以用命令行安装程序了</p>
+<p><strong>以管理员身份打开powershell.exe,执行以下代码</strong></p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#39;https:&#x2F;&#x2F;chocolatey.org&#x2F;install.ps1&#39;))<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>完成后，输入命令：<code>choco</code> ，如果能正确显示版本号，说明安装成功</p>
+<h1 id="LxRunOffline安装（需要重启终端）"><a href="#LxRunOffline安装（需要重启终端）" class="headerlink" title="LxRunOffline安装（需要重启终端）"></a>LxRunOffline安装（需要重启终端）</h1><p>LxRunOffline 是非常实用的 WSL 管理软件，可以备份、创建、恢复、导出WSL子系统，也可以安装适配 WSL 的任何 Linux 发行版，可以将 WSL 子系统安装到任意目录中。</p>
+<p>执行命令</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">choco install lxrunoffline -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+
+
+<h1 id="镜像安装"><a href="#镜像安装" class="headerlink" title="镜像安装"></a>镜像安装</h1><p>依次执行以下命令</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd"># 将wsl默认版本设置为2
+wsl --set-default-version 2
+
+# -n 后面是安装的实例名称，-d 后面是想将实例安装到的位置，-f 后面是镜像包所在路径。镜像要求为容器镜像，不能直接使用发布版。
+lxrunoffline install -n CentOS -d D:&#x2F;work_space&#x2F;wsl&#x2F;centos61 -f D:&#x2F;work_space&#x2F;wsl&#x2F;CentOS8-stream&#x2F;rootfs.tar.gz
+# 将已经安装的实例版本设置为 WSL2（可选，也可以将2改为1）
+wsl --set-version CentOS 2<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>可以从**<a href="https://github.com/mishamosher/CentOS-WSL">GitHub - mishamosher/CentOS-WSL: A GitHub Actions automated CentOS RootFS to use with WSL</a>**获取centos镜像</p>
+<h1 id="WSL简易维护命令行"><a href="#WSL简易维护命令行" class="headerlink" title="WSL简易维护命令行"></a>WSL简易维护命令行</h1><pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd">#升级wsl内核
+wsl --update
+#查看安装的子系统
+wsl -l -v 
+#启用子系统 
+wsl -s centos 
+#停用子系统
+wsl -t centos 
+#卸载子系统
+wsl --terminate centos
+#注销子系统
+wsl --unregister centos 
+#导出系统镜像
+wsl --export centos D:\rootfs.tar
+
+#【可选】centos8配置yum源
+cd &#x2F;etc&#x2F;yum.repos.d
+rm -rf .&#x2F;*
+curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo 
+yum -y clean all #清除所有文件
+yum -y makecache #建立缓存
+yum repolist  #查看yum仓库信息<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+
+
+<h1 id="使用systemctl"><a href="#使用systemctl" class="headerlink" title="使用systemctl"></a>使用systemctl</h1><p>使用管理员权限打开文件<code>/etc/wsl.conf</code>，并加上以下内容</p>
+<pre class="line-numbers language-conf" data-language="conf"><code class="language-conf">[boot] 
+systemd&#x3D;true<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+
+
+<p>在cmd中运行</p>
+<pre class="line-numbers language-cmd" data-language="cmd"><code class="language-cmd"># 配置选项仅适用于在 Windows 内部版本 19041 及更高版本中作为 WSL 2 运行的分发版。
+# 请记住，可能需要运行 &#96;wsl --shutdown&#96;来关闭 WSL 2 VM，然后运行&#96;wsl&#96;重启 WSL 实例以使这些更改生效。
+
+# 关闭
+wsl --shutdown
+
+#重启
+wsl<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>官方文档：<a href="https://learn.microsoft.com/zh-cn/windows/wsl/wsl-config">WSL 中的高级设置配置 | Microsoft Learn</a></p>
+<h1 id="映射windows程序"><a href="#映射windows程序" class="headerlink" title="映射windows程序"></a>映射windows程序</h1><p>新建<code>/usr/mysoft</code>，并追加到环境变量path中，之后将windows软件软连接到这个目录即可</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mkdir &#x2F;usr&#x2F;mysoft
+vi &#x2F;etc&#x2F;profile
+
+# 在&#x2F;etc&#x2F;profile末尾加上
+export PATH&#x3D;$PATH:&#x2F;usr&#x2F;mysoft
+
+# 使之生效
+source &#x2F;etc&#x2F;profile
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>如Notepad++</p>
+<p><code>ln -s &quot;/mnt/d/software/Notepad++/notepad++.exe&quot; /usr/mysoft/note</code></p>
+<p>接下来 就可以使用<code>note aaa.txt</code>等命令来编写文件了</p>
+<blockquote>
+<p>推荐链接：<a href="https://lcdzzz.github.io/2024/06/05/docker-bi-ji/">docker</a> 使用docker让wsl可以做更多的事</p>
+</blockquote>
+]]></content>
   </entry>
   <entry>
     <title>prometheus&amp;consul&amp;blackboxTest</title>
@@ -5337,7 +5428,7 @@ public class day &#123;
 <br>
 
 <h4 id="任务应用程序"><a href="#任务应用程序" class="headerlink" title="任务应用程序"></a>任务应用程序</h4><p>在 flowable-ui 中，绘制好的流程图，可以直接部署称为一个 App。</p>
-<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;">&#x67;&#105;&#x74;&#64;&#103;&#x69;&#x74;&#104;&#x75;&#98;&#46;&#99;&#x6f;&#x6d;</a>:flowable/flowable-engine.gi</p>
+<h1 id="Flowable-源码编译"><a href="#Flowable-源码编译" class="headerlink" title="Flowable 源码编译"></a>Flowable 源码编译</h1><p>源码地址：<a href="https://github.com/flowable/flowable-engine">https://github.com/flowable/flowable-engine</a><br>编译的步骤：<br>1clone 代码： git clone <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#105;&#116;&#x68;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#x67;&#105;&#x74;&#64;&#103;&#105;&#116;&#x68;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;</a>:flowable/flowable-engine.gi</p>
 <p>2切换分支 git checkout -b origin/6.7.2切换到 6.7.2 这个版本。</p>
 <p>先来看下源码的目录结构：</p>
 <ul>
@@ -8694,9 +8785,9 @@ class DataScopeApplicationTests &#123;
         <category>后端</category>
       </categories>
       <tags>
-        <tag>springboot</tag>
         <tag>MybatisPlus</tag>
         <tag>java</tag>
+        <tag>springboot</tag>
         <tag>分页</tag>
         <tag>插件</tag>
         <tag>sql</tag>
@@ -9197,8 +9288,8 @@ public class DataSourceAspect &#123;<span aria-hidden="true" class="line-numbers
 <p><img src="image-20240128162858928.png" alt="image-20240128162858928"></p>
 ]]></content>
       <tags>
-        <tag>springboot</tag>
         <tag>java</tag>
+        <tag>springboot</tag>
         <tag>sql</tag>
         <tag>项目实战</tag>
         <tag>tienchin</tag>
@@ -9269,8 +9360,8 @@ public class DataSourceAspect &#123;<span aria-hidden="true" class="line-numbers
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>原创</tag>
         <tag>springboot</tag>
+        <tag>原创</tag>
       </tags>
   </entry>
   <entry>
@@ -10392,8 +10483,8 @@ System.out.println(&quot;---my test web logs---&quot;);
 </ul>
 ]]></content>
       <tags>
-        <tag>原创</tag>
         <tag>java</tag>
+        <tag>原创</tag>
         <tag>docker</tag>
         <tag>linux</tag>
       </tags>
@@ -10477,9 +10568,9 @@ System.out.println(&quot;---my test web logs---&quot;);
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>原创</tag>
-        <tag>springboot</tag>
         <tag>java</tag>
+        <tag>springboot</tag>
+        <tag>原创</tag>
         <tag>项目实战</tag>
       </tags>
   </entry>
@@ -15052,8 +15143,8 @@ public class EmployeeService &#123;
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>springboot</tag>
         <tag>java</tag>
+        <tag>springboot</tag>
         <tag>项目实战</tag>
       </tags>
   </entry>
@@ -22465,8 +22556,8 @@ while (in.hasNext()) &#123;
         <category>解决的错误</category>
       </categories>
       <tags>
-        <tag>原创</tag>
         <tag>java</tag>
+        <tag>原创</tag>
         <tag>解决的错误</tag>
       </tags>
   </entry>
