@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>java语法随记 | lcdzzz的博客</title><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="java.math.BigDecimal的用法 BigDecimal类型用来存储金额等有小数，需要精度的数据  BigDecimal不能直接使用int类型赋值！  两种使BigDecimal初始化为0的方法:BigDecimal a&#x3D;BigDecimalBigDecimal b&#x3D;new BigDecimal(0);BigDecimal a &#x3D; in.nextBigDe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java语法随记">
+<meta property="og:url" content="http://lcdzzz.github.io/2021/07/04/java%E8%AF%AD%E6%B3%95%E9%9A%8F%E8%AE%B0/index.html">
+<meta property="og:site_name" content="lcdzzz的博客">
+<meta property="og:description" content="java.math.BigDecimal的用法 BigDecimal类型用来存储金额等有小数，需要精度的数据  BigDecimal不能直接使用int类型赋值！  两种使BigDecimal初始化为0的方法:BigDecimal a&#x3D;BigDecimalBigDecimal b&#x3D;new BigDecimal(0);BigDecimal a &#x3D; in.nextBigDe">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://images.wallpaperscraft.com/image/single/pyramids_starry_sky_night_161840_300x168.jpg">
+<meta property="article:published_time" content="2021-07-04T14:31:11.000Z">
+<meta property="article:modified_time" content="2024-01-28T15:02:55.958Z">
+<meta property="article:author" content="lcdzzz">
+<meta property="article:tag" content="lcdzzz的博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.wallpaperscraft.com/image/single/pyramids_starry_sky_night_161840_300x168.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "java语法随记",
+  "url": "http://lcdzzz.github.io/2021/07/04/java%E8%AF%AD%E6%B3%95%E9%9A%8F%E8%AE%B0/",
+  "image": "https://images.wallpaperscraft.com/image/single/pyramids_starry_sky_night_161840_300x168.jpg",
+  "datePublished": "2021-07-04T14:31:11.000Z",
+  "dateModified": "2024-01-28T15:02:55.958Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lcdzzz",
+      "url": "http://lcdzzz.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2021/07/04/java%E8%AF%AD%E6%B3%95%E9%9A%8F%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'java语法随记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://images.wallpaperscraft.com/image/single/pyramids_starry_sky_night_161840_300x168.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">lcdzzz的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">java语法随记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">java语法随记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-04T14:31:11.000Z" title="发表于 2021-07-04 22:31:11">2021-07-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-01-28T15:02:55.958Z" title="更新于 2024-01-28 23:02:55">2024-01-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/java/">java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="java-math-BigDecimal的用法"><a href="#java-math-BigDecimal的用法" class="headerlink" title="java.math.BigDecimal的用法"></a>java.math.BigDecimal的用法</h2><ol>
+<li><p>BigDecimal类型用来存储金额等有小数，需要精度的数据</p>
+</li>
+<li><p>BigDecimal不能直接使用int类型赋值！</p>
+</li>
+<li><p>两种使BigDecimal初始化为0的方法:<br>BigDecimal a&#x3D;BigDecimal<br>BigDecimal b&#x3D;new BigDecimal(0);<br>BigDecimal a &#x3D; in.nextBigDecimal();</p>
+<ul>
+<li>除法运算：</li>
+</ul>
+<p>​      <code>System.out.println(new BigDecimal(153.5).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));</code></p>
+<p>　  &#x2F;&#x2F;new BigDecimal(100)除数，2精确的位数，BigDecimal.ROUND_HALF_UP：舍入模式</p>
+<ul>
+<li><p>加法运算：</p>
+<p><code>System.out.println(new BigDecimal(&quot;2.005&quot;).add(new BigDecimal(&quot;0.03&quot;)));</code></p>
+</li>
+<li><p>减法运算：</p>
+<p><code>System.out.println(new BigDecimal(&quot;2.00&quot;).subtract(new BigDecimal(&quot;1.10&quot;)));</code></p>
+</li>
+<li><p>乘法运算：</p>
+<p><code>System.out.println(new BigDecimal(&quot;2.05&quot;).multiply(new BigDecimal(&quot;10&quot;)));</code></p>
+</li>
+</ul>
+</li>
+</ol>
+<p><br><br><br><br></p>
+<h2 id="char-SS-s-toCharArray"><a href="#char-SS-s-toCharArray" class="headerlink" title="char [] SS &#x3D; s.toCharArray();"></a>char [] SS &#x3D; s.toCharArray();</h2><ul>
+<li><p><code>char [] SS = s.toCharArray();</code></p>
+<p>&#x2F;&#x2F;把字符串中的每个字符放进ss的字符数组里</p>
+<p><br><br><br><br></p>
+</li>
+</ul>
+<h2 id="s-contains-“4”-s-contains-“62”"><a href="#s-contains-“4”-s-contains-“62”" class="headerlink" title="s.contains(“4”)||s.contains(“62”)"></a>s.contains(“4”)||s.contains(“62”)</h2><ul>
+<li><code>(s.contains(&quot;4&quot;)||s.contains(&quot;62&quot;)</code></li>
+</ul>
+<p>  &#x2F;&#x2F;判断s字符串里有没有包含”4”或”62”</p>
+<p><br><br><br><br></p>
+<h2 id="java自定义函数调用"><a href="#java自定义函数调用" class="headerlink" title="java自定义函数调用"></a>java自定义函数调用</h2><h3 id="一：主类中的自定义函数"><a href="#一：主类中的自定义函数" class="headerlink" title="一：主类中的自定义函数"></a>一：主类中的自定义函数</h3><p>在主类中，如果想要在main函数中调用自定义的其他方法，则这个函数需要使用<u>static关键字</u>定义，否则会报错Cannot make a static reference to the non-static method xx from the type xx，调用的时候<u>直接用函数名</u>就可以了，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">create_function</span> &#123;   </span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String []args)</span>&#123;　　</span><br><span class="line"><span class="type">int</span> <span class="variable">s</span> <span class="operator">=</span> jia(<span class="number">5</span>,<span class="number">4</span>);</span><br><span class="line">          System.out.println(s);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">jia</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span>&#123;</span><br><span class="line">          System.out.println(<span class="string">&quot;我是自定义相加函数，我被调用了！！&quot;</span>);</span><br><span class="line">          <span class="keyword">return</span> a+b;</span><br><span class="line">      &#125;             </span><br><span class="line">  &#125;     </span><br></pre></td></tr></table></figure>
+
+<p>下面使用static关键字定义了一个“+”运算的函数，在main中调用时，直接使用函数名，括号中加参数就可以了。输出结果如下：</p>
+<p>​        我是自定义相加函数，我被调用了！！<br>​        9</p>
+<p><br><br></p>
+<h3 id="二：自定义类中函数的调用"><a href="#二：自定义类中函数的调用" class="headerlink" title="二：自定义类中函数的调用"></a>二：自定义类中函数的调用</h3><p>自定义类中函数的调用有两种情况，静态函数和非静态函数，<u>非静态函数的调用需要先声明一个类实例，通过实例调用</u>。静态函数的调用可以通过实例，也可以直接使用类名调用(建议使用这种，要不会造成内存空间的浪费。)，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">create_function</span> &#123;    </span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String []args)</span>&#123;</span><br><span class="line">           <span class="type">Y</span> <span class="variable">y</span> <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">Y</span>();                </span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">s2</span> <span class="operator">=</span> y.cheng(<span class="number">3</span>,<span class="number">5</span>);<span class="comment">//声明了y这个实例</span></span><br><span class="line">        System.out.println(s2);<span class="comment">//直接用Y这个类调用</span></span><br><span class="line">        </span><br><span class="line">        <span class="type">int</span> <span class="variable">s3</span> <span class="operator">=</span> Y.chu(<span class="number">8</span>, <span class="number">2</span>);</span><br><span class="line">        System.out.println(s3);</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Y</span>&#123;</span><br><span class="line">    <span class="type">int</span> <span class="title function_">cheng</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我是自定义类中的乘方法，我被调用了！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> a*b;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">static</span> <span class="type">int</span> <span class="title function_">chu</span><span class="params">(<span class="type">int</span> c,<span class="type">int</span> d)</span>&#123;</span><br><span class="line">       System.out.println(<span class="string">&quot;我是自定义类中的除方法，我被调用了！&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> c/d;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在下面，自定义了一个Y类，cheng方法是非静态方法，必须通过实例y调用，chu方法是静态方法，使用类名直接调用。输出结果如下：</p>
+<p>​		我是自定义类中的乘方法，我被调用了！<br>​		15<br>​		我是自定义类中的除方法，我被调用了！<br>​		4</p>
+<p><br><br><br><br></p>
+<h2 id="String-valueOf-方法的使用"><a href="#String-valueOf-方法的使用" class="headerlink" title="String.valueOf()方法的使用"></a>String.valueOf()方法的使用</h2><h3 id="一：由基本数据形态转换成String"><a href="#一：由基本数据形态转换成String" class="headerlink" title="一：由基本数据形态转换成String"></a>一：由基本数据形态转换成String</h3><p>String 类别中已经提供了将基本数据型态转换成 String 的 static 方法 ，也就是 <strong>String.valueOf()</strong> 这个参数多载的方法 ：</p>
+<p>（1）<strong>String.valueOf(boolean b)</strong> : 将 boolean 变量 b 转换成字符串<br>（2）<strong>String.valueOf(char c)</strong> : 将 char 变量 c 转换成字符串<br>（3）<strong>String.valueOf(char[] data)</strong> : 将 char 数组 data 转换成字符串<br>（4）<strong>String.valueOf(char[] data, int offset, int count)</strong> : 将 char 数组 data 中 由 data[offset] 开始取 count 个元素 转换成字符串 </p>
+<p>（5）<strong>String.valueOf(double d)</strong> : 将 double 变量 d 转换成字符串<br>（6）<strong>String.valueOf(float f)</strong> : 将 float 变量 f 转换成字符串<br>（7）<strong>String.valueOf(int i)</strong> : 将 int 变量 i 转换成字符串<br>（8）<strong>String.valueOf(long l)</strong> : 将 long 变量 l 转换成字符串<br>（9）<strong>String.valueOf(Object obj)</strong> : 将 obj 对象转换成 字符串, 等于 obj.toString() </p>
+<p>　　<strong>用法如下:</strong><br>　　<code>int i = 10;</code><br>　　<code>String str = String.valueOf(i);</code><br>　　这时候 str 就会是 “10” </p>
+<p><br><br></p>
+<h3 id="二、-由-String-转换成-数字的基本数据型态"><a href="#二、-由-String-转换成-数字的基本数据型态" class="headerlink" title="二、 由 String 转换成 数字的基本数据型态"></a><strong>二、 由 String 转换成 数字的基本数据型态</strong></h3><p>要将 String 转换成基本数据型 ，大多需要使用基本数据型态的包装类别 </p>
+<p>（1） <strong>Byte.parseByte(String s)</strong> : 将 s 转换成 byte </p>
+<p>（2）<strong>Byte.parseByte(String s, int radix)</strong> : 以 radix 为基底（进制基数） 将 s 转换为 byte ，比如说 Byte.parseByte(“11”, 16) 会得到 17。</p>
+<p>（3） <strong>Double.parseDouble(String s)</strong> : 将 s 转换成 double </p>
+<p>（4） <strong>Double.parseFloat(String s)</strong> : 将 s 转换成 float </p>
+<p>（5） <strong>Integer.parseInt(String s)</strong> : 将 s 转换成 int </p>
+<p>（6） <strong>Long.parseLong(String s)</strong> : 将 s 转换成 long</p>
+<h2 id="终止程序的执行，退出JVM"><a href="#终止程序的执行，退出JVM" class="headerlink" title="终止程序的执行，退出JVM"></a>终止程序的执行，退出JVM</h2><blockquote>
+<p>system.exit(0);</p>
+</blockquote>
+<p><br><br><br><br></p>
+<h2 id="强行转换类型（强制类型转换-向下转型）"><a href="#强行转换类型（强制类型转换-向下转型）" class="headerlink" title="强行转换类型（强制类型转换&#x2F;向下转型）"></a>强行转换类型（强制类型转换&#x2F;向下转型）</h2><p>调用子类中特有的方法是，需要向下转型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(c <span class="keyword">instanceof</span> D)&#123;<span class="comment">//c指向的对象如果确实是一个D类型的</span></span><br><span class="line">     D d1=(D)c;</span><br><span class="line">    d1.doOther();<span class="comment">//doOther是D类特有的方法</span></span><br><span class="line">   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><br><br><br><br></p>
+<h2 id="局部变量和成员变量"><a href="#局部变量和成员变量" class="headerlink" title="局部变量和成员变量"></a>局部变量和成员变量</h2><p>局部变量是没有初始值的</p>
+<p>成员变量有初始值（0  0.0  null）</p>
+<p><br><br><br><br></p>
+<h2 id="next部分相关用法"><a href="#next部分相关用法" class="headerlink" title="next部分相关用法"></a>next部分相关用法</h2><ol>
+<li><p>nextInt()它只读取int值，nextInt()在读取输入后将光标放在同一行。</p>
+</li>
+<li><p>next()只读取输入直到空格。它无法阅读两个被空格隔开的单词。</p>
+<p>同样，next()在读取输入后将光标放在同一行中。</p>
+</li>
+<li><p>nextLine()读取包括单词之间的空格在内的输入(也就是说，读取到行n的末尾)。<br>读取输入后，nextLine()将光标定位到下一行。</p>
+</li>
+</ol>
+<p><br><br><br><br></p>
+<h2 id="java中，按数组下标来输出内容"><a href="#java中，按数组下标来输出内容" class="headerlink" title="java中，按数组下标来输出内容"></a>java中，按数组下标来输出内容</h2><p><code>System.out.println(line.substring(6,11));</code><br>意思是：输出line字符串中下标6到11的字符</p>
+<p><br><br><br><br></p>
+<h2 id="怎么把一个变量塞到一个字符串当中"><a href="#怎么把一个变量塞到一个字符串当中" class="headerlink" title="怎么把一个变量塞到一个字符串当中"></a>怎么把一个变量塞到一个字符串当中</h2><p>口诀：<strong>加一个引号，双引号中间加两个加号，两个加号之间加变量名</strong></p>
+<p>例如:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> <span class="string">&quot; [ &quot;</span>+no+<span class="string">&quot;,单人间，空闲] &quot;</span>；</span><br></pre></td></tr></table></figure>
+
+<p><br><br><br><br></p>
+<h2 id="三目运算符"><a href="#三目运算符" class="headerlink" title="三目运算符"></a>三目运算符</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">status ? <span class="string">&quot;空闲&quot;</span> : <span class="string">&quot;占用&quot;</span>;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">如果status是true，那么输出空闲，否则就输出占用</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<p><br><br><br><br></p>
+<h2 id="println-引用-，会自动调用引用toString-方法"><a href="#println-引用-，会自动调用引用toString-方法" class="headerlink" title="println(引用)，会自动调用引用toString()方法"></a>println(引用)，会自动调用引用toString()方法</h2><p><br><br><br><br></p>
+<h2 id="arrays工具-排序和二分法查找"><a href="#arrays工具-排序和二分法查找" class="headerlink" title="arrays工具(排序和二分法查找)"></a>arrays工具(排序和二分法查找)</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span> <span class="params">(String [] args)</span>&#123;</span><br><span class="line">    </span><br><span class="line"><span class="type">int</span> [] arr=&#123;<span class="number">1</span>,<span class="number">3</span>,<span class="number">434</span>,<span class="number">3</span>,<span class="number">232</span>,<span class="number">45</span>,<span class="number">67</span>,<span class="number">5</span>,<span class="number">3</span>&#125;</span><br><span class="line">Arrays.sort(arr);<span class="comment">//排序</span></span><br><span class="line"><span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> Arrays.binarySearch(arr,<span class="number">3</span>);<span class="comment">//3是所要查询的数据，arr是查询的对象（数组）</span></span><br><span class="line">System.out.println(index==-<span class="number">1</span> ? <span class="string">&quot;该元素不存在&quot;</span> : <span class="string">&quot;该元素下标是：&quot;</span> +index);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="类和接口的强制类型转换"><a href="#类和接口的强制类型转换" class="headerlink" title="类和接口的强制类型转换"></a>类和接口的强制类型转换</h2><p>类在强制类型转换过程中，如果是类转换成接口类型。那么类和接口之间不需要存在继承关系，也可以转换	</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2021/07/04/java%E8%AF%AD%E6%B3%95%E9%9A%8F%E8%AE%B0/">http://lcdzzz.github.io/2021/07/04/java%E8%AF%AD%E6%B3%95%E9%9A%8F%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://lcdzzz.github.io" target="_blank">lcdzzz的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://images.wallpaperscraft.com/image/single/pyramids_starry_sky_night_161840_300x168.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2022/01/20/SpringBootwmm/" title="SpringBootWMM"><img class="cover" src="https://images.wallpaperscraft.com/image/single/art_trees_drawing_minimalism_100903_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">SpringBootWMM</div></div><div class="info-2"><div class="info-item-1">SpringBoot这个是动力节点王鹤老师讲课时候的笔记，我放上来纯属为了自己看这方便 第一章  JavaConfig 为什么要使用 Spring Boot 因为Spring， SpringMVC 需要使用的大量的配置文件 （xml文件） 还需要配置各种对象，把使用的对象放入到spring容器中才能使用对象 需要了解其他框架配置规则。  SpringBoot 就相当于 不需要配置文件的Spring+SpringMVC。 常用的框架和第三方库都已经配置好了。 拿来就可以使用了。  SpringBoot开发效率高，使用方便多了   1.1 JavaConfigJavaConfig: 使用java类作为xml配置文件的替代， 是配置spring容器的纯java的方式。 在这个java类这可以创建java对象，把对象放入spring容器中（注入到容器），  使用两个注解： 1）@Configuration ： 放在一个类的上面，表示这个类是作为配置文件使用的。 2）@Bean：声明对象，把对象注入到容器中。 1234567891011121314151617181920212223242...</div></div></div></a><a class="pagination-related" href="/2021/07/04/java%E8%87%AA%E5%AD%A6%E7%AC%94%E8%AE%B0/" title="java自学笔记"><img class="cover" src="https://images.wallpaperscraft.com/image/single/lawn_forest_mountains_144578_300x168.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">java自学笔记</div></div><div class="info-2"><div class="info-item-1">IDEA使用新建 新建一个Empty Project 新建一个空的工程，选择创建工程窗口下面的Empty Project  给空的工程起一个名字：javase  会自动弹出一个：project structure，这个窗口先取消掉  给空的工程下新建Module（模块） idea的组织方式projecrt–&gt;module  在New Module窗口上点击左下角的java，然后next  给module起一个名字  编写代码，在src目录下新建类，写代码，并运行。    关于IDEA工具的快捷键以及一些简单的设置字体设置file–&gt;setting–&gt;输入font–&gt;设置字体样式以及字号大小  快捷方式 psvm（main方法）        sout（system.out.println)  删除一行：ctrl+y  左侧窗口的列表怎么展开？怎么关闭？ 左箭头关闭，右箭头展开，上下箭头移动  idea中退出任何窗口，都可以使用esc键  任何新增、新建、添加的快捷键： ​    alt+insert  窗口变大变小 ​    ctrl+shift+F12 ...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lcdzzz</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#java-math-BigDecimal%E7%9A%84%E7%94%A8%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">java.math.BigDecimal的用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#char-SS-s-toCharArray"><span class="toc-number">2.</span> <span class="toc-text">char [] SS &#x3D; s.toCharArray();</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#s-contains-%E2%80%9C4%E2%80%9D-s-contains-%E2%80%9C62%E2%80%9D"><span class="toc-number">3.</span> <span class="toc-text">s.contains(“4”)||s.contains(“62”)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8"><span class="toc-number">4.</span> <span class="toc-text">java自定义函数调用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E4%B8%BB%E7%B1%BB%E4%B8%AD%E7%9A%84%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">4.1.</span> <span class="toc-text">一：主类中的自定义函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%EF%BC%9A%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E4%B8%AD%E5%87%BD%E6%95%B0%E7%9A%84%E8%B0%83%E7%94%A8"><span class="toc-number">4.2.</span> <span class="toc-text">二：自定义类中函数的调用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-valueOf-%E6%96%B9%E6%B3%95%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">5.</span> <span class="toc-text">String.valueOf()方法的使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%EF%BC%9A%E7%94%B1%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E5%BD%A2%E6%80%81%E8%BD%AC%E6%8D%A2%E6%88%90String"><span class="toc-number">5.1.</span> <span class="toc-text">一：由基本数据形态转换成String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E3%80%81-%E7%94%B1-String-%E8%BD%AC%E6%8D%A2%E6%88%90-%E6%95%B0%E5%AD%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E5%9E%8B%E6%80%81"><span class="toc-number">5.2.</span> <span class="toc-text">二、 由 String 转换成 数字的基本数据型态</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%88%E6%AD%A2%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%89%A7%E8%A1%8C%EF%BC%8C%E9%80%80%E5%87%BAJVM"><span class="toc-number">6.</span> <span class="toc-text">终止程序的执行，退出JVM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%BA%E8%A1%8C%E8%BD%AC%E6%8D%A2%E7%B1%BB%E5%9E%8B%EF%BC%88%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2-%E5%90%91%E4%B8%8B%E8%BD%AC%E5%9E%8B%EF%BC%89"><span class="toc-number">7.</span> <span class="toc-text">强行转换类型（强制类型转换&#x2F;向下转型）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E5%92%8C%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F"><span class="toc-number">8.</span> <span class="toc-text">局部变量和成员变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#next%E9%83%A8%E5%88%86%E7%9B%B8%E5%85%B3%E7%94%A8%E6%B3%95"><span class="toc-number">9.</span> <span class="toc-text">next部分相关用法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#java%E4%B8%AD%EF%BC%8C%E6%8C%89%E6%95%B0%E7%BB%84%E4%B8%8B%E6%A0%87%E6%9D%A5%E8%BE%93%E5%87%BA%E5%86%85%E5%AE%B9"><span class="toc-number">10.</span> <span class="toc-text">java中，按数组下标来输出内容</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%8A%8A%E4%B8%80%E4%B8%AA%E5%8F%98%E9%87%8F%E5%A1%9E%E5%88%B0%E4%B8%80%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%BD%93%E4%B8%AD"><span class="toc-number">11.</span> <span class="toc-text">怎么把一个变量塞到一个字符串当中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">12.</span> <span class="toc-text">三目运算符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#println-%E5%BC%95%E7%94%A8-%EF%BC%8C%E4%BC%9A%E8%87%AA%E5%8A%A8%E8%B0%83%E7%94%A8%E5%BC%95%E7%94%A8toString-%E6%96%B9%E6%B3%95"><span class="toc-number">13.</span> <span class="toc-text">println(引用)，会自动调用引用toString()方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#arrays%E5%B7%A5%E5%85%B7-%E6%8E%92%E5%BA%8F%E5%92%8C%E4%BA%8C%E5%88%86%E6%B3%95%E6%9F%A5%E6%89%BE"><span class="toc-number">14.</span> <span class="toc-text">arrays工具(排序和二分法查找)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%B1%BB%E5%92%8C%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="toc-number">15.</span> <span class="toc-text">类和接口的强制类型转换</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2024/11/23/GaussDB%E5%AE%89%E8%A3%85%E5%8F%8A%E5%BA%94%E7%94%A8/" title="GaussDB安装及应用"><img src="https://img2.baidu.com/it/u=1042180318,3822666887&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=565&amp;h=330" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GaussDB安装及应用"/></a><div class="content"><a class="title" href="/2024/11/23/GaussDB%E5%AE%89%E8%A3%85%E5%8F%8A%E5%BA%94%E7%94%A8/" title="GaussDB安装及应用">GaussDB安装及应用</a><time datetime="2024-11-23T14:52:15.000Z" title="发表于 2024-11-23 22:52:15">2024-11-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxTest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxTest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/20/hadoop%E4%B8%8Ehive%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" title="hadoop与hive的安装和配置"><img src="https://img2.baidu.com/it/u=3645694001,4033166664&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=300&amp;h=248" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="hadoop与hive的安装和配置"/></a><div class="content"><a class="title" href="/2024/06/20/hadoop%E4%B8%8Ehive%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" title="hadoop与hive的安装和配置">hadoop与hive的安装和配置</a><time datetime="2024-06-20T10:00:09.000Z" title="发表于 2024-06-20 18:00:09">2024-06-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/" title="Docker笔记"><img src="https://img2.baidu.com/it/u=346135644,1115136735&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=281" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker笔记"/></a><div class="content"><a class="title" href="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/" title="Docker笔记">Docker笔记</a><time datetime="2024-06-05T03:13:46.000Z" title="发表于 2024-06-05 11:13:46">2024-06-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/" title="处理幂等性"><img src="https://img0.baidu.com/it/u=3422995933,1192011804&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=589&amp;h=220" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="处理幂等性"/></a><div class="content"><a class="title" href="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/" title="处理幂等性">处理幂等性</a><time datetime="2024-02-03T12:19:51.000Z" title="发表于 2024-02-03 20:19:51">2024-02-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By lcdzzz</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 7.3.0</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.4.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
