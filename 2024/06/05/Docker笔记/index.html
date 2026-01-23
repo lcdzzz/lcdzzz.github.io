@@ -153,11 +153,11 @@
 </blockquote>
 <p>阿里云 - 容器Hub服务控制台：<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/">https://cr.console.aliyun.com/</a></p>
 <div style="text-align:center">
-  <style>.iornglaklvjv{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240606135635513.png" class="iornglaklvjv" alt="image-20240606135635513">
+  <style>.agmjkkgukgvs{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240606135635513.png" class="agmjkkgukgvs" alt="image-20240606135635513">
 </div>
 
 <div style="text-align:center">
-  <style>.lvtwnffjilub{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240606140211837.png" class="lvtwnffjilub" alt="image-20240606140211837">
+  <style>.codurqpfofgi{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240606140211837.png" class="codurqpfofgi" alt="image-20240606140211837">
 </div>
 
 <hr>
@@ -184,14 +184,14 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建网络 docker network --help</span></span><br><span class="line">docker network create mynet</span><br><span class="line"><span class="comment"># 运行时指定网络</span></span><br><span class="line">docker run -d -p 88:80 --name app1 --network mynet nginx</span><br><span class="line">docker run -d -p 99:80 --name app2 --network mynet nginx</span><br><span class="line"><span class="comment"># 可再查看下容器详情</span></span><br><span class="line">docker inspect app1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 注意，在加入网络时可以通过--alias给容器起别名</span></span><br><span class="line"><span class="comment"># 这样该网络内的其它容器可以用别名互相访问！</span></span><br><span class="line"><span class="comment"># mysql容器，指定别名为db，另外每一个容器都有一个别名是容器名</span></span><br><span class="line">docker network connect hmall mysql --<span class="built_in">alias</span> db</span><br></pre></td></tr></table></figure>
 
 <div style="text-align:center">
-  <style>.eecvbhkxpipf{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605142708562.png" class="eecvbhkxpipf" alt="image-20240605142708562">
+  <style>.ydvrypkuiegu{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605142708562.png" class="ydvrypkuiegu" alt="image-20240605142708562">
 </div>
 
 <p>创建自定义网络，容器名就是稳定域名</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在app1内部访问app2的80端口，此时不是暴露在外面的端口（99）</span></span><br><span class="line">curl http://app2:80</span><br></pre></td></tr></table></figure>
 
 <h3 id="Redis主从同步集群"><a href="#Redis主从同步集群" class="headerlink" title="Redis主从同步集群"></a>Redis主从同步集群</h3><div style="text-align:center">
-  <style>.mwgbxmqokmvh{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605144536266.png" class="mwgbxmqokmvh" alt="image-20240605144536266">
+  <style>.qxkrsvzfoolb{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605144536266.png" class="qxkrsvzfoolb" alt="image-20240605144536266">
 </div>
 
 <p>使用bitnami的redis镜像，这里的镜像不需要修改配置文件，只需要定义一些环境变量</p>
@@ -203,7 +203,7 @@
 
 <h3 id="启动Mysql"><a href="#启动Mysql" class="headerlink" title="启动Mysql"></a>启动Mysql</h3><p>去官方文档寻找三大点：网络、 存储、 环境变量</p>
 <div style="text-align:center">
-  <style>.obsfuubrtzbb{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605150922127.png" class="obsfuubrtzbb" alt="image-20240605150922127">
+  <style>.sgcxdvhwynxk{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605150922127.png" class="sgcxdvhwynxk" alt="image-20240605150922127">
 </div>
 
 <p>因为本地就有mysql，这里暴露的端口就不选3306了</p>
@@ -225,23 +225,23 @@
 </ol>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p>批量管理容器的工具</p>
 <div style="text-align:center">
-  <style>.mrordilmuofm{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605154503301.png" class="mrordilmuofm" alt="image-20240605154503301">
+  <style>.svbknmhlvtob{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605154503301.png" class="svbknmhlvtob" alt="image-20240605154503301">
 </div>
 
 <h3 id="博客实践"><a href="#博客实践" class="headerlink" title="博客实践"></a>博客实践</h3><div style="text-align:center">
-  <style>.ywlwrwfiidzx{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605155009412.png" class="ywlwrwfiidzx" alt="image-20240605155009412">
+  <style>.tlhzjdnnfcqk{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605155009412.png" class="tlhzjdnnfcqk" alt="image-20240605155009412">
 </div>
 
 <h4 id="命令式安装"><a href="#命令式安装" class="headerlink" title="命令式安装"></a>命令式安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#创建网络</span></span><br><span class="line">docker network create blog</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动mysql</span></span><br><span class="line">docker run -d -p 3306:3306 \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD=123456 \</span><br><span class="line">-e MYSQL_DATABASE=wordpress \</span><br><span class="line">-v mysql-data:/var/lib/mysql \</span><br><span class="line">-v /app/myconf:/etc/mysql/conf.d \</span><br><span class="line">--restart always --name mysql \</span><br><span class="line">--network blog \</span><br><span class="line">mysql:8.0</span><br><span class="line"></span><br><span class="line"><span class="comment">#启动wordpress（开源博客系统）</span></span><br><span class="line">docker run -d -p 8090:80 \</span><br><span class="line">-e WORDPRESS_DB_HOST=mysql \</span><br><span class="line">-e WORDPRESS_DB_USER=root \</span><br><span class="line">-e WORDPRESS_DB_PASSWORD=123456 \</span><br><span class="line">-e WORDPRESS_DB_NAME=wordpress \</span><br><span class="line">-v wordpress:/var/www/html \</span><br><span class="line">--restart always --name wordpress-app \</span><br><span class="line">--network blog \</span><br><span class="line">wordpress:latest</span><br></pre></td></tr></table></figure>
 
 <h4 id="compose-yaml安装"><a href="#compose-yaml安装" class="headerlink" title="compose.yaml安装"></a>compose.yaml安装</h4><p><a target="_blank" rel="noopener" href="https://docs.docker.com/compose/compose-file/">官方参考文档</a></p>
 <div style="text-align:center">
-  <style>.ldxftvdvgboq{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605160350842.png" class="ldxftvdvgboq" alt="image-20240605160350842">
+  <style>.jejkhkeukius{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605160350842.png" class="jejkhkeukius" alt="image-20240605160350842">
 </div>
 
 <p>其实就是参考docker run时候的参数，再在参考文档里面去找对应的语法，对应如图</p>
 <div style="text-align:center">
-  <style>.navjbwmpboxi{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605161334512.png" class="navjbwmpboxi" alt="image-20240605161334512">
+  <style>.vdcbgsdopwzm{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605161334512.png" class="vdcbgsdopwzm" alt="image-20240605161334512">
 </div>
 
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">services:</span> </span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:8.0</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;3306:3306&quot;</span> <span class="comment">#一个短横线代表一个数组里面的元素</span></span><br><span class="line">    <span class="attr">environment:</span> <span class="comment"># 数组写法</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=123456</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_DATABASE=wordpress</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql-data:/var/lib/mysql</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">/app/myconf:/etc/mysql/conf.d</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">blog</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">wordpress:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">wordpress</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;8099:80&quot;</span></span><br><span class="line">    <span class="attr">environment:</span> <span class="comment"># k-v写法</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_HOST:</span> <span class="string">mysql</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_USER:</span> <span class="string">root</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_PASSWORD:</span> <span class="number">123456</span></span><br><span class="line">      <span class="attr">WORDPRESS_DB_NAME:</span> <span class="string">wordpress</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">wordpress:/var/www/html</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">blog</span></span><br><span class="line">    <span class="attr">depends_on:</span> <span class="comment">#肯定是要mysql启动好了以后才能启动wordpress，所以是依赖mysql</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">mysql</span></span><br><span class="line"></span><br><span class="line"><span class="attr">volumes:</span></span><br><span class="line">  <span class="attr">mysql-data:</span></span><br><span class="line">  <span class="attr">wordpress:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span> <span class="comment">#声明网络</span></span><br><span class="line">  <span class="attr">blog:</span></span><br></pre></td></tr></table></figure>
@@ -251,7 +251,7 @@
 
 <p><u>“1”代表这个容器启动了一个</u></p>
 <div style="text-align:center">
-  <style>.qlgirivmyxxl{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605163054360.png" class="qlgirivmyxxl" alt="image-20240605163054360">
+  <style>.oyehuknleymk{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605163054360.png" class="oyehuknleymk" alt="image-20240605163054360">
 </div>
 
 
@@ -273,17 +273,17 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 增量更新，只更新compose.yaml中改过的部分</span></span><br><span class="line">docker compose -f compose.yaml </span><br><span class="line"><span class="comment"># down为下线；up为上线【不删除卷】</span></span><br><span class="line">docker compose -f compose.yaml down</span><br><span class="line"><span class="comment"># 可 docker compose down --help</span></span><br><span class="line">docker compose -f compose.yaml down --rmi all -v</span><br><span class="line"></span><br><span class="line"><span class="comment">#【可选】还可指定项目名称</span></span><br><span class="line">docker compose -f compose.yaml -p myapp up -d</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看项目以下的容器docker compose -p myapp ps</span></span><br></pre></td></tr></table></figure>
 
 <div style="text-align:center">
-  <style>.vqbmqioqvngi{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605164041206.png" class="vqbmqioqvngi" alt="image-20240605164041206">
+  <style>.uffeqtmvpqmv{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605164041206.png" class="uffeqtmvpqmv" alt="image-20240605164041206">
 </div>
 
 
 
 <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><div style="text-align:center">
-  <style>.gircpxwwqyai{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605164243442.png" class="gircpxwwqyai" alt="image-20240605164243442">
+  <style>.rzfurpfnboau{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605164243442.png" class="rzfurpfnboau" alt="image-20240605164243442">
 </div>
 
 <div style="text-align:center">
-  <style>.nzfordanvvtv{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605164303334.png" class="nzfordanvvtv" alt="image-20240605164303334">
+  <style>.jkcdiiihuemz{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605164303334.png" class="jkcdiiihuemz" alt="image-20240605164303334">
 </div>
 
 <table>
@@ -353,36 +353,36 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -t指定镜像名字  .指定工作目录</span></span><br><span class="line">docker build -f Dockerfile -t myjavaapp:v1.0 .</span><br></pre></td></tr></table></figure>
 
 <h2 id="Docker分层机制"><a href="#Docker分层机制" class="headerlink" title="Docker分层机制"></a>Docker分层机制</h2><div style="text-align:center">
-  <style>.jpnjimhqhhod{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605170934973.png" class="jpnjimhqhhod" alt="image-20240605170934973">
+  <style>.uisibfpslrpk{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605170934973.png" class="uisibfpslrpk" alt="image-20240605170934973">
 </div>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看构建历史</span></span><br><span class="line">docker image <span class="built_in">history</span> [image_name]</span><br><span class="line"><span class="comment"># 查看镜像详情</span></span><br><span class="line">docker image inspect nginx</span><br></pre></td></tr></table></figure>
 
 <div style="text-align:center">
-  <style>.bpbqflrxdruu{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171055444.png" class="bpbqflrxdruu" alt="image-20240605171055444">
+  <style>.rbfkiibucnww{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171055444.png" class="rbfkiibucnww" alt="image-20240605171055444">
 </div>
 
 
 
 <p>镜像和(多个)容器的关系如下，容器是在镜像基础之上的可读可写层，所以容器删除以后，这一层的东西也是不保存的。而镜像的基础数据还存在磁盘里。</p>
 <div style="text-align:center">
-  <style>.mbelgkofkrzf{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171301268.png" class="mbelgkofkrzf" alt="镜像和容器的关系">
+  <style>.dfgzihqogcqe{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171301268.png" class="dfgzihqogcqe" alt="镜像和容器的关系">
 </div>
 
 <div style="text-align:center">
-  <style>.kxprmohobkaa{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171555870.png" class="kxprmohobkaa" alt="镜像和多个容器的关系">
+  <style>.xejvphhhrsxj{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171555870.png" class="xejvphhhrsxj" alt="镜像和多个容器的关系">
 </div>
 
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -s,--size 陈列全部文件的大小</span></span><br><span class="line">docker ps -s</span><br></pre></td></tr></table></figure>
 
 <div style="text-align:center">
-  <style>.nqcbegngzcjr{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171948658.png" class="nqcbegngzcjr" alt="docker ps -s">
+  <style>.edoybbksxqyg{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605171948658.png" class="edoybbksxqyg" alt="docker ps -s">
 </div>
 
 
 
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><div style="text-align:center">
-  <style>.cejunlgmzcqn{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605174103218.png" class="cejunlgmzcqn" alt="总结">
+  <style>.tmlygehvxzqj{width:70%}</style><img src="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/image-20240605174103218.png" class="tmlygehvxzqj" alt="总结">
 </div>
 
 
