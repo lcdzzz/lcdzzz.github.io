@@ -1,0 +1,304 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>枚举转换的四种写法 | 布鲁成周勒的博客</title><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言：最近开发任务不重，在完成任务工作后，不由的思考起了各种写法的效率和适用场景。 比如下面这种情况 数据库查出来的executionStatus、executionResult我需要转换成executionStatusCH; (执行状态中文描述)、 executionResultCH; (执..."><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "枚举转换的四种写法",
+  "url": "http://lcdzzz.github.io/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/",
+  "image": "http://lcdzzz.github.io/img/avatar.png",
+  "datePublished": "2026-01-23T08:03:12.000Z",
+  "dateModified": "2026-01-23T08:12:49.227Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lcdzzz",
+      "url": "http://lcdzzz.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '枚举转换的四种写法',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">布鲁成周勒的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">枚举转换的四种写法</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">枚举转换的四种写法</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-01-23T08:03:12.000Z" title="发表于 2026-01-23 16:03:12">2026-01-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-23T08:12:49.227Z" title="更新于 2026-01-23 16:12:49">2026-01-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">565</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h2><p>最近开发任务不重，在完成任务工作后，不由的思考起了各种写法的效率和适用场景。</p>
+<p>比如下面这种情况</p>
+<p>数据库查出来的executionStatus、executionResult我需要转换成executionStatusCH; (执行状态中文描述)、 executionResultCH; (执行结果中文描述)</p>
+<hr>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>在创建完两个枚举类：<code>ExecutionStatusEnum</code>  <code>ExecutionResultEnum</code>后，有大概一下四种转换的写法。让我们一次介绍并且分析写法的效能和适用场景。</p>
+<h3 id="1-Lambda-表达式（推荐）"><a href="#1-Lambda-表达式（推荐）" class="headerlink" title="1. Lambda 表达式（推荐）"></a>1. <strong>Lambda 表达式（推荐）</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vos.forEach(vo -&gt; &#123;</span><br><span class="line">    vo.setExecutionStatusCH(ExecutionStatusEnum.getDescByCode(vo.getExecutionStatus()));</span><br><span class="line">    vo.setExecutionResultCH(ExecutionResultEnum.getDescByCode(vo.getExecutionResult()));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：简洁、可读性强，符合现代 Java 风格。</li>
+<li><strong>效率</strong>：略高，因为无额外对象创建，直接执行。</li>
+</ul>
+<hr>
+<h3 id="2-for-each-循环（传统方式）"><a href="#2-for-each-循环（传统方式）" class="headerlink" title="2. for-each 循环（传统方式）"></a>2. <strong>for-each 循环（传统方式）</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (MegrezDataValidJobDetailsVo vo : vos) &#123;</span><br><span class="line">    vo.setExecutionStatusCH(ExecutionStatusEnum.getDescByCode(vo.getExecutionStatus()));</span><br><span class="line">    vo.setExecutionResultCH(ExecutionResultEnum.getDescByCode(vo.getExecutionResult()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：兼容性好，适合复杂逻辑。</li>
+<li><strong>效率</strong>：与 Lambda 几乎一致，JVM 会优化为相同字节码。</li>
+</ul>
+<hr>
+<h3 id="3-Stream-map（不推荐用于此场景）"><a href="#3-Stream-map（不推荐用于此场景）" class="headerlink" title="3. Stream + map（不推荐用于此场景）"></a>3. <strong>Stream + map（不推荐用于此场景）</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> vos.stream()</span><br><span class="line">    .map(vo -&gt; &#123;</span><br><span class="line">        vo.setExecutionStatusCH(ExecutionStatusEnum.getDescByCode(vo.getExecutionStatus()));</span><br><span class="line">        vo.setExecutionResultCH(ExecutionResultEnum.getDescByCode(vo.getExecutionResult()));</span><br><span class="line">        <span class="keyword">return</span> vo;</span><br><span class="line">    &#125;)</span><br><span class="line">    .collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：函数式编程风格。</li>
+<li><strong>缺点</strong>：性能较差，涉及中间流和收集操作，增加内存开销。</li>
+<li><strong>效率</strong>：<strong>最低</strong>，不适合批量数据处理。</li>
+</ul>
+<hr>
+<h3 id="4-提前构建映射表（适用于大数据量）"><a href="#4-提前构建映射表（适用于大数据量）" class="headerlink" title="4. 提前构建映射表（适用于大数据量）"></a>4. <strong>提前构建映射表（适用于大数据量）</strong></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在类加载时预初始化映射</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;Integer, String&gt; STATUS_MAP = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Map&lt;Integer, String&gt; RESULT_MAP = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">    <span class="keyword">for</span> (ExecutionStatusEnum status : ExecutionStatusEnum.values()) &#123;</span><br><span class="line">        STATUS_MAP.put(status.getCode(), status.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (ExecutionResultEnum result : ExecutionResultEnum.values()) &#123;</span><br><span class="line">        RESULT_MAP.put(result.getCode(), result.getDesc());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用时</span></span><br><span class="line">vos.forEach(vo -&gt; &#123;</span><br><span class="line">    vo.setExecutionStatusCH(STATUS_MAP.getOrDefault(vo.getExecutionStatus(), <span class="string">&quot;未知&quot;</span>));</span><br><span class="line">    vo.setExecutionResultCH(RESULT_MAP.getOrDefault(vo.getExecutionResult(), <span class="string">&quot;未知&quot;</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>优点</strong>：避免每次调用枚举方法，减少反射开销。</li>
+<li><strong>效率</strong>：<strong>最高</strong>，尤其在大量数据下表现优异。</li>
+<li><strong>适用场景</strong>：高并发或大数据量查询。</li>
+</ul>
+<hr>
+<h3 id="效率对比总结"><a href="#效率对比总结" class="headerlink" title="效率对比总结"></a>效率对比总结</h3><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>性能</th>
+<th>推荐度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Lambda 表达式</td>
+<td>⭐⭐⭐⭐☆</td>
+<td>推荐</td>
+</tr>
+<tr>
+<td>for-each 循环</td>
+<td>⭐⭐⭐⭐☆</td>
+<td>推荐</td>
+</tr>
+<tr>
+<td>Stream + map</td>
+<td>⭐⭐☆☆☆</td>
+<td>不推荐</td>
+</tr>
+<tr>
+<td>预构建映射表</td>
+<td>⭐⭐⭐⭐⭐</td>
+<td>强烈推荐（大数据量）</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 建议：</p>
+<ul>
+<li>若数据量较小（&lt;1000），使用 <code>Lambda</code> 或 <code>for-each</code> 即可；</li>
+<li>若数据量大或频繁调用，建议使用 <strong>预构建映射表</strong> 方式。</li>
+</ul>
+</blockquote>
+<h2 id="深度分析"><a href="#深度分析" class="headerlink" title="深度分析"></a>深度分析</h2></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/">http://lcdzzz.github.io/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://lcdzzz.github.io" target="_blank">布鲁成周勒的博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/01/04/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E9%80%89%E6%8B%A9/" title="快速排序和快速选择"><img class="cover" src="https://img2.baidu.com/it/u=924906505,2741718824&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=250" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">快速排序和快速选择</div></div><div class="info-2"><div class="info-item-1">快速排序1234567891011121314151617181920int Partition(int A[], int low, int high) &#123;    int pivot = A[low]; // 选择首元素作为基准    while (low &lt; high) &#123;        while (low &lt; high &amp;&amp; A[high] &gt;= pivot) --high;        A[low] = A[high]; // 比基准小的元素移到左端        while (low &lt; high &amp;&amp; A[low] &lt;= pivot) ++low;        A[high] = A[low]; // 比基准大的元素移到右端    &#125;    A[low] = pivot; // 基准元素放入最终位置    return low;&#125;void QuickSort(int A[], int low, int high) &#123;    if (low &lt; hi...</div></div></div></a></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lcdzzz</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">39</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">41</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80%EF%BC%9A"><span class="toc-number">1.</span> <span class="toc-text">前言：</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Lambda-%E8%A1%A8%E8%BE%BE%E5%BC%8F%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">1. Lambda 表达式（推荐）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-for-each-%E5%BE%AA%E7%8E%AF%EF%BC%88%E4%BC%A0%E7%BB%9F%E6%96%B9%E5%BC%8F%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">2. for-each 循环（传统方式）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Stream-map%EF%BC%88%E4%B8%8D%E6%8E%A8%E8%8D%90%E7%94%A8%E4%BA%8E%E6%AD%A4%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">3. Stream + map（不推荐用于此场景）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%8F%90%E5%89%8D%E6%9E%84%E5%BB%BA%E6%98%A0%E5%B0%84%E8%A1%A8%EF%BC%88%E9%80%82%E7%94%A8%E4%BA%8E%E5%A4%A7%E6%95%B0%E6%8D%AE%E9%87%8F%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">4. 提前构建映射表（适用于大数据量）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%88%E7%8E%87%E5%AF%B9%E6%AF%94%E6%80%BB%E7%BB%93"><span class="toc-number">2.5.</span> <span class="toc-text">效率对比总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90"><span class="toc-number">3.</span> <span class="toc-text">深度分析</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法">枚举转换的四种写法</a><time datetime="2026-01-23T08:03:12.000Z" title="发表于 2026-01-23 16:03:12">2026-01-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/04/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E9%80%89%E6%8B%A9/" title="快速排序和快速选择"><img src="https://img2.baidu.com/it/u=924906505,2741718824&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=250" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="快速排序和快速选择"/></a><div class="content"><a class="title" href="/2026/01/04/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F%E5%92%8C%E5%BF%AB%E9%80%9F%E9%80%89%E6%8B%A9/" title="快速排序和快速选择">快速排序和快速选择</a><time datetime="2026-01-04T08:56:59.000Z" title="发表于 2026-01-04 16:56:59">2026-01-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/31/windows%E3%81%AEwsl%E5%AE%89%E8%A3%85centos/" title="windowsのwsl安装centos"><img src="https://img0.baidu.com/it/u=4198488413,3086794076&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=501&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="windowsのwsl安装centos"/></a><div class="content"><a class="title" href="/2025/07/31/windows%E3%81%AEwsl%E5%AE%89%E8%A3%85centos/" title="windowsのwsl安装centos">windowsのwsl安装centos</a><time datetime="2025-07-30T16:25:54.000Z" title="发表于 2025-07-31 00:25:54">2025-07-31</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/11/23/GaussDB%E5%AE%89%E8%A3%85%E5%8F%8A%E5%BA%94%E7%94%A8/" title="GaussDB安装及应用"><img src="https://img2.baidu.com/it/u=1042180318,3822666887&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=565&amp;h=330" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="GaussDB安装及应用"/></a><div class="content"><a class="title" href="/2024/11/23/GaussDB%E5%AE%89%E8%A3%85%E5%8F%8A%E5%BA%94%E7%94%A8/" title="GaussDB安装及应用">GaussDB安装及应用</a><time datetime="2024-11-23T14:52:15.000Z" title="发表于 2024-11-23 22:52:15">2024-11-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2024/09/30/prometheus-consul-blackboxTest/" title="prometheus&amp;consul&amp;blackboxTest"><img src="https://lcdzzz.github.io/2022/05/11/pictures/prometheus.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="prometheus&amp;consul&amp;blackboxTest"/></a><div class="content"><a class="title" href="/2024/09/30/prometheus-consul-blackboxTest/" title="prometheus&amp;consul&amp;blackboxTest">prometheus&amp;consul&amp;blackboxTest</a><time datetime="2024-09-30T09:03:24.000Z" title="发表于 2024-09-30 17:03:24">2024-09-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By lcdzzz</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天" style="display:none"><i class="fas fa-message"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>(() => {
+  window.ChatraID = ''
+  window.Chatra = window.Chatra || function() {
+    (window.Chatra.q = window.Chatra.q || []).push(arguments)
+  }
+
+  btf.getScript('https://call.chatra.io/chatra.js').then(() => {
+    const isChatBtn = true
+    const isChatHideShow = true
+
+    if (isChatBtn) {
+      const close = () => {
+        Chatra('minimizeWidget')
+        Chatra('hide')
+      }
+
+      const open = () => {
+        Chatra('openChat', true)
+        Chatra('show')
+      }
+
+      window.ChatraSetup = { startHidden: true }
+    
+      window.chatBtnFn = () => document.getElementById('chatra').classList.contains('chatra--expanded') ? close() : open()
+
+      document.getElementById('chat-btn').style.display = 'block'
+    } else if (isChatHideShow) {
+      window.chatBtn = {
+        hide: () => Chatra('hide'),
+        show: () => Chatra('show')
+      }
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
