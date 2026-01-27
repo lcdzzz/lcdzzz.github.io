@@ -173,7 +173,7 @@
 
 <p>**【注】**访问&#x2F;hello时首先会被拦截器拦截，拦截器里面的<code>request.getReader().readLine()</code>与接口中的<code>@RequestBody</code>都是通过io流实现的，然而io流使用过一次以后数据就不存在了。所以会出现报错。</p>
 <div style="text-align:center">
-  <style>.hpdqwpdmkvrx{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240205160338198.png" class="hpdqwpdmkvrx" alt="image-20240205160338198">
+  <style>.muikhyxayucv{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240205160338198.png" class="muikhyxayucv" alt="image-20240205160338198">
 </div>
 
 <hr>
@@ -210,7 +210,7 @@
 
 <p><strong>综合来看，这三段代码一起实现了一个防止重复提交的机制，在请求为 JSON 格式时，通过替换请求对象的方式，允许请求体的多次读取。同时，通过拦截器和过滤器的配置，使这个机制能够在整个应用中生效。</strong></p>
 <div style="text-align:center">
-  <style>.myfgimgybcgk{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240205160840618.png" class="myfgimgybcgk" alt="image-20240205160840618">
+  <style>.algxgnfezptn{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240205160840618.png" class="algxgnfezptn" alt="image-20240205160840618">
 </div>
 
 <p><u>过滤器先执行，拦截器后执行</u>。因为拦截器是servlet调用的，过滤器比servlet先执行。<u>所以顺序应该是在过滤器中先把请求的格式切换过来。</u></p>
@@ -247,11 +247,11 @@
 <p><u>最后</u>，如果不需要拦截该请求（即不是重复提交），则返回<code>true</code>，表示允许继续执行后续的请求处理；如果需要拦截该请求（即是重复提交），则返回<code>false</code>，表示不允许继续执行后续的请求处理。</p>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>在&#x2F;hello接口上添加<code>@RepeatSubmit(interval = 10000)</code>，表示两个请求之间的间隔时间是10秒</p>
 <div style="text-align:center">
-  <style>.iorovasauzmw{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240214185919455.png" class="iorovasauzmw" alt="image-20240214185919455">
+  <style>.owxgmhiabibq{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240214185919455.png" class="owxgmhiabibq" alt="image-20240214185919455">
 </div>
 
 <div style="text-align:center">
-  <style>.owvkhvvmnrbj{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240214190028285.png" class="owvkhvvmnrbj" alt="image-20240214190028285">
+  <style>.tohjgtsptlpz{width:70%}</style><img src="/2024/02/03/%E5%A4%84%E7%90%86%E5%B9%82%E7%AD%89%E6%80%A7/image-20240214190028285.png" class="tohjgtsptlpz" alt="image-20240214190028285">
 </div>
 
 
