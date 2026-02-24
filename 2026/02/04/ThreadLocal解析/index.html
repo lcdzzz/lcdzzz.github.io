@@ -1,0 +1,337 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>ThreadLocal解析 | 布鲁成周勒的博客</title><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ThreadLocal 是什么？ThreadLocal 不是“线程”，也不是“存储容器”，而是一个“访问代理”或“操作工具类”。 可以把它理解为：  一个“钥匙生成器”+“存取接口”——它本身不存数据，但是可以帮我在线程专属的存储空间里面存取数据  关键点：  ThreadLocal 每个实例..."><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "ThreadLocal解析",
+  "url": "http://lcdzzz.github.io/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/",
+  "image": "http://lcdzzz.github.io/img/avatar.png",
+  "datePublished": "2026-02-04T09:03:56.000Z",
+  "dateModified": "2026-02-04T14:12:11.000Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lcdzzz",
+      "url": "http://lcdzzz.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ThreadLocal解析',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">43</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">布鲁成周勒的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">ThreadLocal解析</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">ThreadLocal解析</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-04T09:03:56.000Z" title="发表于 2026-02-04 17:03:56">2026-02-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-02-04T14:12:11.000Z" title="更新于 2026-02-04 22:12:11">2026-02-04</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="ThreadLocal-是什么？"><a href="#ThreadLocal-是什么？" class="headerlink" title="ThreadLocal 是什么？"></a>ThreadLocal 是什么？</h2><p><strong><code>ThreadLocal</code> 不是“线程”，也不是“存储容器”，而是一个“访问代理”或“操作工具类”。</strong></p>
+<p>可以把它理解为：</p>
+<blockquote>
+<p>一个“钥匙生成器”+“存取接口”——它本身不存数据，但是可以帮我在线程专属的存储空间里面存取数据</p>
+</blockquote>
+<p>关键点：</p>
+<ul>
+<li><code>ThreadLocal</code> 每个实例代表一个独立的“<strong>变量槽位</strong>”</li>
+<li>它通过 <code>set(value)</code> &#x2F; <code>get()/remove()</code> 方法，操作当前线程内部的一个 <strong>Map</strong>（即 <code>ThreadLocalMap</code>）</li>
+<li>所有数据<strong>实际存储在 <code>Thread</code> 对象内部</strong>，而不是 <code>ThreadLocal</code> 里</li>
+</ul>
+<h2 id="ThreadLocal-和-ThreadLocalMap-的关系"><a href="#ThreadLocal-和-ThreadLocalMap-的关系" class="headerlink" title="ThreadLocal 和 ThreadLocalMap 的关系"></a>ThreadLocal 和 ThreadLocalMap 的关系</h2><p>它们的结构如下：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Thread</span><br><span class="line">  └── ThreadLocal.ThreadLocalMap threadLocals（线程私有）</span><br><span class="line">        └── Entry[] table（键值对数组）</span><br><span class="line">              └── Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt;</span><br><span class="line">                    ├── key: ThreadLocal 实例（弱引用）</span><br><span class="line">                    └── value: 线程本地变量值</span><br></pre></td></tr></table></figure>
+
+<p>关系总结</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>角色</th>
+<th>所在位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ThreadLocal</code></td>
+<td><strong>操作入口</strong>，每个实例代表一个“变量名”</td>
+<td>全局（通常是 static）</td>
+</tr>
+<tr>
+<td><code>ThreadLocalMap</code></td>
+<td><strong>真正的存储容器</strong>，是一个自定义哈希表</td>
+<td>属于 <code>Thread</code> 对象（每个线程一个）</td>
+</tr>
+<tr>
+<td><code>Thread</code></td>
+<td><strong>宿主</strong>，持有自己的 <code>ThreadLocalMap</code></td>
+<td>JVM 线程</td>
+</tr>
+</tbody></table>
+<h2 id="ThreadLocal结构"><a href="#ThreadLocal结构" class="headerlink" title="ThreadLocal结构"></a>ThreadLocal结构</h2><p>起初我以为ThreadLocal是一个大的map，线程当key变量当value。</p>
+<p>实际上错了，因为那样ThreadLocal自己又变成共享变量了，还得加锁。</p>
+<p>真正的实现是</p>
+<p>每个线程内部都有一个<code>ThreadLocalMap</code>，key是<code>ThreadLocal</code>对象，value是线程独立数据</p>
+<p>如下图</p>
+<img src="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/image-20260204193751754.png" class="" title="image-20260204193751754">
+
+<p>这样线程1和线程2去访问threadlocal1时，查找的都是自己的ThreadLocalMap</p>
+<h2 id="为什么能实现“线程隔离”"><a href="#为什么能实现“线程隔离”" class="headerlink" title="为什么能实现“线程隔离”"></a>为什么能实现“线程隔离”</h2><p>答： 每个线程都有自己的<code>ThreadLocalMap</code>，彼此完全独立。</p>
+<p>在 <strong>线程 A</strong> 中调用 <code>userId.set(&quot;A&quot;)</code>，数据存入 <strong>线程 A 的 map</strong>；</p>
+<p>在 <strong>线程 B</strong> 中调用 <code>userId.set(&quot;B&quot;)</code>，数据存入 <strong>线程 B 的 map</strong>。</p>
+<p>他们操作的属于不同的内存区域，自然互补干扰。</p>
+<p><strong>数据绑定到线程自身，而非共享全局变量。</strong></p>
+<h2 id="为什么能实现“线程内资源共享”"><a href="#为什么能实现“线程内资源共享”" class="headerlink" title="为什么能实现“线程内资源共享”"></a>为什么能实现“线程内资源共享”</h2><p>答：在一个线程中，所以代码（不管经历几层的方法调用），都能通过一个ThreadLocal实例，访问到当前线程map中对应的数据。</p>
+<p>如<code>ThreadLocalDemo.java</code>中所示。</p>
+<h2 id="源码关键片段"><a href="#源码关键片段" class="headerlink" title="源码关键片段"></a>源码关键片段</h2><h3 id="ThreadLocal-set"><a href="#ThreadLocal-set" class="headerlink" title="ThreadLocal.set()"></a>ThreadLocal.set()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">set</span><span class="params">(T value)</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread(); <span class="comment">// 获取当前线程</span></span><br><span class="line">    <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t); <span class="comment">// 获取线程的 ThreadLocalMap</span></span><br><span class="line">    <span class="keyword">if</span> (map != <span class="literal">null</span>)</span><br><span class="line">        map.set(<span class="built_in">this</span>, value); <span class="comment">// 以 this (当前 ThreadLocal 实例) 为 key 存入</span></span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        createMap(t, value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ThreadLocal-get"><a href="#ThreadLocal-get" class="headerlink" title="ThreadLocal.get()"></a><code>ThreadLocal.get()</code></h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">    <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> map.getEntry(<span class="built_in">this</span>); <span class="comment">// 用 this 作 key 查找</span></span><br><span class="line">        <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">            <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="内存泄漏风险"><a href="#内存泄漏风险" class="headerlink" title="内存泄漏风险"></a>内存泄漏风险</h2><blockquote>
+<p>内存泄漏</p>
+<p>(英语:memory leak)是计算机科学中的一种资源泄漏，主因是计算机程序的内存管理失当，因而失去对一段已分配内存空间的控制，程序继续占用已不再使用的内存空间，或是存储器所存储之对象无法透过执行代码而访问，令内存资源空耗。 -维基百科</p>
+</blockquote>
+<p>先说结论：会</p>
+<p>但是要注意：Java一般用来开发web，web一般用tomcat，所以大部分情况下业务是跑在tomcat线程池上的，所以ThreadLocal内存泄漏的问题要建立在线程会被复用的线程池场景。</p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">ThreadLocalMap</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Entry</span> <span class="keyword">extends</span> <span class="title class_">WeakReference</span>&lt;ThreadLocal&lt;?&gt;&gt; &#123;</span><br><span class="line">        <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">        Object value;</span><br><span class="line">        Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">            <span class="built_in">super</span>(k); <span class="comment">// 调用父类 WeakReference 的构造函数，k 是弱引用！</span></span><br><span class="line">            value = v; <span class="comment">// value 是普通引用（强引用）</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 底层是一个 Entry 数组</span></span><br><span class="line">    <span class="keyword">private</span> Entry[] table;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>因为Entry 继承自 <code>WeakReference</code>，所以Entry本身就是一个弱引用对象。</p>
+<p>entry对象通过弱引用关联当前的<code>threadLocal</code>对象，通过强引用value保存我们设置的值。</p>
+<p>此外，还有栈上的<code>threadLocal</code>引用指向堆中的<code>threadLocal</code>对象，这个引用是强引用</p>
+</li>
+</ul>
+<p>如下图</p>
+<img src="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/image-20260204212957453.png" class="" title="image-20260204212957453">
+
+<ul>
+<li><p>并且，如果有红色箭头指向的强引用存在的话，说明目前<code>threadlocal</code>是有用的，如果发生GC，<code>threadlocal</code>对象不会被清楚。但如果<code>threadlocal</code>是成员变量（也就是非静态）随着方法的执行完成，相应的栈帧也出栈了，此时，红色箭头指向的强引用链就没了。</p>
+<p>再后来，如果没有别的栈对<code>threadlocal</code>对象有引用的话，它对应的entry就没法再被访问到了，此时<strong>内存泄漏</strong>就发生了。</p>
+</li>
+<li><p>那如果<code>ThreadLocal</code>被定义成静态变量呢？</p>
+<p>照理说有静态变量的强引用在，因此<code>ThreadLocal</code>中的key弱引用不会被GC回收，所以不会有内存泄漏。</p>
+<p>但是这是不对的，一般情况下确实不会，但是类加载器是可以被卸载的，此时对应的类会被回收，于是强引用又没了…</p>
+</li>
+</ul>
+<p>不过ThreadLocal本身也对内存泄漏问题做了防范，我们以get方法作为切入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> T <span class="title function_">get</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Thread</span> <span class="variable">t</span> <span class="operator">=</span> Thread.currentThread();</span><br><span class="line">    <span class="type">ThreadLocalMap</span> <span class="variable">map</span> <span class="operator">=</span> getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="literal">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.<span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> map.getEntry(<span class="built_in">this</span>); <span class="comment">//⬇️</span></span><br><span class="line">        <span class="keyword">if</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">            <span class="type">T</span> <span class="variable">result</span> <span class="operator">=</span> (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Entry <span class="title function_">getEntry</span><span class="params">(ThreadLocal&lt;?&gt; key)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> key.threadLocalHashCode &amp; (table.length - <span class="number">1</span>);<span class="comment">//从这里也可以看到，ThreadLocalMap是用线性探测法解决Hash冲突的，效率比较低。</span></span><br><span class="line">    <span class="type">Entry</span> <span class="variable">e</span> <span class="operator">=</span> table[i];</span><br><span class="line">    <span class="keyword">if</span> (e != <span class="literal">null</span> &amp;&amp; e.get() == key)</span><br><span class="line">        <span class="keyword">return</span> e;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> getEntryAfterMiss(key, i, e); <span class="comment">//⬇️</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Entry <span class="title function_">getEntryAfterMiss</span><span class="params">(ThreadLocal&lt;?&gt; key, <span class="type">int</span> i, Entry e)</span> &#123;</span><br><span class="line">    Entry[] tab = table;</span><br><span class="line">    <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> tab.length;</span><br><span class="line">    <span class="keyword">while</span> (e != <span class="literal">null</span>) &#123;</span><br><span class="line">        ThreadLocal&lt;?&gt; k = e.get();</span><br><span class="line">        <span class="keyword">if</span> (k == key)</span><br><span class="line">            <span class="keyword">return</span> e;</span><br><span class="line">        <span class="keyword">if</span> (k == <span class="literal">null</span>)</span><br><span class="line">            expungeStaleEntry(i); <span class="comment">//将key为null的entry清理掉</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            i = nextIndex(i, len);</span><br><span class="line">        e = tab[i];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>以上虽然降低了内存泄漏的发生概率，但这其实就是把清理的开销，弄到了get和set上。万一get的时候清理的无用的entry特别多，那这次get相对而言就比较慢了。</p>
+<p>并且，这个方法只能介绍内存泄漏的发生，因为这种清理是局部的，它是从触发清理的位置开始向右遍历，直到碰到第一个有效的entry，所以不是所有的entry都会被检查，万一运气就不好呢？</p>
+<h2 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a>最佳实践</h2><ol>
+<li><p>不要滥用<code>ThreadLocal</code></p>
+<p>普通参数不要用它，它适合存放线程独立信息如</p>
+<ul>
+<li>数据库链接</li>
+<li>用户上下文</li>
+</ul>
+</li>
+<li><p>用完一定要<code>remove</code>，在<code>try-finally</code>里面清理</p>
+</li>
+<li><p>把<code>ThreadLocal</code>定义成静态变量，使它全局可用，只分配一块内存</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/">http://lcdzzz.github.io/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://lcdzzz.github.io" target="_blank">布鲁成周勒的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%B2%BE%E9%80%89%E5%8E%9F%E5%88%9B/">精选原创</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a><a class="post-meta__tags" href="/tags/java%E5%9F%BA%E7%A1%80/">java基础</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"><img class="cover" src="https://img0.baidu.com/it/u=33332782,423268096&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=889&amp;h=500" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">微服务网关的响应式实战：利用Reactor实现非阻塞动态配置</div></div><div class="info-2"><div class="info-item-1">前言在微服务架构中，网关作为流量的门户，其稳定性和性能至关重要。在我的开源项目 ZAutumn-gateway 的开发过程中，为了实现动态路由与限流规则的热更新，我们将配置存入了Redis。但随之而来的是这样一个问题——如果采用传统的同步阻塞方式监听配置变更，那么在主流程（路由转发、熔断限流）中，关键的I&#x2F;O线程很可能因等待配置更新而被阻塞，这将损害网关处理高并发请求的核心能力。 为了解决这一问题，我引入了响应式编程范式，并选用 Project Reactor 作为核心工具库，将配置更新的相关逻辑全部改造为异步非阻塞处理。这样一来，配置监听器在等待Redis消息时不会阻塞任何线程，当消息到达时才会异步地触发更新操作，从而确保了网关数据平面的高性能和响应性。 阅读本文前，您需要掌握：  微服务架构基础：微服务架构的基本思想、API 网关的角色（统一入口、路由、过滤等） 响应式编程范式：核心思想（异步非阻塞、数据流、变化传播）、背压（Backpressure）概念 Spring 技术栈：Spring Boot 基础（如注解配置、依赖注入）、Spring Cloud 生态的初...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法"><img class="cover" src="https://img1.baidu.com/it/u=721907534,3678819417&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=478" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-23</div><div class="info-item-2">枚举转换的四种写法</div></div><div class="info-2"><div class="info-item-1">前言：最近开发任务不重，在完成任务工作后，不由的思考起了各种写法的效率和适用场景。 比如下面这种情况 数据库查出来的executionStatus、executionResult我需要转换成executionStatusCH; (执行状态中文描述)、 executionResultCH; (执行结果中文描述)  实现在创建完两个枚举类：ExecutionStatusEnum  ExecutionResultEnum后，有大概一下四种转换的写法。让我们一次介绍并且分析写法的效能和适用场景。 1. Lambda 表达式（推荐）1234vos.forEach(vo -&gt; &#123;    vo.setExecutionStatusCH(ExecutionStatusEnum.getDescByCode(vo.getExecutionStatus()));    vo.setExecutionResultCH(ExecutionResultEnum.getDescByCode(vo.getExecutionResult()));&#125;);   优点：简洁、可读性强，符合现代...</div></div></div></a><a class="pagination-related" href="/2025/07/31/windows%E3%81%AEwsl%E5%AE%89%E8%A3%85centos/" title="windowsのwsl安装centos"><img class="cover" src="https://img0.baidu.com/it/u=4198488413,3086794076&fm=253&fmt=auto&app=138&f=JPEG?w=501&h=500" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-31</div><div class="info-item-2">windowsのwsl安装centos</div></div><div class="info-2"><div class="info-item-1">打开虚拟化在安装 WSL 2 之前，必须启用虚拟机平台可选功能。计算机将需要虚拟化功能才能使用此功能。 执行命令(管理员) 1dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart    Chocolatey安装NuGet（读作New Get）是用于微软.NET开发平台的软件包管理器，是一个Visual Studio的扩展。Chocolatey 是基于 NuGet 的一个软件包管理器，就像 Linux 中的 yum 或 apt 一样，在 Windows10 中也可以用命令行安装程序了 以管理员身份打开powershell.exe,执行以下代码 1Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString(&#x27;https://chocolatey.org/install.ps1&#x27;))  完成后，输入命令：c...</div></div></div></a><a class="pagination-related" href="/2024/06/05/Docker%E7%AC%94%E8%AE%B0/" title="Docker基本用法"><img class="cover" src="https://img2.baidu.com/it/u=346135644,1115136735&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=281" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-06-05</div><div class="info-item-2">Docker基本用法</div></div><div class="info-2"><div class="info-item-1">基础安装123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869#【可选】centos8配置yum源cd /etc/yum.repos.drm -rf ./*curl -o /etc/yum.repos.d/CentOS-Base.repo https://mirrors.aliyun.com/repo/Centos-8.repo yum -y clean all #清除所有文件yum -y makecache #建立缓存yum repolist  #查看yum仓库信息# 移除旧版本dockersudo yum remove docker \                  docker-client \                  docker-client-latest \                  docker-common \                ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lcdzzz</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">43</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadLocal-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">ThreadLocal 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadLocal-%E5%92%8C-ThreadLocalMap-%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">2.</span> <span class="toc-text">ThreadLocal 和 ThreadLocalMap 的关系</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ThreadLocal%E7%BB%93%E6%9E%84"><span class="toc-number">3.</span> <span class="toc-text">ThreadLocal结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%AE%9E%E7%8E%B0%E2%80%9C%E7%BA%BF%E7%A8%8B%E9%9A%94%E7%A6%BB%E2%80%9D"><span class="toc-number">4.</span> <span class="toc-text">为什么能实现“线程隔离”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E5%AE%9E%E7%8E%B0%E2%80%9C%E7%BA%BF%E7%A8%8B%E5%86%85%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%AB%E2%80%9D"><span class="toc-number">5.</span> <span class="toc-text">为什么能实现“线程内资源共享”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%85%B3%E9%94%AE%E7%89%87%E6%AE%B5"><span class="toc-number">6.</span> <span class="toc-text">源码关键片段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ThreadLocal-set"><span class="toc-number">6.1.</span> <span class="toc-text">ThreadLocal.set()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ThreadLocal-get"><span class="toc-number">6.2.</span> <span class="toc-text">ThreadLocal.get()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%B3%84%E6%BC%8F%E9%A3%8E%E9%99%A9"><span class="toc-number">7.</span> <span class="toc-text">内存泄漏风险</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="toc-number">7.1.</span> <span class="toc-text">源码分析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">8.</span> <span class="toc-text">最佳实践</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析">ThreadLocal解析</a><time datetime="2026-02-04T09:03:56.000Z" title="发表于 2026-02-04 17:03:56">2026-02-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"><img src="https://img0.baidu.com/it/u=33332782,423268096&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=889&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"/></a><div class="content"><a class="title" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置">微服务网关的响应式实战：利用Reactor实现非阻塞动态配置</a><time datetime="2026-01-29T16:00:00.000Z" title="发表于 2026-01-30 00:00:00">2026-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"><img src="https://img1.baidu.com/it/u=990940841,655710864&amp;fm=253&amp;fmt=auto?w=1025&amp;h=489" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"/></a><div class="content"><a class="title" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析">Spring-Cloud-Gateway-路由定位器RouteLocator源码解析</a><time datetime="2026-01-26T16:00:00.000Z" title="发表于 2026-01-27 00:00:00">2026-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法"><img src="https://img1.baidu.com/it/u=721907534,3678819417&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=478" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="枚举转换的四种写法"/></a><div class="content"><a class="title" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法">枚举转换的四种写法</a><time datetime="2026-01-23T08:03:12.000Z" title="发表于 2026-01-23 16:03:12">2026-01-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/07/31/windows%E3%81%AEwsl%E5%AE%89%E8%A3%85centos/" title="windowsのwsl安装centos"><img src="https://img0.baidu.com/it/u=4198488413,3086794076&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=501&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="windowsのwsl安装centos"/></a><div class="content"><a class="title" href="/2025/07/31/windows%E3%81%AEwsl%E5%AE%89%E8%A3%85centos/" title="windowsのwsl安装centos">windowsのwsl安装centos</a><time datetime="2025-07-30T16:25:54.000Z" title="发表于 2025-07-31 00:25:54">2025-07-31</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By lcdzzz</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天" style="display:none"><i class="fas fa-message"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>(() => {
+  window.ChatraID = ''
+  window.Chatra = window.Chatra || function() {
+    (window.Chatra.q = window.Chatra.q || []).push(arguments)
+  }
+
+  btf.getScript('https://call.chatra.io/chatra.js').then(() => {
+    const isChatBtn = true
+    const isChatHideShow = true
+
+    if (isChatBtn) {
+      const close = () => {
+        Chatra('minimizeWidget')
+        Chatra('hide')
+      }
+
+      const open = () => {
+        Chatra('openChat', true)
+        Chatra('show')
+      }
+
+      window.ChatraSetup = { startHidden: true }
+    
+      window.chatBtnFn = () => document.getElementById('chatra').classList.contains('chatra--expanded') ? close() : open()
+
+      document.getElementById('chat-btn').style.display = 'block'
+    } else if (isChatHideShow) {
+      window.chatBtn = {
+        hide: () => Chatra('hide'),
+        show: () => Chatra('show')
+      }
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
