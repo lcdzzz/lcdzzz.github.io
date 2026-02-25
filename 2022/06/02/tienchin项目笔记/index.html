@@ -1,0 +1,382 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>tienchin项目笔记 | 布鲁成周勒的博客</title><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="项目结构：多模块（不是微服务） 整体思路：  依赖链最底层：common，提供了公用的工具，定义了统一的controller，BaseEntity实体类公共对象，以及其他的操作工具 common的上一层：framework，主要是配置类，在这里配置了系统的一些东西，例如security aop..."><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "tienchin项目笔记",
+  "url": "http://lcdzzz.github.io/2022/06/02/tienchin%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/",
+  "image": "https://img2.baidu.com/it/u=2535873879,22375097&fm=253&fmt=auto&app=138&f=JPEG?w=900&h=448项目结构分析",
+  "datePublished": "2022-06-02T07:16:13.000Z",
+  "dateModified": "2026-02-25T08:41:24.849Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lcdzzz",
+      "url": "http://lcdzzz.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2022/06/02/tienchin%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'tienchin项目笔记',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://img2.baidu.com/it/u=2535873879,22375097&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=900&amp;h=448项目结构分析);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">布鲁成周勒的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">tienchin项目笔记</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">tienchin项目笔记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-06-02T07:16:13.000Z" title="发表于 2022-06-02 15:16:13">2022-06-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-02-25T08:41:24.849Z" title="更新于 2026-02-25 16:41:24">2026-02-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Spring%E7%94%9F%E6%80%81/">Spring生态</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">2.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/06/02/tienchin%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2022/06/02/tienchin%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>项目结构：多模块（不是微服务）</p>
+<p>整体思路：</p>
+<ul>
+<li>依赖链最底层：common，提供了公用的工具，定义了统一的controller，BaseEntity实体类公共对象，以及其他的操作工具</li>
+<li>common的上一层：framework，主要是配置类，在这里配置了系统的一些东西，例如security aop 数据源的配置等等</li>
+<li>剩下的对应了三个的功能模块<ul>
+<li>system：系统管理，相等于具体的业务。比如系统管理中的用户管理，角色管理，菜单管理等等，包括系统监控什么的，都是写在system里面的</li>
+<li>generator：代码生成</li>
+<li>quartz：定时任务</li>
+</ul>
+</li>
+<li>ui：前端项目</li>
+<li>admin：项目唯一的统一入口，controller都是在这里写的，上面的common等，都会被admin所依赖，这里的controller会调用对应的service</li>
+</ul>
+<h1 id="登录"><a href="#登录" class="headerlink" title="登录"></a>登录</h1><p>验证码响应结果分析：</p>
+<p>Base64字符串转图片：<a target="_blank" rel="noopener" href="https://tool.jisuapi.com/base642pic.html">https://tool.jisuapi.com/base642pic.html</a></p>
+<p>验证码生成接口分析：</p>
+<p>url：<code>localhost/dev-api/captchaImage</code></p>
+<p>AjaxResult是一个封装的返回工具类</p>
+<h2 id="验证码配置分析"><a href="#验证码配置分析" class="headerlink" title="验证码配置分析"></a>验证码配置分析</h2><h3 id="使用github上的kaptcha开源工具"><a href="#使用github上的kaptcha开源工具" class="headerlink" title="使用github上的kaptcha开源工具"></a>使用github上的kaptcha开源工具</h3><p>导入maven依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.github.penggle<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>kaptcha<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来只要提供一个CaptchaConfig就行</p>
+<p>再在里面提供一个bean</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.lcdzzz.kaptcha;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.google.code.kaptcha.impl.DefaultKaptcha;</span><br><span class="line"><span class="keyword">import</span> com.google.code.kaptcha.util.Config;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Bean;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Properties;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> com.google.code.kaptcha.Constants.*;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CaptchaConfig</span> &#123;</span><br><span class="line">    <span class="meta">@Bean(name = &quot;captchaProducer&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> DefaultKaptcha <span class="title function_">getKaptchaBean</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">DefaultKaptcha</span> <span class="variable">defaultKaptcha</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultKaptcha</span>();</span><br><span class="line">        <span class="type">Properties</span> <span class="variable">properties</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">        <span class="comment">// 是否有边框 默认为true 我们可以自己设置yes，no</span></span><br><span class="line">        properties.setProperty(KAPTCHA_BORDER, <span class="string">&quot;yes&quot;</span>);</span><br><span class="line">        <span class="comment">// 验证码文本字符颜色 默认为Color.BLACK</span></span><br><span class="line">        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, <span class="string">&quot;black&quot;</span>);</span><br><span class="line">        <span class="comment">// 验证码图片宽度 默认为200</span></span><br><span class="line">        properties.setProperty(KAPTCHA_IMAGE_WIDTH, <span class="string">&quot;160&quot;</span>);</span><br><span class="line">        <span class="comment">// 验证码图片高度 默认为50</span></span><br><span class="line">        properties.setProperty(KAPTCHA_IMAGE_HEIGHT, <span class="string">&quot;60&quot;</span>);</span><br><span class="line">        <span class="comment">// 验证码文本字符大小 默认为40</span></span><br><span class="line">        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, <span class="string">&quot;38&quot;</span>);</span><br><span class="line">        <span class="comment">// KAPTCHA_SESSION_KEY</span></span><br><span class="line">        <span class="comment">//将来生成验证码时，自动将验证码文本存入session中</span></span><br><span class="line">        properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, <span class="string">&quot;kaptchaCode&quot;</span>);</span><br><span class="line">        <span class="comment">// 验证码文本字符长度 默认为5</span></span><br><span class="line">        properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">        <span class="comment">// 验证码文本字体样式 默认为new Font(&quot;Arial&quot;, 1, fontSize), new Font(&quot;Courier&quot;, 1, fontSize)</span></span><br><span class="line">        properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, <span class="string">&quot;Arial,Courier&quot;</span>);</span><br><span class="line">        <span class="comment">// 图片样式 水纹com.google.code.kaptcha.impl.WaterRipple 鱼眼com.google.code.kaptcha.impl.FishEyeGimpy 阴影com.google.code.kaptcha.impl.ShadowGimpy</span></span><br><span class="line">        properties.setProperty(KAPTCHA_OBSCURIFICATOR_IMPL, <span class="string">&quot;com.google.code.kaptcha.impl.ShadowGimpy&quot;</span>);</span><br><span class="line">        <span class="type">Config</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Config</span>(properties);</span><br><span class="line">        defaultKaptcha.setConfig(config);</span><br><span class="line">        <span class="keyword">return</span> defaultKaptcha;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>搞一个图片返回的controller</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CaptchaController</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    DefaultKaptcha defaultKaptcha;</span><br><span class="line">    <span class="meta">@GetMapping(&quot;/img&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">captchaImg</span><span class="params">(HttpServletResponse reps)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="comment">//生成验证码的文本</span></span><br><span class="line">        <span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> defaultKaptcha.createText();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//基于这个文本去生成一个图片对象。把这个文本作为参数传进去，它会绘制一个验证码图片出来</span></span><br><span class="line">        <span class="type">BufferedImage</span> <span class="variable">image</span> <span class="operator">=</span> defaultKaptcha.createImage(text);</span><br><span class="line"></span><br><span class="line">        ImageIO.write(image,<span class="string">&quot;jpg&quot;</span>,reps.getOutputStream());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>接下里我们访问localhost:8082&#x2F;img</p>
+<p>就会生成图片。</p>
+<p><strong>BUT!!!其实这个验证码工具，自己提供了个servlet，其实我们不需要自己写，直接用它提供的servlet</strong></p>
+<p>怎么用呢？</p>
+<p>注册一个bean,原先的bean就不使用了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Bean</span></span><br><span class="line">   ServletRegistrationBean&lt;HttpServlet&gt; <span class="title function_">captchaServlet</span><span class="params">()</span>&#123;</span><br><span class="line">       ServletRegistrationBean&lt;HttpServlet&gt; bean = <span class="keyword">new</span> <span class="title class_">ServletRegistrationBean</span>&lt;&gt;();</span><br><span class="line">       bean.setServlet(<span class="keyword">new</span> <span class="title class_">KaptchaServlet</span>());</span><br><span class="line">       bean.addUrlMappings(<span class="string">&quot;/img2&quot;</span>);</span><br><span class="line">       <span class="type">Properties</span> <span class="variable">properties</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">       <span class="comment">// 是否有边框 默认为true 我们可以自己设置yes，no</span></span><br><span class="line">       properties.setProperty(KAPTCHA_BORDER, <span class="string">&quot;yes&quot;</span>);</span><br><span class="line">       <span class="comment">// 验证码文本字符颜色 默认为Color.BLACK</span></span><br><span class="line">       properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_COLOR, <span class="string">&quot;black&quot;</span>);</span><br><span class="line">       <span class="comment">// 验证码图片宽度 默认为200</span></span><br><span class="line">       properties.setProperty(KAPTCHA_IMAGE_WIDTH, <span class="string">&quot;160&quot;</span>);</span><br><span class="line">       <span class="comment">// 验证码图片高度 默认为50</span></span><br><span class="line">       properties.setProperty(KAPTCHA_IMAGE_HEIGHT, <span class="string">&quot;60&quot;</span>);</span><br><span class="line">       <span class="comment">// 验证码文本字符大小 默认为40</span></span><br><span class="line">       properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_SIZE, <span class="string">&quot;38&quot;</span>);</span><br><span class="line">       <span class="comment">// KAPTCHA_SESSION_KEY</span></span><br><span class="line">       <span class="comment">//将来生成验证码时，自动将验证码文本存入session中</span></span><br><span class="line">       properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, <span class="string">&quot;kaptchaCode&quot;</span>);</span><br><span class="line">       <span class="comment">// 验证码文本字符长度 默认为5</span></span><br><span class="line">       properties.setProperty(KAPTCHA_TEXTPRODUCER_CHAR_LENGTH, <span class="string">&quot;4&quot;</span>);</span><br><span class="line">       <span class="comment">// 验证码文本字体样式 默认为new Font(&quot;Arial&quot;, 1, fontSize), new Font(&quot;Courier&quot;, 1, fontSize)</span></span><br><span class="line">       properties.setProperty(KAPTCHA_TEXTPRODUCER_FONT_NAMES, <span class="string">&quot;Arial,Courier&quot;</span>);</span><br><span class="line">       <span class="comment">// 图片样式 水纹com.google.code.kaptcha.impl.WaterRipple 鱼眼com.google.code.kaptcha.impl.FishEyeGimpy 阴影com.google.code.kaptcha.impl.ShadowGimpy</span></span><br><span class="line">       properties.setProperty(KAPTCHA_OBSCURIFICATOR_IMPL, <span class="string">&quot;com.google.code.kaptcha.impl.ShadowGimpy&quot;</span>);</span><br><span class="line"></span><br><span class="line">       bean.setInitParameters(<span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;((Map)properties));</span><br><span class="line">       <span class="keyword">return</span> bean;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>只有当：使用这个工具提供的验证码接口， <code>properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, &quot;kaptchaCode&quot;);</code>这个配置才是有效的</p>
+<p>此时，只有hello一个接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(&quot;/hello&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">hello</span><span class="params">(HttpSession session)</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;session.getAttribute(\&quot;kaptchaCode\&quot;) = &quot;</span> + session.getAttribute(<span class="string">&quot;kaptchaCode&quot;</span>));</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<div style="text-align:center">
+  <style>.hgybwgsiifyc{width:70%}</style>
+</div>
+
+<p><strong>&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;总结&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;&#x3D;</strong>&#x3D;</p>
+<p><code>properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, &quot;kaptchaCode&quot;);</code></p>
+<ul>
+<li>如果想用Kaptcha本身提供的servlet来生成验证码的话，它就会自动把验证码文本存入session中</li>
+<li>但如果是自己写的接口，比如最开始的方法，那么文本就需要自己手动去存入session中了</li>
+</ul>
+<h3 id="tienchin项目本身"><a href="#tienchin项目本身" class="headerlink" title="tienchin项目本身"></a>tienchin项目本身</h3><p>回归项目本身，其实<code>properties.setProperty(KAPTCHA_SESSION_CONFIG_KEY, &quot;kaptchaCode&quot;);</code>这行配置没必要，不需要</p>
+<p>为什么呢？</p>
+<ul>
+<li>生成验证码接口是我们自己写的</li>
+<li>tienchin项目本身没有用session</li>
+<li>所以tienchin中Captconfig中的bean，最终目的就是生成字符串&#x2F;数学运算的验证码</li>
+</ul>
+<p>数学运算方面有意思的是这行代码,意思是验证码文本生成器是：<code>KaptchaTextCreator</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 验证码文本生成器</span></span><br><span class="line">        properties.setProperty(KAPTCHA_TEXTPRODUCER_IMPL, <span class="string">&quot;com.lcdzzz.tienchin.framework.config.KaptchaTextCreator&quot;</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="登录-1"><a href="#登录-1" class="headerlink" title="登录"></a>登录</h2><h3 id="流程分析"><a href="#流程分析" class="headerlink" title="流程分析"></a>流程分析</h3><ol>
+<li><p>登录核心：</p>
+<p>SysLoginService类下的login方法中的</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 该方法会去调用UserDetailsServiceImpl.loadUserByUsername</span><br><span class="line">// 这句话的意思就是去执行登录</span><br><span class="line">authentication = authenticationManager</span><br><span class="line">                    .authenticate(new UsernamePasswordAuthenticationToken(username, password));</span><br><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>登录成功后生成一个jwt字符串,<code>return tokenService.createToken(loginUser);</code>从这里点进createToken查看</p>
+</li>
+<li><pre><code class="language-java">public String createToken(LoginUser loginUser) &#123;
+        String token = IdUtils.fastUUID();
+        loginUser.setToken(token);
+        setUserAgent(loginUser);
+        refreshToken(loginUser);//所谓的刷新，就是存入到redis里面去
+
+        Map&lt;String, Object&gt; claims = new HashMap&lt;&gt;();
+        claims.put(Constants.LOGIN_USER_KEY, token);
+        return createToken(claims);
+    &#125;
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">4. 点进上面的refreshToken</span><br><span class="line"></span><br><span class="line">   ```java</span><br><span class="line">       /**</span><br><span class="line">        * 刷新令牌有效期</span><br><span class="line">        *</span><br><span class="line">        * @param loginUser 登录信息</span><br><span class="line">        */</span><br><span class="line">       public void refreshToken(LoginUser loginUser) &#123;</span><br><span class="line">           loginUser.setLoginTime(System.currentTimeMillis());</span><br><span class="line">           loginUser.setExpireTime(loginUser.getLoginTime() + expireTime * MILLIS_MINUTE);</span><br><span class="line">           // 根据uuid将loginUser缓存</span><br><span class="line">           String userKey = getTokenKey(loginUser.getToken());</span><br><span class="line">           redisCache.setCacheObject(userKey, loginUser, expireTime, TimeUnit.MINUTES);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+
+</code></pre>
+</li>
+<li><p>暂且不考虑jwt原先的作用（例如无状态登录），其实这里的jwt作用已经“变形了”，实际上又变成了httpsession的作用，【虽然没有用session，但其实用户信息已经存入到redis里面了】</p>
+</li>
+<li><p>所谓的jwt，其实返回的仅仅只是uuid【相当于sessionid】，以后来回都传uuid</p>
+</li>
+<li><p>以后发送请求时，都会携带jwt字符串</p>
+</li>
+<li><p>登录成功后，f12查看token</p>
+</li>
+</ol>
+<div style="text-align:center">
+  <style>.issmntqimlcp{width:70%}</style>
+</div>
+
+<p>   这个token是一个jwt字符串，而jwt字符串是分为了三部分【都是用base64编码】,如下</p>
+   <figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzUxMiJ9 //指定算法名字</span><br><span class="line">.eyJsb2dpbl91c2VyX2tleSI6ImYwOTg1ZjljLWQ0YmEtNDZlYy05MWZkLTFkZWE4ZmQxNTFkNCJ9 //核心信息==&gt;json对象</span><br><span class="line">.y_wTovMxjSdh2XDFFoS8Y_ANo2p3iYjrhU-rK72LfG63OrL1L-d05-NNNBBOSJsgA4G410uOYl8PustxtN3DaQ</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>使用base64解码工具【<a target="_blank" rel="noopener" href="https://base64.us/%E3%80%91%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AE%B9">https://base64.us/】查看内容</a></li>
+</ol>
+<div style="text-align:center">
+  <style>.sfcoqjnsvpxy{width:70%}</style>
+</div>
+
+
+
+<h3 id="流程分析总结"><a href="#流程分析总结" class="headerlink" title="流程分析总结"></a>流程分析总结</h3><p><em>综上，登录流程就是：登录成功后，返回一个jwt字符串，以后每次发送请求都会携带它。jwt字符串分为三部分，第一部分是算法，第二部分是核心信息，核心信息里面只有一个uuid。</em></p>
+<p><em>同时，它把用户信息存入redis里面中【登录信息，管理员，名字，leader，部门等等，都存在redis里面】，如图【左边相等于id，右边则是信息】</em></p>
+<div style="text-align:center">
+  <style>.bupvttrivcqp{width:70%}</style>
+</div>
+
+<ul>
+<li>以后每次访问接口时，都要带上jwt字符串</li>
+</ul>
+<div style="text-align:center">
+  <style>.deieazhjolje{width:70%}</style>
+</div>
+
+<ul>
+<li><p>所谓的jwt说白了就像用session时的jsessionid一样。只不过jsessionid是浏览器自动携带，而现在是自己手动加上jwt参数的</p>
+</li>
+<li><p>每次请求都需要校验参数，而这个是在哪里校验的呢？</p>
+</li>
+</ul>
+<h3 id="jwt校验"><a href="#jwt校验" class="headerlink" title="jwt校验"></a>jwt校验</h3><p>核心部分就是framework.security.filter下的JwtAuthenticationTokenFilter</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">   <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain chain)</span></span><br><span class="line">           <span class="keyword">throws</span> ServletException, IOException &#123;</span><br><span class="line">       <span class="type">LoginUser</span> <span class="variable">loginUser</span> <span class="operator">=</span> tokenService.getLoginUser(request); <span class="comment">//根据请求，来获取登录用户</span></span><br><span class="line">       <span class="keyword">if</span> (StringUtils.isNotNull(loginUser) &amp;&amp; <span class="comment">/*这玩意为null，代表没有登录*/</span>StringUtils.isNull(SecurityUtils.getAuthentication())) &#123;</span><br><span class="line">           <span class="comment">//令牌续签</span></span><br><span class="line">           tokenService.verifyToken(loginUser);<span class="comment">//验证用户，看看有没有过期</span></span><br><span class="line">           <span class="comment">//构建一个UsernamePasswordAuthenticationToken存放用户信息，然后存入SecurityContextHolder</span></span><br><span class="line">           <span class="type">UsernamePasswordAuthenticationToken</span> <span class="variable">authenticationToken</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">UsernamePasswordAuthenticationToken</span>(loginUser, <span class="literal">null</span>, loginUser.getAuthorities());</span><br><span class="line">           authenticationToken.setDetails(<span class="keyword">new</span> <span class="title class_">WebAuthenticationDetailsSource</span>().buildDetails(request));</span><br><span class="line">           SecurityContextHolder.getContext().setAuthentication(authenticationToken);</span><br><span class="line">           <span class="comment">//此时SecurityContextHolder就有了用信息</span></span><br><span class="line">           <span class="comment">//这样以后【接下来层级的过滤器，就不需要从请求头里获取用户信息了】</span></span><br><span class="line">           <span class="comment">//当当前请求完毕时，SecurityContextHolder里的用户信息会被清楚掉。当下个请求来了，再周而复始，走来时路</span></span><br><span class="line">       &#125;</span><br><span class="line">       chain.doFilter(request, response);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>每次请求的时候，都带上jwt，然后拿着jwt，去redis里面查看用户信息，，然后存到SecurityContextHolder里面去</em></p>
+<h3 id="springsecurity登录配置分析"><a href="#springsecurity登录配置分析" class="headerlink" title="springsecurity登录配置分析"></a>springsecurity登录配置分析</h3><p>详见framework.config下的SecurityConfig类，以后准备再看看springsecurity</p>
+<h1 id="自定义动态数据源"><a href="#自定义动态数据源" class="headerlink" title="自定义动态数据源"></a>自定义动态数据源</h1><h2 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h2><ol>
+<li>自定义一个注解@DataSource,将来可以将该注解加service层在方法或者类上面，表示方法或者类中的所有方法都使用某一个数据源</li>
+<li>对于第一步，如果某个方法上面有@DataSource注解，那么就将该方法需要使用的数据源名称存入ThreadLocal。</li>
+<li>自定义切面，在切面中解析@DataSource注解的时候，将@DataSource注解所标记的数据源存入到ThreadLocal中。</li>
+<li>最后，当Mapper执行的时候，需要DataSource，他会自动去AbstractRoutingDataSource类中查找需要的数据源，我们只需要在AbstractRoutingDataSource中返回ThreadLocal中的值</li>
+</ol>
+<p>综上：用@DataSource注解，在一个方法或者一个类上面，去标注你想使用哪个数据源。然后将来在这个AOP(切面)里面解析这个注解，把想使用的数据源的名字找出来，存在ThreadLocal里面去。当以后真正需要用的时候，人家会自动的从AbstractRoutingDataSource里面去查找需要的数据源。</p>
+<p>所以，我们要做的就是：重写（自己写一个类继承）AbstractRoutingDataSource，然后在它的方法里面去返回ThreadLocal里边所存储的数据源的名字。最后它会根据名字找到对应的数据源</p>
+<p>详细可见：<a href="https://lcdzzz.github.io/2022/06/18/zi-ding-yi-duo-shu-ju-yuan/">自定义动态数据源</a></p>
+<h1 id="自定义限流注解"><a href="#自定义限流注解" class="headerlink" title="自定义限流注解"></a>自定义限流注解</h1><p>详见：<a href="https://lcdzzz.github.io/2024/01/28/zi-ding-yi-xian-liu-zhu-jie/">自定义限流注解</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2022/06/02/tienchin%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/">http://lcdzzz.github.io/2022/06/02/tienchin%E9%A1%B9%E7%9B%AE%E7%AC%94%E8%AE%B0/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://lcdzzz.github.io" target="_blank">布鲁成周勒的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a><a class="post-meta__tags" href="/tags/springboot/">springboot</a><a class="post-meta__tags" href="/tags/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB/">前后端分离</a><a class="post-meta__tags" href="/tags/ruoyi/">ruoyi</a><a class="post-meta__tags" href="/tags/tienchin/">tienchin</a></div><div class="post-share"><div class="social-share" data-image="https://img2.baidu.com/it/u=2535873879,22375097&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=900&amp;h=448项目结构分析" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2022/06/18/%E8%87%AA%E5%AE%9A%E4%B9%89%E5%A4%9A%E6%95%B0%E6%8D%AE%E6%BA%90/" title="自定义多数据源"><img class="cover" src="https://img0.baidu.com/it/u=3276317046,1367389085&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=PNG?w=889&amp;h=500" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">自定义多数据源</div></div><div class="info-2"><div class="info-item-1">  项目地址  准备依赖：  Web  Spring Web   SQL  MyBatis Framework MySQL Driver   关于@Retention注解作用可以看这个  @Target:注解的作用目标   配置文件 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556# 数据源配置spring:  datasource:    type: com.alibaba.druid.pool.DruidDataSource    driverClassName: com.mysql.cj.jdbc.Driver    ds:      # 主库数据源      master:        url: jdbc:mysql://localhost:3306/test01?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertT...</div></div></div></a><a class="pagination-related" href="/2022/05/16/%E7%82%B9%E9%A4%90%E7%B3%BB%E7%BB%9F%E5%AD%A6%E4%B9%A0%E9%9A%8F%E8%AE%B0/" title="点餐系统学习随记"><img class="cover" src="https://lcdzzz.github.io/2022/05/11/pictures/diancan.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">点餐系统学习随记</div></div><div class="info-2"><div class="info-item-1">流程分析（小程序后端）   .juorrwmgjnvm{width:70%}      .jjjxswphyfup{width:70%}         下单模块在首页进行扫码，入桌，然后会跳转到buy页面，点击选好了，如果没有问题的话，则跳转到confirmOrder页面，点击最下面的总计xxx,弹窗出现。经过一系列判断和对数据的处理，向&#x2F;userOrder&#x2F;create接口发送请求，对应后端的WxOrderUtils的createOrder方法 me页面 me界面，点击注册用户，跳转到change界面 点击提交修改按钮，对数据进行处理后，向&#x2F;user&#x2F;save接口发送请求。对应后端的WxUserController  me页面，点击会员充值，跳转到vip页面 点击充值一、二年向&#x2F;user&#x2F;payVip接口发送请求，对应后端的WxUserController  在app.js里，通过向&#x2F;use,r&#x2F;getUserInfo接口发送请求，拿到用户的数据，对应后端的WxUserController  me...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" title="SPI机制介绍及应用场景"><img class="cover" src="https://ts1.tc.mm.bing.net/th/id/OIP-C.wTH2hgJ8ZtMTafXUtaUHVwHaER?w=108&h=108&c=1&bgcl=d37d21&r=0&o=7&dpr=1.5&pid=ImgRC&rm=3" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-25</div><div class="info-item-2">SPI机制介绍及应用场景</div></div><div class="info-2"><div class="info-item-1"> 网络上优秀的SPI机制解析很多，会在文末推荐 这篇文章主要是介绍一下“报表&#x2F;数据导出格式扩展”场景下的SPI机制应用。 强烈建议下载源码后阅读 代码地址：https://gitee.com/lcdzzz/spi-export-demo  介绍SPI（Service Provider Interface）机制是Java提供的一种服务发现与动态加载的标准化方式。其核心思想是**“面向接口编程 + 策略模式 + 配置文件”** 简单来说，SPI定义了一个服务接口，而具体的实现则由第三方提供。程序通过读取配置文件来找到并加载这些实现，无需在代码中硬编码具体实现类。 工作原理 定义接口：服务方定义一个标准的接口。 提供实现：第三方（服务提供者）提供该接口的具体实现，并在其 META-INF/services/目录下创建一个以接口全限定名命名的文件。文件内容是该接口具体实现类的全限定名（每行一个）。 加载服务：服务方通过 java.util.ServiceLoader工具类来扫描、加载并实例化配置文件中声明的所有实现类。  SPI 与 API 的核心区别   对比维度 API (...</div></div></div></a><a class="pagination-related" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"><img class="cover" src="https://img0.baidu.com/it/u=33332782,423268096&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-30</div><div class="info-item-2">微服务网关的响应式实战：利用Reactor实现非阻塞动态配置</div></div><div class="info-2"><div class="info-item-1">前言在微服务架构中，网关作为流量的门户，其稳定性和性能至关重要。在我的开源项目 ZAutumn-gateway 的开发过程中，为了实现动态路由与限流规则的热更新，我们将配置存入了Redis。但随之而来的是这样一个问题——如果采用传统的同步阻塞方式监听配置变更，那么在主流程（路由转发、熔断限流）中，关键的I&#x2F;O线程很可能因等待配置更新而被阻塞，这将损害网关处理高并发请求的核心能力。 为了解决这一问题，我引入了响应式编程范式，并选用 Project Reactor 作为核心工具库，将配置更新的相关逻辑全部改造为异步非阻塞处理。这样一来，配置监听器在等待Redis消息时不会阻塞任何线程，当消息到达时才会异步地触发更新操作，从而确保了网关数据平面的高性能和响应性。 阅读本文前，您需要掌握：  微服务架构基础：微服务架构的基本思想、API 网关的角色（统一入口、路由、过滤等） 响应式编程范式：核心思想（异步非阻塞、数据流、变化传播）、背压（Backpressure）概念 Spring 技术栈：Spring Boot 基础（如注解配置、依赖注入）、Spring Cloud 生态的初...</div></div></div></a><a class="pagination-related" href="/2024/01/28/%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E6%B3%A8%E8%A7%A3/" title="自定义限流注解"><img class="cover" src="https://img1.baidu.com/it/u=1262509061,4086244529&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=339" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-28</div><div class="info-item-2">自定义限流注解</div></div><div class="info-2"><div class="info-item-1"> 代码地址  依赖依赖：springweb、nosql的redis、aop 123456789101112&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starte...</div></div></div></a><a class="pagination-related" href="/2022/11/03/SprngSecurity%E5%AE%9E%E6%88%98%E5%AE%9E%E4%BE%8B%EF%BC%8CJWT%20Token%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81&%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" title="SprngSecurity实战实例，JWT Token登录认证&amp;权限控制"><img class="cover" src="https://img2.baidu.com/it/u=924906505,2741718824&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=250" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-03</div><div class="info-item-2">SprngSecurity实战实例，JWT Token登录认证&amp;权限控制</div></div><div class="info-2"><div class="info-item-1"> 这个在暑假就写过，上学以后重新再去写一遍发现困难比较多，于是准备写一篇记录一下。 tips: 源码在文章末尾，sql文件在源码resource文件夹下的sql文件夹里   需求想用springsecurity实现JWT Token登录认证，实现动态菜单生成，权限控制，登出（用户注销）。 认证准备工作 maven依赖 1234567891011121314151617181920212223242526     &lt;dependency&gt;         &lt;groupId&gt;com.alibaba&lt;/groupId&gt;         &lt;artifactId&gt;fastjson&lt;/artifactId&gt;         &lt;version&gt;1.2.47&lt;/version&gt;     &lt;/dependency&gt;&lt;dependency&gt;         &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;         &lt;artifact...</div></div></div></a><a class="pagination-related" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"><img class="cover" src="https://img1.baidu.com/it/u=990940841,655710864&fm=253&fmt=auto?w=1025&h=489" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-27</div><div class="info-item-2">Spring-Cloud-Gateway-路由定位器RouteLocator源码解析</div></div><div class="info-2"><div class="info-item-1">前言在整理和优化 星云网关 的时候，顺便仔细看了看Spring Cloud Gateway源码 网关代码123456789101112131415161718192021222324252627/** * 动态路由定义定位器 */@Component(&quot;dynamicRouteDefinitionLocator&quot;)public class DynamicRouteDefinitionLocator implements RouteDefinitionLocator &#123;    private static final Logger logger = LoggerFactory.getLogger(DynamicRouteDefinitionLocator.class);    private final RedisRouteDefinitionRepository repository;    private final ApplicationEventPublisher eventPublisher;    public DynamicRouteDe...</div></div></div></a><a class="pagination-related" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法"><img class="cover" src="https://img1.baidu.com/it/u=721907534,3678819417&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=478" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-23</div><div class="info-item-2">枚举转换的四种写法</div></div><div class="info-2"><div class="info-item-1">前言：最近开发任务不重，在完成任务工作后，不由的思考起了各种写法的效率和适用场景。 比如下面这种情况 数据库查出来的executionStatus、executionResult我需要转换成executionStatusCH; (执行状态中文描述)、 executionResultCH; (执行结果中文描述)  实现在创建完两个枚举类：ExecutionStatusEnum  ExecutionResultEnum后，有大概一下四种转换的写法。让我们一次介绍并且分析写法的效能和适用场景。 1. Lambda 表达式（推荐）1234vos.forEach(vo -&gt; &#123;    vo.setExecutionStatusCH(ExecutionStatusEnum.getDescByCode(vo.getExecutionStatus()));    vo.setExecutionResultCH(ExecutionResultEnum.getDescByCode(vo.getExecutionResult()));&#125;);   优点：简洁、可读性强，符合现代...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lcdzzz</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">41</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%99%BB%E5%BD%95"><span class="toc-number">1.</span> <span class="toc-text">登录</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E7%A0%81%E9%85%8D%E7%BD%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.1.</span> <span class="toc-text">验证码配置分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8github%E4%B8%8A%E7%9A%84kaptcha%E5%BC%80%E6%BA%90%E5%B7%A5%E5%85%B7"><span class="toc-number">1.1.1.</span> <span class="toc-text">使用github上的kaptcha开源工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tienchin%E9%A1%B9%E7%9B%AE%E6%9C%AC%E8%BA%AB"><span class="toc-number">1.1.2.</span> <span class="toc-text">tienchin项目本身</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BB%E5%BD%95-1"><span class="toc-number">1.2.</span> <span class="toc-text">登录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90"><span class="toc-number">1.2.1.</span> <span class="toc-text">流程分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E5%88%86%E6%9E%90%E6%80%BB%E7%BB%93"><span class="toc-number">1.2.2.</span> <span class="toc-text">流程分析总结</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#jwt%E6%A0%A1%E9%AA%8C"><span class="toc-number">1.2.3.</span> <span class="toc-text">jwt校验</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#springsecurity%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE%E5%88%86%E6%9E%90"><span class="toc-number">1.2.4.</span> <span class="toc-text">springsecurity登录配置分析</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%8A%A8%E6%80%81%E6%95%B0%E6%8D%AE%E6%BA%90"><span class="toc-number">2.</span> <span class="toc-text">自定义动态数据源</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90"><span class="toc-number">2.1.</span> <span class="toc-text">思路分析</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E6%B3%A8%E8%A7%A3"><span class="toc-number">3.</span> <span class="toc-text">自定义限流注解</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" title="SPI机制介绍及应用场景"><img src="https://ts1.tc.mm.bing.net/th/id/OIP-C.wTH2hgJ8ZtMTafXUtaUHVwHaER?w=108&amp;h=108&amp;c=1&amp;bgcl=d37d21&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=ImgRC&amp;rm=3" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SPI机制介绍及应用场景"/></a><div class="content"><a class="title" href="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" title="SPI机制介绍及应用场景">SPI机制介绍及应用场景</a><time datetime="2026-02-25T11:36:04.000Z" title="发表于 2026-02-25 19:36:04">2026-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析"><img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.bhYM55hZztwVVb6we5hXKAHaEK?w=304&amp;h=180&amp;c=7&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=1.7&amp;rm=3" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ThreadLocal解析"/></a><div class="content"><a class="title" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析">ThreadLocal解析</a><time datetime="2026-02-04T09:03:56.000Z" title="发表于 2026-02-04 17:03:56">2026-02-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"><img src="https://img0.baidu.com/it/u=33332782,423268096&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=889&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"/></a><div class="content"><a class="title" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置">微服务网关的响应式实战：利用Reactor实现非阻塞动态配置</a><time datetime="2026-01-29T16:00:00.000Z" title="发表于 2026-01-30 00:00:00">2026-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"><img src="https://img1.baidu.com/it/u=990940841,655710864&amp;fm=253&amp;fmt=auto?w=1025&amp;h=489" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"/></a><div class="content"><a class="title" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析">Spring-Cloud-Gateway-路由定位器RouteLocator源码解析</a><time datetime="2026-01-26T16:00:00.000Z" title="发表于 2026-01-27 00:00:00">2026-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法"><img src="https://img1.baidu.com/it/u=721907534,3678819417&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=478" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="枚举转换的四种写法"/></a><div class="content"><a class="title" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法">枚举转换的四种写法</a><time datetime="2026-01-23T08:03:12.000Z" title="发表于 2026-01-23 16:03:12">2026-01-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By lcdzzz</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天" style="display:none"><i class="fas fa-message"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>(() => {
+  window.ChatraID = ''
+  window.Chatra = window.Chatra || function() {
+    (window.Chatra.q = window.Chatra.q || []).push(arguments)
+  }
+
+  btf.getScript('https://call.chatra.io/chatra.js').then(() => {
+    const isChatBtn = true
+    const isChatHideShow = true
+
+    if (isChatBtn) {
+      const close = () => {
+        Chatra('minimizeWidget')
+        Chatra('hide')
+      }
+
+      const open = () => {
+        Chatra('openChat', true)
+        Chatra('show')
+      }
+
+      window.ChatraSetup = { startHidden: true }
+    
+      window.chatBtnFn = () => document.getElementById('chatra').classList.contains('chatra--expanded') ? close() : open()
+
+      document.getElementById('chat-btn').style.display = 'block'
+    } else if (isChatHideShow) {
+      window.chatBtn = {
+        hide: () => Chatra('hide'),
+        show: () => Chatra('show')
+      }
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
