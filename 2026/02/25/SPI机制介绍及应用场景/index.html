@@ -1,0 +1,348 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>SPI机制介绍及应用场景 | 布鲁成周勒的博客</title><meta name="author" content="lcdzzz"><meta name="copyright" content="lcdzzz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content=" 网络上优秀的SPI机制解析很多，会在文末推荐 这篇文章主要是介绍一下“报表&amp;#x2F;数据导出格式扩展”场景下的SPI机制应用。 强烈建议下载源码后阅读 代码地址：https://gitee.com/lcdzzz/spi-export-demo  介绍SPI（Service Provider..."><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "SPI机制介绍及应用场景",
+  "url": "http://lcdzzz.github.io/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/",
+  "image": "https://ts1.tc.mm.bing.net/th/id/OIP-C.wTH2hgJ8ZtMTafXUtaUHVwHaER?w=108&h=108&c=1&bgcl=d37d21&r=0&o=7&dpr=1.5&pid=ImgRC&rm=3",
+  "datePublished": "2026-02-25T11:36:04.000Z",
+  "dateModified": "2026-02-25T08:40:20.154Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lcdzzz",
+      "url": "http://lcdzzz.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://lcdzzz.github.io/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'SPI机制介绍及应用场景',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 7.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://ts1.tc.mm.bing.net/th/id/OIP-C.wTH2hgJ8ZtMTafXUtaUHVwHaER?w=108&amp;h=108&amp;c=1&amp;bgcl=d37d21&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=ImgRC&amp;rm=3);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">布鲁成周勒的博客</span></a><a class="nav-page-title" href="/"><span class="site-name">SPI机制介绍及应用场景</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-list"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">SPI机制介绍及应用场景</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-02-25T11:36:04.000Z" title="发表于 2026-02-25 19:36:04">2026-02-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-02-25T08:40:20.154Z" title="更新于 2026-02-25 16:40:20">2026-02-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Java%E5%9F%BA%E7%A1%80/">Java基础</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/#post-comment" itemprop="discussionUrl"><span class="valine-comment-count" data-xid="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" itemprop="commentCount"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>网络上优秀的SPI机制解析很多，会在文末推荐</p>
+<p>这篇文章主要是介绍一下“<u>报表&#x2F;数据导出格式扩展</u>”场景下的SPI机制应用。 强烈建议下载源码后阅读</p>
+<p>代码地址：<a target="_blank" rel="noopener" href="https://gitee.com/lcdzzz/spi-export-demo">https://gitee.com/lcdzzz/spi-export-demo</a></p>
+</blockquote>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>SPI（Service Provider Interface）机制是Java提供的一种服务发现与动态加载的标准化方式。其核心思想是**“面向接口编程 + 策略模式 + 配置文件”**</p>
+<p>简单来说，SPI定义了一个服务接口，而具体的实现则由第三方提供。程序通过<strong>读取配置文件</strong>来找到并加载这些实现，无需在代码中硬编码具体实现类。</p>
+<h2 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h2><ol>
+<li><strong>定义接口</strong>：服务方定义一个标准的接口。</li>
+<li><strong>提供实现</strong>：第三方（服务提供者）提供该接口的具体实现，并在其 <code>META-INF/services/</code>目录下创建一个以<strong>接口全限定名</strong>命名的文件。文件内容是该接口<strong>具体实现类的全限定名</strong>（每行一个）。</li>
+<li><strong>加载服务</strong>：服务方通过 <code>java.util.ServiceLoader</code>工具类来扫描、加载并实例化配置文件中声明的所有实现类。</li>
+</ol>
+<h2 id="SPI-与-API-的核心区别"><a href="#SPI-与-API-的核心区别" class="headerlink" title="SPI 与 API 的核心区别"></a>SPI 与 API 的核心区别</h2><table>
+<thead>
+<tr>
+<th>对比维度</th>
+<th><strong>API (Application Programming Interface)</strong></th>
+<th><strong>SPI (Service Provider Interface)</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>定义方</strong></td>
+<td>实现方定义接口和实现，提供给调用方使用。</td>
+<td>调用方定义接口，由实现方来提供具体实现。</td>
+</tr>
+<tr>
+<td><strong>控制权</strong></td>
+<td>接口和实现的控制权在<strong>实现方</strong>。</td>
+<td>接口的控制权在<strong>调用方</strong>，实现的控制权在第三方。</td>
+</tr>
+<tr>
+<td><strong>目的</strong></td>
+<td>提供明确的功能，让开发者调用。</td>
+<td>提供扩展点，让框架或平台能被定制和扩展。</td>
+</tr>
+<tr>
+<td><strong>关系方向</strong></td>
+<td>实现方 -&gt; 调用方</td>
+<td>调用方 &lt;- 实现方</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>SPI是一种强大的解耦和扩展机制，它让程序的架构更加灵活，实现了“面向接口编程”和“开闭原则”，是许多优秀框架可扩展性的基石。</p>
+</blockquote>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><h2 id="报表-数据导出格式扩展"><a href="#报表-数据导出格式扩展" class="headerlink" title="报表&#x2F;数据导出格式扩展"></a>报表&#x2F;数据导出格式扩展</h2><p>系统需要将数据导出为Excel、PDF、Word、CSV等多种格式。</p>
+<ul>
+<li><strong>SPI应用</strong>：定义 <code>ExportService</code>接口。每种导出格式作为一个SPI实现。用户在前端选择“导出为PDF”时，后端根据格式参数，通过SPI找到对应的实现类执行导出。</li>
+<li><strong>优势</strong>：方便地增加新的导出格式（如导出为图片），不会影响已有的导出功能。</li>
+</ul>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">spi-export-demo/</span><br><span class="line">├── pom.xml                    <span class="comment"># 主项目 POM 文件</span></span><br><span class="line">├── export-api/                <span class="comment"># 接口定义模块</span></span><br><span class="line">│   └── src/main/java/com/example/export/</span><br><span class="line">│       ├── ExportData.java    <span class="comment"># 导出数据模型</span></span><br><span class="line">│       └── spi/ExportService.java  <span class="comment"># SPI 接口定义</span></span><br><span class="line">├── export-excel/              <span class="comment"># Excel 导出实现模块</span></span><br><span class="line">├── export-pdf/                <span class="comment"># PDF 导出实现模块</span></span><br><span class="line">├── export-csv/                <span class="comment"># CSV 导出实现模块</span></span><br><span class="line">└── web-app/                   <span class="comment"># Web 应用模块</span></span><br><span class="line">    └── src/main/java/com/example/export/</span><br><span class="line">        ├── ExportApplication.java  <span class="comment"># Spring Boot 启动类</span></span><br><span class="line">        ├── controller/ExportController.java  <span class="comment"># REST 控制器</span></span><br><span class="line">        └── factory/ExportServiceFactory.java  <span class="comment"># 导出服务工厂</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>根据上面提到的SPI机制的实现原理，本项目的实现可以分为以下几步</p>
+<h3 id="SPI机制实现步骤"><a href="#SPI机制实现步骤" class="headerlink" title="SPI机制实现步骤"></a>SPI机制实现步骤</h3><h4 id="步骤1：定义接口"><a href="#步骤1：定义接口" class="headerlink" title="步骤1：定义接口"></a>步骤1：定义接口</h4><p>在 export-api 模块中，我们定义了标准的 ExportService 接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 导出服务SPI接口</span></span><br><span class="line"><span class="comment"> * 所有导出实现都必须实现此接口</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">ExportService</span> &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取支持的导出格式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">getFormat</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取格式描述（用于前端展示）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">getDescription</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 执行导出</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> data 导出数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> outputStream 输出流</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">export</span><span class="params">(ExportData data, OutputStream outputStream)</span> <span class="keyword">throws</span> Exception;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 支持的MIME类型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">getContentType</span><span class="params">()</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 文件扩展名</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    String <span class="title function_">getFileExtension</span><span class="params">()</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="步骤-2：提供实现"><a href="#步骤-2：提供实现" class="headerlink" title="步骤 2：提供实现"></a>步骤 2：提供实现</h4><p>在各个导出模块中，我们提供了 ExportService 接口的具体实现：</p>
+<p><img src="/image-20260225115625266.png" alt="image-20260225115625266"></p>
+<p><strong>Excel导出实现</strong>（其余同理）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExcelExportService</span> <span class="keyword">implements</span> <span class="title class_">ExportService</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getFormat</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;excel&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getDescription</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Microsoft Excel (.xlsx)&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getContentType</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getFileExtension</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;xlsx&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">export</span><span class="params">(ExportData data, OutputStream outputStream)</span> <span class="keyword">throws</span> Exception &#123;...&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> CellStyle <span class="title function_">createHeaderStyle</span><span class="params">(Workbook workbook)</span> &#123;...&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>创建 SPI 配置文件</strong></p>
+<p>在每个导出模块的 <code>META-INF/services/</code> 目录下，我们创建了以<strong>接口全限定名命名</strong>的文件：</p>
+<p><strong>Excel 模块配置文件</strong> （其余同理）：</p>
+<ul>
+<li>文件路径： <code>export-excel/src/main/resources/META-INF/services/com.example.export.spi.ExportService</code></li>
+<li>文件内容： <code>com.example.export.excel.ExcelExportService</code></li>
+</ul>
+<p>这些配置文件告诉 Java 运行时哪些类实现了 ExportService 接口。</p>
+<h4 id="步骤-3：加载服务"><a href="#步骤-3：加载服务" class="headerlink" title="步骤 3：加载服务"></a>步骤 3：加载服务</h4><p>在 <code>web-app</code> 模块中，我们通过 <code>ExportServiceFactory</code> 类使用 <code>ServiceLoader</code> 来加载所有实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExportServiceFactory</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, ExportService&gt; exportServiceMap = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 初始化时加载所有SPI实现</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">init</span><span class="params">()</span> &#123;</span><br><span class="line">        ServiceLoader&lt;ExportService&gt; loader = ServiceLoader.load(ExportService.class);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> (ExportService service : loader) &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">format</span> <span class="operator">=</span> service.getFormat().toLowerCase();</span><br><span class="line">            <span class="keyword">if</span> (exportServiceMap.containsKey(format)) &#123;</span><br><span class="line">                <span class="comment">// 可以记录日志，说明有重复实现</span></span><br><span class="line">                System.err.println(<span class="string">&quot;警告：导出格式 &quot;</span> + format + <span class="string">&quot; 有多个实现，使用 &quot;</span> + </span><br><span class="line">                    service.getClass().getName());</span><br><span class="line">            &#125;</span><br><span class="line">            exportServiceMap.put(format, service);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">&quot;加载的导出服务：&quot;</span> + exportServiceMap.keySet());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据格式获取导出服务</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> ExportService <span class="title function_">getExportService</span><span class="params">(String format)</span> &#123;</span><br><span class="line">        <span class="type">ExportService</span> <span class="variable">service</span> <span class="operator">=</span> exportServiceMap.get(format.toLowerCase());</span><br><span class="line">        <span class="keyword">if</span> (service == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalArgumentException</span>(<span class="string">&quot;不支持的导出格式: &quot;</span> + format + </span><br><span class="line">                <span class="string">&quot;，可用格式: &quot;</span> + getSupportedFormats());</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> service;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取所有支持的导出格式</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> List&lt;String&gt; <span class="title function_">getSupportedFormats</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(exportServiceMap.keySet());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取格式描述信息（用于前端下拉框）</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; <span class="title function_">getFormatDescriptions</span><span class="params">()</span> &#123;</span><br><span class="line">        Map&lt;String, String&gt; descriptions = <span class="keyword">new</span> <span class="title class_">LinkedHashMap</span>&lt;&gt;();</span><br><span class="line">        exportServiceMap.forEach((format, service) -&gt; &#123;</span><br><span class="line">            descriptions.put(format, service.getDescription());</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> descriptions;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当应用启动时， @PostConstruct 注解标记的 init() 方法会被执行：</p>
+<ol>
+<li><p>创建 <code>ServiceLoader&lt;ExportService&gt;</code> 实例</p>
+<p>调用 ServiceLoader.load(接口.class)</p>
+<ol>
+<li><strong>定位配置文件</strong>：扫描类路径下所有 <code>META-INF/services/com.example.export.spi.ExportService</code>文件</li>
+<li><strong>读取实现类名</strong>： 读取文件中每一行的全限定类名（如 <code>com.example.export.excel.ExcelExportService</code>）</li>
+<li><strong>延迟加载</strong>： 创建 <code>ServiceLoader</code>实例，但<strong>不立即</strong>实例化实现类（懒加载）</li>
+<li><strong>提供服务</strong>： 返回一个可迭代的 <code>ServiceLoader</code>对象，用于按需加载实现类</li>
+</ol>
+<p>底层机制流程图如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">调用 ServiceLoader.load(接口.class)</span><br><span class="line">        ↓</span><br><span class="line">扫描类路径下的 META-INF/services/接口全限定名 文件</span><br><span class="line">        ↓</span><br><span class="line">读取文件中所有实现类的全限定名</span><br><span class="line">        ↓</span><br><span class="line">为每个实现类创建 LazyClassPathLookupIterator</span><br><span class="line">        ↓</span><br><span class="line">当调用 iterator().next() 或 for-each 循环时</span><br><span class="line">        ↓</span><br><span class="line">通过反射 Class.forName() 加载类</span><br><span class="line">        ↓</span><br><span class="line">调用无参构造器 newInstance() 创建实例</span><br><span class="line">        ↓</span><br><span class="line">缓存实例，避免重复创建</span><br><span class="line">        ↓</span><br><span class="line">返回实例给调用者</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>遍历加载所有实现类</p>
+</li>
+<li><p>将实现类缓存到 <code>exportServiceMap</code> 中，以格式名称为键</p>
+</li>
+</ol>
+<p><strong>运行时效果</strong></p>
+<p>当应用启动时，控制台会输出：</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">加载的导出服务：[excel, pdf, csv]</span><br></pre></td></tr></table></figure>
+
+<p>这表明 SPI 机制成功加载了所有导出服务实现。</p>
+<h3 id="如何使用SPI服务"><a href="#如何使用SPI服务" class="headerlink" title="如何使用SPI服务"></a>如何使用SPI服务</h3><p>在 <code>ExportController</code> 中，我们通过 <code>ExportServiceFactory</code> 获取具体的导出服务：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(&quot;/api/export&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">ExportController</span> &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> ExportServiceFactory exportServiceFactory;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@PostMapping(&quot;/execute&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">exportData</span><span class="params">(</span></span><br><span class="line"><span class="params">            <span class="meta">@RequestParam</span> String format,</span></span><br><span class="line"><span class="params">            <span class="meta">@RequestBody</span> ExportRequest request,</span></span><br><span class="line"><span class="params">            HttpServletResponse response)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 1. 获取对应的导出服务</span></span><br><span class="line">            <span class="type">ExportService</span> <span class="variable">exportService</span> <span class="operator">=</span> exportServiceFactory.getExportService(format);</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 2. 后续操作省略</span></span><br><span class="line">            </span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            <span class="comment">// 错误处理...</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 其他方法...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="假如要扩展新的导出格式"><a href="#假如要扩展新的导出格式" class="headerlink" title="假如要扩展新的导出格式"></a>假如要扩展新的导出格式</h3><p>要添加新的导出格式（如 Word），只需：</p>
+<ol>
+<li>创建新的 Maven 模块 export-word</li>
+<li>实现 ExportService 接口</li>
+<li>在 src&#x2F;main&#x2F;resources&#x2F;META-INF&#x2F;services&#x2F; 目录下创建配置文件</li>
+<li>在 web-app&#x2F;pom.xml 中添加新模块的依赖</li>
+</ol>
+<p>无需修改任何现有代码，新的导出格式会被自动加载。</p>
+<blockquote>
+<p>参考资料： <a target="_blank" rel="noopener" href="https://javaguide.cn/java/basis/spi.html">Java SPI 机制详解 | JavaGuide</a></p>
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/7486483409084268595">Java常用机制–SPI机制详解一、什么是SPI机制 SPI（Service Provider Interface）， - 掘金</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io">lcdzzz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://lcdzzz.github.io/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/">http://lcdzzz.github.io/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://lcdzzz.github.io" target="_blank">布鲁成周勒的博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%8E%9F%E5%88%9B/">原创</a><a class="post-meta__tags" href="/tags/java/">java</a><a class="post-meta__tags" href="/tags/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98/">项目实战</a><a class="post-meta__tags" href="/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a></div><div class="post-share"><div class="social-share" data-image="https://ts1.tc.mm.bing.net/th/id/OIP-C.wTH2hgJ8ZtMTafXUtaUHVwHaER?w=108&amp;h=108&amp;c=1&amp;bgcl=d37d21&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=ImgRC&amp;rm=3" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析"><img class="cover" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.bhYM55hZztwVVb6we5hXKAHaEK?w=304&amp;h=180&amp;c=7&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=1.7&amp;rm=3" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">ThreadLocal解析</div></div><div class="info-2"><div class="info-item-1">ThreadLocal 是什么？ThreadLocal 不是“线程”，也不是“存储容器”，而是一个“访问代理”或“操作工具类”。 可以把它理解为：  一个“钥匙生成器”+“存取接口”——它本身不存数据，但是可以帮我在线程专属的存储空间里面存取数据  关键点：  ThreadLocal 每个实例代表一个独立的“变量槽位” 它通过 set(value) &#x2F; get()/remove() 方法，操作当前线程内部的一个 Map（即 ThreadLocalMap） 所有数据实际存储在 Thread 对象内部，而不是 ThreadLocal 里  ThreadLocal 和 ThreadLocalMap 的关系它们的结构如下： 123456Thread  └── ThreadLocal.ThreadLocalMap threadLocals（线程私有）        └── Entry[] table（键值对数组）              └── Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt;            ...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"><img class="cover" src="https://img0.baidu.com/it/u=33332782,423268096&fm=253&fmt=auto&app=138&f=JPEG?w=889&h=500" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-30</div><div class="info-item-2">微服务网关的响应式实战：利用Reactor实现非阻塞动态配置</div></div><div class="info-2"><div class="info-item-1">前言在微服务架构中，网关作为流量的门户，其稳定性和性能至关重要。在我的开源项目 ZAutumn-gateway 的开发过程中，为了实现动态路由与限流规则的热更新，我们将配置存入了Redis。但随之而来的是这样一个问题——如果采用传统的同步阻塞方式监听配置变更，那么在主流程（路由转发、熔断限流）中，关键的I&#x2F;O线程很可能因等待配置更新而被阻塞，这将损害网关处理高并发请求的核心能力。 为了解决这一问题，我引入了响应式编程范式，并选用 Project Reactor 作为核心工具库，将配置更新的相关逻辑全部改造为异步非阻塞处理。这样一来，配置监听器在等待Redis消息时不会阻塞任何线程，当消息到达时才会异步地触发更新操作，从而确保了网关数据平面的高性能和响应性。 阅读本文前，您需要掌握：  微服务架构基础：微服务架构的基本思想、API 网关的角色（统一入口、路由、过滤等） 响应式编程范式：核心思想（异步非阻塞、数据流、变化传播）、背压（Backpressure）概念 Spring 技术栈：Spring Boot 基础（如注解配置、依赖注入）、Spring Cloud 生态的初...</div></div></div></a><a class="pagination-related" href="/2022/11/03/SprngSecurity%E5%AE%9E%E6%88%98%E5%AE%9E%E4%BE%8B%EF%BC%8CJWT%20Token%E7%99%BB%E5%BD%95%E8%AE%A4%E8%AF%81&%E6%9D%83%E9%99%90%E6%8E%A7%E5%88%B6/" title="SprngSecurity实战实例，JWT Token登录认证&amp;权限控制"><img class="cover" src="https://img2.baidu.com/it/u=924906505,2741718824&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=250" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2022-11-03</div><div class="info-item-2">SprngSecurity实战实例，JWT Token登录认证&amp;权限控制</div></div><div class="info-2"><div class="info-item-1"> 这个在暑假就写过，上学以后重新再去写一遍发现困难比较多，于是准备写一篇记录一下。 tips: 源码在文章末尾，sql文件在源码resource文件夹下的sql文件夹里   需求想用springsecurity实现JWT Token登录认证，实现动态菜单生成，权限控制，登出（用户注销）。 认证准备工作 maven依赖 1234567891011121314151617181920212223242526     &lt;dependency&gt;         &lt;groupId&gt;com.alibaba&lt;/groupId&gt;         &lt;artifactId&gt;fastjson&lt;/artifactId&gt;         &lt;version&gt;1.2.47&lt;/version&gt;     &lt;/dependency&gt;&lt;dependency&gt;         &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;         &lt;artifact...</div></div></div></a><a class="pagination-related" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"><img class="cover" src="https://img1.baidu.com/it/u=990940841,655710864&fm=253&fmt=auto?w=1025&h=489" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-27</div><div class="info-item-2">Spring-Cloud-Gateway-路由定位器RouteLocator源码解析</div></div><div class="info-2"><div class="info-item-1">前言在整理和优化 星云网关 的时候，顺便仔细看了看Spring Cloud Gateway源码 网关代码123456789101112131415161718192021222324252627/** * 动态路由定义定位器 */@Component(&quot;dynamicRouteDefinitionLocator&quot;)public class DynamicRouteDefinitionLocator implements RouteDefinitionLocator &#123;    private static final Logger logger = LoggerFactory.getLogger(DynamicRouteDefinitionLocator.class);    private final RedisRouteDefinitionRepository repository;    private final ApplicationEventPublisher eventPublisher;    public DynamicRouteDe...</div></div></div></a><a class="pagination-related" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法"><img class="cover" src="https://img1.baidu.com/it/u=721907534,3678819417&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=478" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-01-23</div><div class="info-item-2">枚举转换的四种写法</div></div><div class="info-2"><div class="info-item-1">前言：最近开发任务不重，在完成任务工作后，不由的思考起了各种写法的效率和适用场景。 比如下面这种情况 数据库查出来的executionStatus、executionResult我需要转换成executionStatusCH; (执行状态中文描述)、 executionResultCH; (执行结果中文描述)  实现在创建完两个枚举类：ExecutionStatusEnum  ExecutionResultEnum后，有大概一下四种转换的写法。让我们一次介绍并且分析写法的效能和适用场景。 1. Lambda 表达式（推荐）1234vos.forEach(vo -&gt; &#123;    vo.setExecutionStatusCH(ExecutionStatusEnum.getDescByCode(vo.getExecutionStatus()));    vo.setExecutionResultCH(ExecutionResultEnum.getDescByCode(vo.getExecutionResult()));&#125;);   优点：简洁、可读性强，符合现代...</div></div></div></a><a class="pagination-related" href="/2024/01/28/%E8%87%AA%E5%AE%9A%E4%B9%89%E9%99%90%E6%B5%81%E6%B3%A8%E8%A7%A3/" title="自定义限流注解"><img class="cover" src="https://img1.baidu.com/it/u=1262509061,4086244529&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=339" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2024-01-28</div><div class="info-item-2">自定义限流注解</div></div><div class="info-2"><div class="info-item-1"> 代码地址  依赖依赖：springweb、nosql的redis、aop 123456789101112&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;&lt;/dependency&gt;&lt;dependency&gt;    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;    &lt;artifactId&gt;spring-boot-starte...</div></div></div></a><a class="pagination-related" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析"><img class="cover" src="https://tse4-mm.cn.bing.net/th/id/OIP-C.bhYM55hZztwVVb6we5hXKAHaEK?w=304&h=180&c=7&r=0&o=7&dpr=1.5&pid=1.7&rm=3" alt="cover"><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-02-04</div><div class="info-item-2">ThreadLocal解析</div></div><div class="info-2"><div class="info-item-1">ThreadLocal 是什么？ThreadLocal 不是“线程”，也不是“存储容器”，而是一个“访问代理”或“操作工具类”。 可以把它理解为：  一个“钥匙生成器”+“存取接口”——它本身不存数据，但是可以帮我在线程专属的存储空间里面存取数据  关键点：  ThreadLocal 每个实例代表一个独立的“变量槽位” 它通过 set(value) &#x2F; get()/remove() 方法，操作当前线程内部的一个 Map（即 ThreadLocalMap） 所有数据实际存储在 Thread 对象内部，而不是 ThreadLocal 里  ThreadLocal 和 ThreadLocalMap 的关系它们的结构如下： 123456Thread  └── ThreadLocal.ThreadLocalMap threadLocals（线程私有）        └── Entry[] table（键值对数组）              └── Entry extends WeakReference&lt;ThreadLocal&lt;?&gt;&gt;            ...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lcdzzz</div><div class="author-info-description"></div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">40</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">38</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">7</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="toc-number">1.1.</span> <span class="toc-text">工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SPI-%E4%B8%8E-API-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="toc-number">1.2.</span> <span class="toc-text">SPI 与 API 的核心区别</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.</span> <span class="toc-text">应用场景</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%A5%E8%A1%A8-%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%87%BA%E6%A0%BC%E5%BC%8F%E6%89%A9%E5%B1%95"><span class="toc-number">2.1.</span> <span class="toc-text">报表&#x2F;数据导出格式扩展</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.</span> <span class="toc-text">实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84"><span class="toc-number">2.2.1.</span> <span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SPI%E6%9C%BA%E5%88%B6%E5%AE%9E%E7%8E%B0%E6%AD%A5%E9%AA%A4"><span class="toc-number">2.2.2.</span> <span class="toc-text">SPI机制实现步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A41%EF%BC%9A%E5%AE%9A%E4%B9%89%E6%8E%A5%E5%8F%A3"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">步骤1：定义接口</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-2%EF%BC%9A%E6%8F%90%E4%BE%9B%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.2.2.2.</span> <span class="toc-text">步骤 2：提供实现</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%AD%A5%E9%AA%A4-3%EF%BC%9A%E5%8A%A0%E8%BD%BD%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.2.3.</span> <span class="toc-text">步骤 3：加载服务</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8SPI%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.2.3.</span> <span class="toc-text">如何使用SPI服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%87%E5%A6%82%E8%A6%81%E6%89%A9%E5%B1%95%E6%96%B0%E7%9A%84%E5%AF%BC%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.2.4.</span> <span class="toc-text">假如要扩展新的导出格式</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" title="SPI机制介绍及应用场景"><img src="https://ts1.tc.mm.bing.net/th/id/OIP-C.wTH2hgJ8ZtMTafXUtaUHVwHaER?w=108&amp;h=108&amp;c=1&amp;bgcl=d37d21&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=ImgRC&amp;rm=3" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="SPI机制介绍及应用场景"/></a><div class="content"><a class="title" href="/2026/02/25/SPI%E6%9C%BA%E5%88%B6%E4%BB%8B%E7%BB%8D%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF/" title="SPI机制介绍及应用场景">SPI机制介绍及应用场景</a><time datetime="2026-02-25T11:36:04.000Z" title="发表于 2026-02-25 19:36:04">2026-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析"><img src="https://tse4-mm.cn.bing.net/th/id/OIP-C.bhYM55hZztwVVb6we5hXKAHaEK?w=304&amp;h=180&amp;c=7&amp;r=0&amp;o=7&amp;dpr=1.5&amp;pid=1.7&amp;rm=3" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ThreadLocal解析"/></a><div class="content"><a class="title" href="/2026/02/04/ThreadLocal%E8%A7%A3%E6%9E%90/" title="ThreadLocal解析">ThreadLocal解析</a><time datetime="2026-02-04T09:03:56.000Z" title="发表于 2026-02-04 17:03:56">2026-02-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"><img src="https://img0.baidu.com/it/u=33332782,423268096&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=889&amp;h=500" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置"/></a><div class="content"><a class="title" href="/2026/01/30/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E7%BD%91%E5%85%B3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E5%AE%9E%E6%88%98%EF%BC%9A%E5%88%A9%E7%94%A8Reactor%E5%AE%9E%E7%8E%B0%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%8A%A8%E6%80%81%E9%85%8D%E7%BD%AE/" title="微服务网关的响应式实战：利用Reactor实现非阻塞动态配置">微服务网关的响应式实战：利用Reactor实现非阻塞动态配置</a><time datetime="2026-01-29T16:00:00.000Z" title="发表于 2026-01-30 00:00:00">2026-01-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"><img src="https://img1.baidu.com/it/u=990940841,655710864&amp;fm=253&amp;fmt=auto?w=1025&amp;h=489" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析"/></a><div class="content"><a class="title" href="/2026/01/27/Spring-Cloud-Gateway-%E8%B7%AF%E7%94%B1%E5%AE%9A%E4%BD%8D%E5%99%A8RouteLocator%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="Spring-Cloud-Gateway-路由定位器RouteLocator源码解析">Spring-Cloud-Gateway-路由定位器RouteLocator源码解析</a><time datetime="2026-01-26T16:00:00.000Z" title="发表于 2026-01-27 00:00:00">2026-01-27</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法"><img src="https://img1.baidu.com/it/u=721907534,3678819417&amp;fm=253&amp;fmt=auto&amp;app=138&amp;f=JPEG?w=500&amp;h=478" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="枚举转换的四种写法"/></a><div class="content"><a class="title" href="/2026/01/23/%E6%9E%9A%E4%B8%BE%E8%BD%AC%E6%8D%A2%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%86%99%E6%B3%95/" title="枚举转换的四种写法">枚举转换的四种写法</a><time datetime="2026-01-23T08:03:12.000Z" title="发表于 2026-01-23 16:03:12">2026-01-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2020 - 2026 By lcdzzz</span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="chat-btn" type="button" title="聊天" style="display:none"><i class="fas fa-message"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const initValine = (el, path) => {
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyValine = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+
+    const valineConfig = {
+      el: '#vcomment',
+      appId: '',
+      appKey: '',
+      avatar: 'monsterid',
+      serverURLs: '',
+      emojiMaps: "",
+      visitor: false,
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || window.location.pathname
+    }
+
+    new Valine(valineConfig)
+  }
+
+  const loadValine = async (el, path) => {
+    if (typeof Valine === 'function') {
+      initValine(el, path)
+    } else {
+      await btf.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js')
+      initValine(el, path)
+    }
+  }
+
+  if (isShuoshuo) {
+    'Valine' === 'Valine'
+      ? window.shuoshuoComment = { loadComment: loadValine }
+      : window.loadOtherComment = loadValine
+    return
+  }
+
+  if ('Valine' === 'Valine' || !false) {
+    if (false) btf.loadComment(document.getElementById('vcomment'),loadValine)
+    else setTimeout(loadValine, 0)
+  } else {
+    window.loadOtherComment = loadValine
+  }
+})()</script></div><script>(() => {
+  window.ChatraID = ''
+  window.Chatra = window.Chatra || function() {
+    (window.Chatra.q = window.Chatra.q || []).push(arguments)
+  }
+
+  btf.getScript('https://call.chatra.io/chatra.js').then(() => {
+    const isChatBtn = true
+    const isChatHideShow = true
+
+    if (isChatBtn) {
+      const close = () => {
+        Chatra('minimizeWidget')
+        Chatra('hide')
+      }
+
+      const open = () => {
+        Chatra('openChat', true)
+        Chatra('show')
+      }
+
+      window.ChatraSetup = { startHidden: true }
+    
+      window.chatBtnFn = () => document.getElementById('chatra').classList.contains('chatra--expanded') ? close() : open()
+
+      document.getElementById('chat-btn').style.display = 'block'
+    } else if (isChatHideShow) {
+      window.chatBtn = {
+        hide: () => Chatra('hide'),
+        show: () => Chatra('show')
+      }
+    }
+  })
+})()</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
