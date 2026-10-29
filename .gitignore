@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+db.json
+*.log
+node_modules/
+public/
+.deploy*/
+_multiconfig.yml
+
+# skywalking-agent 附件体积大（jar 18M + log 14M），且可从官方仓库重新下载
+source/_posts/skywalking-agent/
+
+# source/_posts - 副本 是 _posts 的重复拷贝，hexo 不会发布，不纳入版本管理
+source/_posts - 副本/
